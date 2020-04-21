@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">BIHAR</string>
-
+    <string name="matricula_curso">Curso</string>
+    <string name="matricula_convocatoria">Convocatoria</string>
+    <string name="matricula_notaOrdinaria">Nota C. Ordinaria</string>
+    <string name="matricula_notaExtraOrdinaria">Nota C.Extraordinaria</string>
 
 </resources>

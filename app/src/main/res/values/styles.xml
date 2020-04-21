@@ -8,4 +8,11 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="matricula_tableRows" parent="Theme.AppCompat.Light">
+        <item name="android:textColor">@color/negro</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:paddingRight">5dp</item>
+        <item name="background">@drawable/bordes_tablelayout</item>
+        <item name="android:paddingLeft">3dp</item>
+    </style>
 </resources>
