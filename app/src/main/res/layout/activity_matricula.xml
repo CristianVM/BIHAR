@@ -1,18 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".activities.Matricula"
     android:orientation="vertical">
 
     <fragment
+        android:id="@+id/frgmt_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:name="com.example.bihar.ToolBar"
         tools:layout="@layout/fragment_toolbar"/>
 
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"/>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/matricula_texto_anioMatricula"
+            android:theme="@style/matricula_tableRows"
+            android:paddingRight="15dp"
+            android:textSize="15sp"
+            android:textStyle="bold"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/borde_spinner_matricula"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/matricula_seleccionAnio"
+                android:text="2019-20"
+                android:textSize="15sp"
+                android:textColor="@color/negro"
+                android:textStyle="bold"
+                android:padding="13dp"
+                android:paddingRight="0dp"/>
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_arrow_down_white30"
+                android:paddingEnd="10dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                app:civ_circle_background_color="@color/negro"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/matricula_lista"
+        android:padding="15dp"/>
 
 </LinearLayout>
