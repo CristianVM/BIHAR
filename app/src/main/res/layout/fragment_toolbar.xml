@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
     android:background="@color/verde"
-    tools:context=".ToolBar">
+    tools:context=".view.fragments.ToolBar">
 
     <TextView
         android:id="@+id/textView"

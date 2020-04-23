@@ -1,4 +1,7 @@
-package com.example.bihar;
+package com.example.bihar.model;
+
+import com.example.bihar.R;
+import com.example.bihar.model.CardOpcion;
 
 public class ListaOpcionesMenu {
 

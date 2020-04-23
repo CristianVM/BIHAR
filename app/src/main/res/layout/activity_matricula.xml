@@ -4,14 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".activities.Matricula"
+    tools:context=".view.activities.Matricula"
     android:orientation="vertical">
 
     <fragment
         android:id="@+id/frgmt_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:name="com.example.bihar.ToolBar"
+        android:name="com.example.bihar.view.fragments.ToolBar"
         tools:layout="@layout/fragment_toolbar"/>
 
     <Space

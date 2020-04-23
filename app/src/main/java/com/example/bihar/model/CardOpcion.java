@@ -1,4 +1,4 @@
-package com.example.bihar;
+package com.example.bihar.model;
 
 public class CardOpcion {
 

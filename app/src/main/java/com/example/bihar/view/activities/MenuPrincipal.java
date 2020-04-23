@@ -1,4 +1,4 @@
-package com.example.bihar;
+package com.example.bihar.view.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+
+import com.example.bihar.model.CardOpcion;
+import com.example.bihar.model.ListaOpcionesMenu;
+import com.example.bihar.R;
 
 public class MenuPrincipal extends AppCompatActivity {
 
