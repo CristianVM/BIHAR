@@ -9,18 +9,20 @@ import android.widget.TextView;
 
 import com.example.bihar.R;
 
+import java.util.ArrayList;
+
 public class AdapterListaAsignaturasMatricula extends BaseAdapter {
 
     private Context context;
     private LayoutInflater inflater;
-    private String[] asignaturas;
-    private int[] cursos;
-    private int[] convocatorias;
-    private double[] notasOrdinarias;
-    private double[] notasExtraordinarias;
+    private ArrayList<String> asignaturas;
+    private ArrayList<String> cursos;
+    private ArrayList<String> convocatorias;
+    private ArrayList<String> notasOrdinarias;
+    private ArrayList<String> notasExtraordinarias;
 
-    public AdapterListaAsignaturasMatricula(Context context, String[] asignaturas, int[] cursos,
-         int[] convocatorias, double[] notasExtraordinarias,double[] notasOrdinarias){
+    public AdapterListaAsignaturasMatricula(Context context, ArrayList<String> asignaturas, ArrayList<String> cursos,
+          ArrayList<String> convocatorias, ArrayList<String> notasExtraordinarias,ArrayList<String> notasOrdinarias){
 
         this.context = context;
         this.asignaturas = asignaturas;
@@ -33,12 +35,12 @@ public class AdapterListaAsignaturasMatricula extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return asignaturas.length;
+        return asignaturas.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return asignaturas[i];
+        return asignaturas.get(i);
     }
 
     @Override
@@ -56,11 +58,11 @@ public class AdapterListaAsignaturasMatricula extends BaseAdapter {
         TextView notaOrdinaria = (TextView) view.findViewById(R.id.lista_matricula_notaOrdinaria);
         TextView notaExtraordinaria = (TextView) view.findViewById(R.id.lista_matricula_notaExtraordinaria);
 
-        asignatura.setText(asignaturas[i]);
-        curso.setText(cursos[i]+"");
-        convocatoria.setText(convocatorias[i]+"");
-        notaOrdinaria.setText(notasOrdinarias[i]+"");
-        notaExtraordinaria.setText(notasExtraordinarias[i]+"");
+        asignatura.setText(asignaturas.get(i));
+        curso.setText(cursos.get(i));
+        convocatoria.setText(convocatorias.get(i));
+        notaOrdinaria.setText(notasOrdinarias.get(i));
+        notaExtraordinaria.setText(notasExtraordinarias.get(i));
         return view;
     }
 }

@@ -2,11 +2,13 @@
     <string name="app_name">BIHAR</string>
 
 
-    <!-- LISTA ASIGNATURAS MATRICULAS -->
+    <!-- Actividad Matricula -->
     <string name="matricula_curso">Curso</string>
     <string name="matricula_convocatoria">Convocatoria</string>
     <string name="matricula_notaOrdinaria">Nota Ord.</string>
     <string name="matricula_notaExtraOrdinaria">Nota Extraord.</string>
     <string name="matricula_texto_anioMatricula">"Año de matrícula: "</string>
+    <string name="dialog_matricaTxtSelectAnio">Seleccione el año de la matrícula</string>
+    <string name="matricula_notaNP">NP</string>
 
 </resources>

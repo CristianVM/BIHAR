@@ -8,9 +8,6 @@ import androidx.work.Data;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
-
-import com.example.bihar.controller.GeneradorConexionesSeguras;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -56,7 +53,7 @@ public class WorkerBihar extends Worker {
                     Data.Builder data = new Data.Builder();
 
                     data.putString("result",result);
-                    Log.i("BDD","CORRECTO: " + result);
+                    Log.i("BDD",result);
 
                     return Result.success(data.build());
                 }else{

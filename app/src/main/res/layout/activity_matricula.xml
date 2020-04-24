@@ -22,7 +22,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center">
+        android:gravity="center"
+        android:paddingBottom="10dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -37,12 +38,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/borde_spinner_matricula"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:id="@+id/matricula_linearLayoutSeleccionAnio">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/matricula_seleccionAnio"
-                android:text="2019-20"
                 android:textSize="15sp"
                 android:textColor="@color/negro"
                 android:textStyle="bold"
@@ -59,6 +60,11 @@
                 app:civ_circle_background_color="@color/negro"/>
         </LinearLayout>
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/negro" />
 
     <ListView
         android:layout_width="match_parent"
