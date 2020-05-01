@@ -2,15 +2,19 @@ package com.example.bihar.view.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.example.bihar.model.CardOpcion;
 import com.example.bihar.model.ListaOpcionesMenu;
@@ -58,7 +62,47 @@ public class MenuPrincipal extends AppCompatActivity {
         @Override
         public void onBindViewHolder(@NonNull MiViewHolder holder, int position) {
             holder.imgButton.setImageResource(opciones[position].getImagen());
-            holder.imgButton.setTag(opciones[position].getTag());
+            holder.imgButton.setOnClickListener(v -> {
+                Intent intent = null;
+                switch (opciones[position].getTag()){
+                    case "matricula":{
+                        intent = new Intent(MenuPrincipal.this, Matricula.class);
+                        break;
+                    }
+                    case "expediente":{
+                        //intent = new Intent(MenuPrincipal.this, Matricula.class);
+                        Toast.makeText(MenuPrincipal.this, "No hecho aún", Toast.LENGTH_SHORT).show();
+                        break;
+                    }
+                    case "horarios":{
+                        //intent = new Intent(MenuPrincipal.this, Matricula.class);
+                        Toast.makeText(MenuPrincipal.this, "No hecho aún", Toast.LENGTH_SHORT).show();
+                        break;
+                    }
+                    case "tutorias":{
+                        intent = new Intent(MenuPrincipal.this, Tutorias.class);
+                        break;
+                    }
+                    case "biblioteca":{
+                        intent = new Intent(MenuPrincipal.this, Biblioteca.class);
+                        break;
+                    }
+                    case "practicas":{
+                        //intent = new Intent(MenuPrincipal.this, Matricula.class);
+                        Toast.makeText(MenuPrincipal.this, "No hecho aún", Toast.LENGTH_SHORT).show();
+                        break;
+                    }
+                    case "egela":{
+                        //intent = new Intent(MenuPrincipal.this, Matricula.class);
+                        Toast.makeText(MenuPrincipal.this, "No hecho aún", Toast.LENGTH_SHORT).show();
+                        break;
+                    }
+                }
+
+                if(intent != null)
+                    startActivity(intent);
+
+            });
         }
 
         @Override

@@ -115,7 +115,7 @@ public class InicioSesion extends AppCompatActivity {
                                             }
 
                                             Intent i = new Intent(getApplicationContext(), MenuPrincipal.class);
-                                            getApplicationContext().startActivity(i);
+                                            startActivity(i);
 
                                             // Solicitamos la imagen asociada de manera individual
                                             //obtenerImagen(email);

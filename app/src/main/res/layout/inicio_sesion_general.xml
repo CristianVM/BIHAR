@@ -22,13 +22,13 @@
         <ProgressBar
             android:id="@+id/login1ProgressBar"
             style="?android:attr/progressBarStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
             android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/login1TextAcceso"
-            app:layout_constraintStart_toEndOf="@+id/login1TextAcceso"
-            app:layout_constraintTop_toTopOf="@+id/login1TextAcceso" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline1"

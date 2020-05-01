@@ -13,7 +13,7 @@ public class ListaOpcionesMenu {
                 new CardOpcion(R.drawable.card_tutorias,"tutorias"),
                 new CardOpcion(R.drawable.card_biblioteca, "biblioteca"),
                 new CardOpcion(R.drawable.card_practicas,"practicas"),
-                new CardOpcion(R.drawable.card_egela,"Practicas")};
+                new CardOpcion(R.drawable.card_egela,"egela")};
 
     }
 
