@@ -10,6 +10,7 @@
     <string name="matricula_texto_anioMatricula">"Año de matrícula: "</string>
     <string name="dialog_matricaTxtSelectAnio">Seleccione el año de la matrícula</string>
     <string name="matricula_notaNP">NP</string>
+    <string name="tutorias">TUTORIAS</string>
 
     <!-- LOGIN -->
     <string name="login_usuario">Usuario</string>
