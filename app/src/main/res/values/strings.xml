@@ -25,4 +25,20 @@
     <string name="login_cambiar_usuario">Utilizar otro usuario</string>
     <string name="contraseña_olvidada">He olvidado mi contraseña</string>
 
+    <!--BIBLIOTECA -->
+    <string name="biblioteca_txtFiltrado">Filtrar temas:</string>
+    <string name="biblioteca_btnFiltrar">Filtrar</string>
+    <string name="biblioteca_temaInformatica">Informática</string>
+    <string name="biblioteca_temaEconomia">Economía</string>
+    <string name="biblioteca_temaMedicina">Medicina</string>
+    <string name="libroInformacion_txtInfoLibro">Información del libro</string>
+    <string name="libroEscritoPor">Escrito por</string>
+    <string name="libroInformacion_descripcion">Descripción: </string>
+    <string name="libroInformacion_editorial">Editorial: </string>
+    <string name="libroInformacion_publicacion">"Publicado en "</string>
+    <string name="lista_libroInformacion_localizacion">Localización</string>
+    <string name="lista_libroInformacion_reservar">Reservar</string>
+    <string name="libroInformacion_libroDisponible">Disponible</string>
+    <string name="libroInformacion_libroNoDisponible">"No disponible hasta "</string>
+
 </resources>

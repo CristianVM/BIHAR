@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.activities.LibroInformacion"
+    android:orientation="vertical"
+    android:layout_marginStart="10dp">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:id="@+id/libroInformacion_imagen"/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/libroInformacion_titulo"
+            android:paddingTop="30dp"
+            android:paddingLeft="20dp"
+            android:textColor="@color/negro"
+            android:textStyle="bold"
+            android:text="NOMBRE LIBROOOOOOOOOOOOOOOOO"/>
+
+    </LinearLayout>
+
+    <!-- ################### DESPLEGABLE 1 ##############-->
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/menu_seleccion_naranja"
+        android:orientation="horizontal"
+        android:id="@+id/libroInformacion_lyDesplegableInfoLibro">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textColor="@color/negro"
+            android:textStyle="bold"
+            android:padding="13dp"
+            android:text="@string/libroInformacion_txtInfoLibro"/>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_arrow_down_white30"
+            android:paddingEnd="10dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            app:civ_circle_background_color="@color/negro"/>
+    </LinearLayout>
+
+    <!-- ################### INFORMACION DEL LIBRO DESPLEGABLE ##############-->
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/libroInformacion_linearLayoutContenidoInfo"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/libroEscritoPor"
+                android:theme="@style/libroInformacion_textView_info"
+                android:textStyle="bold"
+                android:drawableStart="@drawable/ic_libroinformacion_escritor"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:theme="@style/libroInformacion_textView_info"
+                android:id="@+id/libroInformacion_escritor"
+                android:paddingStart="8dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/libroInformacion_descripcion"
+                android:theme="@style/libroInformacion_textView_info"
+                android:textStyle="bold"
+                android:drawableLeft="@drawable/ic_libroinformacion_descripcion"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:theme="@style/libroInformacion_textView_info"
+                android:id="@+id/libroInformacion_descripcion"
+                android:paddingStart="8dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/libroInformacion_editorial"
+                android:theme="@style/libroInformacion_textView_info"
+                android:textStyle="bold"
+                android:drawableLeft="@drawable/ic_libroimagen_editorial"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:theme="@style/libroInformacion_textView_info"
+                android:id="@+id/libroInformacion_editorial"
+                android:paddingStart="8dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/libroInformacion_publicacion"
+                android:theme="@style/libroInformacion_textView_info"
+                android:textStyle="bold"
+                android:drawableLeft="@drawable/ic_libroinformacion_publicacion"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:theme="@style/libroInformacion_textView_info"
+                android:id="@+id/libroInformacion_publicacion"
+                android:paddingStart="8dp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- ################### DESPLEGABLE 2 ##############-->
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/menu_seleccion_naranja"
+        android:orientation="horizontal"
+        android:layout_marginTop="15dp"
+        android:id="@+id/libroInformacion_lyDesplegableUniversidades">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textColor="@color/negro"
+            android:textStyle="bold"
+            android:padding="13dp"
+            android:text="Universidades"/>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_arrow_down_white30"
+            android:paddingEnd="10dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            app:civ_circle_background_color="@color/negro"/>
+    </LinearLayout>
+
+    <!-- ################### UNIVERSIDADES DESPLEGABLE ##############-->
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:id="@+id/libroInformacion_layoutListaUniversidades">
+        <ListView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/libroInformacion_listaUniversidades"
+            android:layout_marginTop="10dp"/>
+    </RelativeLayout>
+
+</LinearLayout>

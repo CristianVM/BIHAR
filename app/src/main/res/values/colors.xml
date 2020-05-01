@@ -8,4 +8,5 @@
     <color name="blanco">#ffffff</color>
     <color name="gris">#95969a</color>
     <color name="negro">#000000</color>
+    <color name="verdeDisponible">#05ec28</color>
 </resources>

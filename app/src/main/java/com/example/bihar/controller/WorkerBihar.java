@@ -60,7 +60,7 @@ public class WorkerBihar extends Worker {
                     Log.i("BDD","Vacio");
                 }
             }else{
-                Log.i("BDD","FAIL");
+                Log.i("BDD",statusCode+"");
             }
         } catch (Exception e) {
             e.printStackTrace();

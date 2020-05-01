@@ -37,7 +37,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/borde_spinner_matricula"
+            android:background="@drawable/menu_seleccion_naranja"
             android:orientation="horizontal"
             android:id="@+id/matricula_linearLayoutSeleccionAnio">
             <TextView
