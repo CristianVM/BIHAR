@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">BIHAR</string>
+    <string name="login_usuario">Erabiltzailea</string>
+    <string name="login_contraseña">Pasahitza</string>
+    <string name="login_contraseña_recordar">"Gogoratu pasahitza "</string>
+    <string name="login_entrar">Sartu</string>
+    <string name="usuario_vacio">Erabiltzailea sartu</string>
+    <string name="password_vacia">Pasahitza sartu</string>
+    <string name="menu_identificacion">Sarrera</string>
+    <string name="login_datos_incorrectos">"Erabiltzailea eta/edo pasahitza okerrak "</string>
+    <string name="error_general">¡Ups! Badirudi zerbaitek huts egin duela</string>
+    <string name="login_cambiar_usuario">Beste erabiltzailea erabili</string>
+    <string name="contraseña_olvidada">Nire pasahitza ahaztu dut</string>
+</resources>

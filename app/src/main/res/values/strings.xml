@@ -11,4 +11,17 @@
     <string name="dialog_matricaTxtSelectAnio">Seleccione el año de la matrícula</string>
     <string name="matricula_notaNP">NP</string>
 
+    <!-- LOGIN -->
+    <string name="login_usuario">Usuario</string>
+    <string name="login_contraseña">Contraseña</string>
+    <string name="login_contraseña_recordar">"Recordar contraseña "</string>
+    <string name="login_entrar">Entrar</string>
+    <string name="usuario_vacio">Introduce el usuario</string>
+    <string name="password_vacia">Introduce la contraseña</string>
+    <string name="menu_identificacion">Acceso</string>
+    <string name="login_datos_incorrectos">Usuario y/o contraseña incorrectos</string>
+    <string name="error_general">¡Ups! Parece que algo ha fallado…</string>
+    <string name="login_cambiar_usuario">Utilizar otro usuario</string>
+    <string name="contraseña_olvidada">He olvidado mi contraseña</string>
+
 </resources>
