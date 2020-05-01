@@ -9,7 +9,9 @@ import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -27,6 +29,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -35,6 +38,9 @@ public class Tutorias extends AppCompatActivity {
 
     private ListView listView;
     private ArrayAdapter elAdapter;
+    Map<String, Profesor> datos;
+    String[] ids;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +110,7 @@ public class Tutorias extends AppCompatActivity {
 
         Map<String, Profesor> datos = GestorProfesores.getGestorProfesores().getListaProfesores();
         String[] ids = GestorProfesores.getGestorProfesores().getIds();
-
+        Log.i("ids", Arrays.toString(ids));
 
         elAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_2, android.R.id.text1, ids){
             @NonNull
@@ -113,6 +119,12 @@ public class Tutorias extends AppCompatActivity {
                 View vista = super.getView(position, convertView, parent);
                 TextView lineaPrincipal = (TextView) vista.findViewById(android.R.id.text1);
                 TextView lineaSecundaria = (TextView) vista.findViewById(android.R.id.text2);
+
+                lineaPrincipal.setTypeface(null, Typeface.BOLD);
+                lineaPrincipal.setTextSize(20);
+
+                lineaSecundaria.setTextSize(13);
+
                 lineaPrincipal.setText(datos.get(ids[position]).getNombreCompleto());
                 lineaSecundaria.setText(datos.get(ids[position]).getAsignaturas());
 
