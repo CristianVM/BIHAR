@@ -2,8 +2,11 @@ package com.example.bihar.controller;
 
 import com.example.bihar.model.Profesor;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Gestor que almacena todos los datos de los profesores, en caso que no haya algún dato guardado
@@ -33,12 +36,25 @@ public class GestorProfesores {
         }
     }
 
-    public String[] getIds(){
-        return profesores.keySet().toArray(new String[0]);
+    public List<String> getIds(String s){
+        Set<String> ids = profesores.keySet();
+        List<String> filtrado = new ArrayList<>();
+        for(String id: ids){
+            String nombre = profesores.get(id).getNombreCompleto();
+            if(nombre.toLowerCase().contains(s.toLowerCase())){
+                filtrado.add(id);
+            }
+        }
+
+        return filtrado;
     }
 
     public Map<String, Profesor> getListaProfesores(){
         return profesores;
+    }
+
+    public void limpiar(){
+        profesores.clear();
     }
 
 }
