@@ -150,7 +150,8 @@ public class Tutorias extends AppCompatActivity {
 
         if(!todos){
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-            String idPersona = prefs.getString("idPersona",null);
+            String idPersona = prefs.getString("idUsuario",null);
+            Log.i("idPersona", idPersona);
             map.put("idPersona", idPersona);
         }
 
