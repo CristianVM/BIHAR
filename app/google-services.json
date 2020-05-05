@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "788802599346",
+    "firebase_url": "https://das-bihar.firebaseio.com",
+    "project_id": "das-bihar",
+    "storage_bucket": "das-bihar.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:788802599346:android:8792f390f364b9e00f4cab",
+        "android_client_info": {
+          "package_name": "com.example.bihar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "788802599346-0tns6soolbo4lt2olvoci1rcqlnqqikc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBK82jZ8m7FLLbZ67LO2KH7kdSLdyFwdhU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "788802599346-0tns6soolbo4lt2olvoci1rcqlnqqikc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
