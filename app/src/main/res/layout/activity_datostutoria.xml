@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".view.activities.DatosTutoria">
+
+    <fragment
+        android:id="@+id/frgmt_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:name="com.example.bihar.view.fragments.ToolBar"
+        tools:layout="@layout/fragment_toolbar"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/imgProfesor"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            tools:src="@tools:sample/avatars"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Unai Lopez Novoa"
+            android:textColor="@color/negro"
+            android:layout_alignRight="@id/imgProfesor"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

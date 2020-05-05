@@ -74,7 +74,6 @@ public class Tutorias extends AppCompatActivity {
         searchView = findViewById(R.id.tutoriasSearchView);
 
 
-
         aSwitch.setOnClickListener(v -> {
             todos = aSwitch.isChecked();
             progressBar.setVisibility(View.VISIBLE);
@@ -127,16 +126,19 @@ public class Tutorias extends AppCompatActivity {
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
         outState.putInt("visible", titulo.getVisibility());
+        outState.putBoolean("todos",todos);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
         int visible = savedInstanceState.getInt("visible");
         titulo.setVisibility(visible);
         imagen.setVisibility(visible);
+        todos = savedInstanceState.getBoolean("todos");
+        actualizarLista();
+        super.onRestoreInstanceState(savedInstanceState);
     }
 
     /**
