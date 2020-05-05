@@ -20,7 +20,7 @@
         android:layout_height="match_parent">
 
         <ProgressBar
-            android:id="@+id/login1ProgressBar"
+            android:id="@+id/loginProgressBar"
             style="?android:attr/progressBarStyle"
             android:layout_width="75dp"
             android:layout_height="75dp"
@@ -75,7 +75,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="35dp"
             android:layout_marginEnd="35dp"
-            app:layout_constraintBottom_toTopOf="@+id/login1InputContraseña"
+            app:layout_constraintBottom_toTopOf="@+id/loginInputPassword"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
@@ -90,19 +90,19 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/login1InputContraseña"
+            android:id="@+id/loginInputPassword"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="35dp"
             android:layout_marginEnd="35dp"
-            app:layout_constraintBottom_toTopOf="@+id/login1SwitchRecordar"
+            app:layout_constraintBottom_toTopOf="@+id/loginSwitchRecordar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/login1InputUsuario"
             app:passwordToggleEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/login1EditContraseña"
+                android:id="@+id/loginEditPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/login_contraseña"
@@ -110,19 +110,20 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <Switch
-            android:id="@+id/login1SwitchRecordar"
+            android:id="@+id/loginSwitchRecordar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="cambiarOpcionSwitch"
             android:text="@string/login_contraseña_recordar"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/login1BotonEntrar"
-            app:layout_constraintEnd_toEndOf="@+id/login1InputContraseña"
+            app:layout_constraintBottom_toTopOf="@+id/loginBotonEntrar"
+            app:layout_constraintEnd_toEndOf="@+id/loginInputPassword"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/login1InputContraseña" />
+            app:layout_constraintTop_toBottomOf="@+id/loginInputPassword" />
 
         <Button
-            android:id="@+id/login1BotonEntrar"
+            android:id="@+id/loginBotonEntrar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/boton_redondo_naranja"
@@ -134,7 +135,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/login1SwitchRecordar" />
+            app:layout_constraintTop_toBottomOf="@+id/loginSwitchRecordar" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline7"

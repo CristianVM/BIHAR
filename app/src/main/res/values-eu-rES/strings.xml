@@ -12,4 +12,5 @@
     <string name="error_general">¡Ups! Badirudi zerbaitek huts egin duela</string>
     <string name="login_cambiar_usuario">Beste erabiltzailea erabili</string>
     <string name="contraseña_olvidada">Nire pasahitza ahaztu dut</string>
+    <string name="acceso_huella">Sarrera hatz-markarekin</string>
 </resources>
