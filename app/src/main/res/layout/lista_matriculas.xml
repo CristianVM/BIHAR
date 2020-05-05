@@ -19,14 +19,13 @@
         android:orientation="horizontal">
 
         <TableLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
             <TableRow
                 android:background="@drawable/bordes_tablelayout"
                 android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:gravity="center">
+                android:layout_width="match_parent">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

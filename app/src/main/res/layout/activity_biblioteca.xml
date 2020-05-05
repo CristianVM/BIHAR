@@ -7,12 +7,68 @@
     tools:context=".view.activities.Biblioteca"
     android:orientation="vertical">
 
-    <fragment
-        android:id="@+id/frgmt_toolbar"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:name="com.example.bihar.view.fragments.ToolBar"
-        tools:layout="@layout/fragment_toolbar"/>
+        android:background="@color/verde">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/biblioteca_imgAtras"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_back"
+            app:civ_border_width="2dp"
+            app:civ_circle_background_color="@color/naranja"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.043"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/biblioteca_tituloToolbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/biblioteca"
+            android:textColor="@color/blanco"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/biblioteca_imgBusqueda"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_nada"
+            app:civ_border_width="2dp"
+            app:civ_circle_background_color="@color/naranja"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.957"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/biblioteca_searchView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:searchIcon="@drawable/ic_search"
+            app:closeIcon="@drawable/ic_close"
+            app:searchHintIcon="@drawable/ic_search"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.975"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -30,53 +86,15 @@
             android:textColor="@color/negro"
             android:layout_weight="3"/>
 
-        <Space
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="5"/>
-
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="3"
             android:text="@string/biblioteca_btnFiltrar"
-            android:onClick="filtrarLibros"/>
+            android:onClick="dialogFiltrado"
+            android:textStyle="bold"
+            android:background="@drawable/boton_redondo_naranja"/>
     </LinearLayout>
-
-    <RadioGroup
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:paddingBottom="15dp"
-        android:padding="10dp">
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="false"
-            android:text="@string/biblioteca_temaInformatica"
-            android:id="@+id/biblioteca_radio_informatica"
-            android:padding="8dp"/>
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="false"
-            android:text="@string/biblioteca_temaEconomia"
-            android:id="@+id/biblioteca_radio_economia"
-            android:padding="8dp"/>
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="false"
-            android:text="@string/biblioteca_temaMedicina"
-            android:id="@+id/biblioteca_radio_medicina"
-            tools:ignore="HardcodedText"
-            android:padding="8dp"/>
-
-    </RadioGroup>
 
     <View
         android:layout_width="match_parent"
@@ -89,4 +107,7 @@
         android:id="@+id/biblioteca_lista"
         android:padding="10dp"/>
 
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"/>
 </LinearLayout>

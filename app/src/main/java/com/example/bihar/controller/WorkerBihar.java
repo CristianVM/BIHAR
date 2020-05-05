@@ -85,9 +85,16 @@ public class WorkerBihar extends Worker {
 
                     if(!result.isEmpty()){
                         Data.Builder data = new Data.Builder();
-
                         data.putString("result",result);
                         Log.i("BDD",result);
+
+                        JSONObject jsonObject = (JSONObject) parser.parse(jsonString);
+                        String accion = (String) jsonObject.get("accion");
+                        if(accion.equals("consultarLibros")){
+                            GestorLibros.getGestorLibros().addLibro(result);
+                        }else if(accion.equals("verMatricula")){
+                            GestorMatriculas.gestorMatriculas().addMatriculas(result,getApplicationContext(),(String) jsonObject.get("idPersona"));
+                        }
 
                         return Result.success(data.build());
                     }else{

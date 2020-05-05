@@ -2,8 +2,6 @@ package com.example.bihar.model;
 
 public class Libro {
 
-    private int idLibro;
-    private int idCentro;
     private String titulo;
     private String autor;
     private String descripcion;
@@ -11,23 +9,13 @@ public class Libro {
     private String fecha;
     private String tema;
 
-    public Libro(int idLibro, int idCentro, String titulo, String autor, String descripcion, String editorial, String fecha, String tema) {
-        this.idLibro = idLibro;
-        this.idCentro = idCentro;
+    public Libro(String titulo, String autor, String descripcion, String editorial, String fecha, String tema) {
         this.titulo = titulo;
         this.autor = autor;
         this.descripcion = descripcion;
         this.editorial = editorial;
         this.fecha = fecha;
         this.tema = tema;
-    }
-
-    public int getIdLibro() {
-        return idLibro;
-    }
-
-    public int getIdCentro() {
-        return idCentro;
     }
 
     public String getTitulo() {

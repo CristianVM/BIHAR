@@ -40,14 +40,18 @@
             android:layout_height="wrap_content"
             android:text="@string/lista_libroInformacion_localizacion"
             android:layout_marginStart="10dp"
-            android:id="@+id/lista_libroInformacion_btnLocalizacion"/>
+            android:id="@+id/lista_libroInformacion_btnLocalizacion"
+            android:background="@drawable/boton_redondo_naranja"
+            android:textStyle="bold"/>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/lista_libroInformacion_reservar"
             android:layout_marginStart="10dp"
-            android:id="@+id/lista_libroInformacion_btnReservar"/>
+            android:id="@+id/lista_libroInformacion_btnReservar"
+            android:background="@drawable/boton_redondo_naranja"
+            android:textStyle="bold"/>
     </LinearLayout>
 
 </LinearLayout>

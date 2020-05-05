@@ -39,10 +39,16 @@
     <string name="lista_libroInformacion_reservar">Reservar</string>
     <string name="libroInformacion_libroDisponible">Disponible</string>
     <string name="libroInformacion_libroNoDisponible">"No disponible hasta "</string>
+    <string name="libroInformacion_reservaRealizada">Reserva realizada</string>
+    <string name="libroInformacion_reservaFallo">Error al reservar el libro</string>
+    <string name="title_activity_maps_universidad">Map</string>
+    <string name="libroInformacion_explPermiso">Necesario el permiso para ver la localización</string>
+    <string name="biblioteca">Biblioteca</string>
+
 
     <!--TUTORIAS -->
     <string name="tutorias">TUTORIAS</string>
     <string name="mostrarTodo">Mostrar todo</string>
-    <string name="acceso_huella">Acceso con huella</string>
 
+    <string name="acceso_huella">Acceso con huella</string>
 </resources>

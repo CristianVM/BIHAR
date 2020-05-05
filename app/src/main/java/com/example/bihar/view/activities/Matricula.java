@@ -14,15 +14,15 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.bihar.R;
+import com.example.bihar.controller.GestorMatriculas;
 import com.example.bihar.controller.WorkerBihar;
+import com.example.bihar.model.AlmacenajeMatricula;
+import com.example.bihar.model.MatriculaAnios;
 import com.example.bihar.utils.AdapterListaAsignaturasMatricula;
 import com.example.bihar.view.dialog.DialogSelectAnioMatricula;
 
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,20 +30,19 @@ public class Matricula extends AppCompatActivity implements DialogSelectAnioMatr
 
     private TextView txtAnioSeleccionado;
     private ListView asignaturas;
-
-    private HashMap<String,AlmacenajeDatos> matriculas;
-    private ArrayList<String> anios;
+    private String anioMatriculaMostrado;
+    private String idPersona;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_matricula);
 
-        matriculas = new HashMap<>();
         txtAnioSeleccionado = findViewById(R.id.matricula_seleccionAnio);
+        idPersona = "835334";
 
         Map<String,String> map = new HashMap<>();
-        map.put("idPersona","837448");
+        map.put("idPersona","835334");
         map.put("accion","verMatricula");
         JSONObject json = new JSONObject(map);
 
@@ -61,48 +60,28 @@ public class Matricula extends AppCompatActivity implements DialogSelectAnioMatr
 
        WorkManager.getInstance(this).getWorkInfoByIdLiveData(trabajo.getId()).observe(
                 this, status -> {
-                    if(status != null && status.getState().isFinished()) {
-                        String resultado = status.getOutputData().getString("result");
-                        JSONParser parser = new JSONParser();
-                        try{
-                            JSONArray jsonArray = (JSONArray) parser.parse(resultado);
-                            AlmacenajeDatos almacenajeArrays =null;
-                            String anioEnJson="0";
-                            anios = new ArrayList<>();
+                   if (status != null && status.getState().isFinished()) {
+                       MatriculaAnios matriculaAnios = GestorMatriculas.gestorMatriculas().getMatriculas(idPersona);
+                       Map<String, AlmacenajeMatricula> matriculaMap = matriculaAnios.getMatriculas();
 
-                            for(int i=0; i< jsonArray.size();i++){
-                                JSONObject jsonObject = (JSONObject) jsonArray.get(i);
-                                // SI ES UN AÑO QUE NO HA APARECIDO SE AÑADE AL MAP LA MATRICULA ANTERIOR
-                                // Y SE CREA UN NUEVO ALMACEN DE MATRICULAS
-                                if(!anioEnJson.equals(jsonObject.get("anio"))){
-                                    if(i>0){
-                                        matriculas.put(anioEnJson,almacenajeArrays);
-                                    }
-                                    almacenajeArrays = new AlmacenajeDatos();
-                                    anioEnJson = (String) jsonObject.get("anio");
-                                    anios.add(anioEnJson);
-                                }
-                                //SE RECOGE LOS DATOS DEL JSON
-                                almacenajeArrays.setDato(jsonObject);
-                            }
-                            txtAnioSeleccionado.setText(anioEnJson+"-"+(Integer.parseInt(anioEnJson)+1));
-                            matriculas.put(anioEnJson,almacenajeArrays);
+                       for (Map.Entry<String, AlmacenajeMatricula> datos : matriculaMap.entrySet()) {
+                           anioMatriculaMostrado = datos.getKey();
+                           txtAnioSeleccionado.setText(anioMatriculaMostrado + "-" + (Integer.parseInt(anioMatriculaMostrado) + 1));
+                           asignaturas = (ListView) findViewById(R.id.matricula_lista);
+                           AlmacenajeMatricula almacenajeMatricula = datos.getValue();
 
-                            // RELLENA EL LISTVIEW
-                            asignaturas = (ListView) findViewById(R.id.matricula_lista);
-                            AdapterListaAsignaturasMatricula adapter = new AdapterListaAsignaturasMatricula(
-                                    this, almacenajeArrays.asignaturaNombres, almacenajeArrays.asignaturaCursos,
-                                    almacenajeArrays.asignaturasConvocatorias, almacenajeArrays.asignaturasOrdinarias,
-                                    almacenajeArrays.asignaturasExtraordinarias);
-                            asignaturas.setAdapter(adapter);
+                           AdapterListaAsignaturasMatricula adapter = new AdapterListaAsignaturasMatricula(
+                                   this, almacenajeMatricula.asignaturaNombres, almacenajeMatricula.asignaturaCursos,
+                                   almacenajeMatricula.asignaturasConvocatorias, almacenajeMatricula.asignaturasExtraordinarias,
+                                   almacenajeMatricula.asignaturasOrdinarias);
+                           asignaturas.setAdapter(adapter);
 
-                            // SE ASIGNA EL LISTENER PARA QUE ABRA EL DIALOG
-                            asignarListeners();
-                        }catch (Exception e){
-                            e.printStackTrace();
-                        }
-                    }});
-
+                           // SE ASIGNA EL LISTENER PARA QUE ABRA EL DIALOG
+                           asignarListeners();
+                           break;
+                       }
+                   }
+               });
     }
 
     /**
@@ -111,12 +90,9 @@ public class Matricula extends AppCompatActivity implements DialogSelectAnioMatr
      */
     private void asignarListeners(){
         LinearLayout linearLayoutAnio = (LinearLayout) findViewById(R.id.matricula_linearLayoutSeleccionAnio);
-        linearLayoutAnio.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DialogSelectAnioMatricula dialog = new DialogSelectAnioMatricula(anios);
-                dialog.show(getSupportFragmentManager(),"etiquetaMatricula");
-            }
+        linearLayoutAnio.setOnClickListener(view -> {
+            DialogSelectAnioMatricula dialog = new DialogSelectAnioMatricula(GestorMatriculas.gestorMatriculas().getMatriculas(idPersona).getAnios());
+            dialog.show(getSupportFragmentManager(),"etiquetaMatricula");
         });
     }
 
@@ -127,72 +103,15 @@ public class Matricula extends AppCompatActivity implements DialogSelectAnioMatr
      */
     @Override
     public void seleccionAnio(int i) {
-        String anioSeleccionado = anios.get(i);
-        AlmacenajeDatos almacenajeDatos = matriculas.get(anioSeleccionado);
+        String anioSeleccionado = GestorMatriculas.gestorMatriculas().getMatriculas(idPersona).getAnios().get(i);
+        AlmacenajeMatricula datos = GestorMatriculas.gestorMatriculas().getMatriculas(idPersona).getMatriculas().get(anioSeleccionado);
+
         AdapterListaAsignaturasMatricula adapter = new AdapterListaAsignaturasMatricula(
-                this, almacenajeDatos.asignaturaNombres, almacenajeDatos.asignaturaCursos,
-                almacenajeDatos.asignaturasConvocatorias, almacenajeDatos.asignaturasOrdinarias,
-                almacenajeDatos.asignaturasExtraordinarias);
+                this, datos.asignaturaNombres, datos.asignaturaCursos,
+                datos.asignaturasConvocatorias, datos.asignaturasExtraordinarias,
+                datos.asignaturasOrdinarias);
         asignaturas.setAdapter(adapter);
         txtAnioSeleccionado.setText(anioSeleccionado+"-"+(Integer.parseInt(anioSeleccionado)+1));
     }
 
-
-    class AlmacenajeDatos{
-
-        ArrayList<String> asignaturaNombres;
-        ArrayList<String>  asignaturaCursos;
-        ArrayList<String>  asignaturasConvocatorias;
-        ArrayList<String>  asignaturasOrdinarias;
-        ArrayList<String>  asignaturasExtraordinarias;
-
-        /**
-         * Constructor de AlmacenajeDatos
-         */
-        public AlmacenajeDatos(){
-            asignaturaNombres = new ArrayList<>();
-            asignaturaCursos = new ArrayList<>();
-            asignaturasConvocatorias = new ArrayList<>();
-            asignaturasExtraordinarias = new ArrayList<>();
-            asignaturasOrdinarias = new ArrayList<>();
-        }
-
-        /**
-         * Se almacenan en las listas el nombre, el curso, la convocatoria y las notas de la asignatura
-         * @param jsonDato: el json con los datos de la asignatura
-         */
-        public void setDato(JSONObject jsonDato){
-            asignaturaNombres.add((String)jsonDato.get("nombreAsignatura"));
-            asignaturaCursos.add((String) jsonDato.get("curso"));
-            asignaturasConvocatorias.add((String) jsonDato.get("convocatoria"));
-
-            String notaOrd = (String) jsonDato.get("notaOrdinaria");
-            String notaExtrad = (String) jsonDato.get("notaExtraordinaria");
-            setNotaTabla(notaOrd,notaExtrad);
-        }
-
-        /**
-         * Con los datos obtenidos del json se añade la nota obtenida o un no presentado o aún no ha
-         * realizado el examen
-         * @param notaOrd: nota obtenida en la convocatoria ordinaria
-         * @param notaExtrad: nota obtenida en la convocatoria extraordinaria
-         */
-        private void setNotaTabla(String notaOrd,String notaExtrad){
-            if(notaOrd.equals("-1")){
-                asignaturasOrdinarias.add("-");
-            }else if(notaOrd.equals("-2")){
-                asignaturasOrdinarias.add(getResources().getString(R.string.matricula_notaNP));
-            }else{
-                asignaturasOrdinarias.add(notaOrd);
-            }
-
-            if(notaExtrad.equals("-1")){
-                asignaturasExtraordinarias.add("-");
-            }else if(notaExtrad.equals("-2")){
-                asignaturasExtraordinarias.add(getResources().getString(R.string.matricula_notaNP));
-            }else{
-                asignaturasExtraordinarias.add(notaExtrad);
-            }
-        }
-    }
 }

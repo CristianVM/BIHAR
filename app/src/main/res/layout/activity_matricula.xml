@@ -72,4 +72,7 @@
         android:id="@+id/matricula_lista"
         android:padding="15dp"/>
 
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"/>
 </LinearLayout>
