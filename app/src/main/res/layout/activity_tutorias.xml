@@ -40,6 +40,7 @@
                 android:layout_gravity="center"
                 android:src="@drawable/ic_back"
                 app:civ_border_width="2dp"
+                android:onClick="salir"
                 app:civ_circle_background_color="@color/naranja"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

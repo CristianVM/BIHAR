@@ -125,6 +125,10 @@ public class Tutorias extends AppCompatActivity {
         }
     }
 
+    public void salir(View v){
+        finish();
+    }
+
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putInt("visible", titulo.getVisibility());
