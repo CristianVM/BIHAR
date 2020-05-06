@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#fdddca">
+
+        <TextView
+            android:id="@+id/txtHora"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            tools:text="15:00 - 17:00"
+            android:textColor="@color/negro"
+            android:textSize="15sp"
+            android:layout_marginStart="40dp"
+            android:gravity="center_vertical" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <ImageView
+            android:id="@+id/imgReservar"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center"
+            android:layout_marginEnd="20dp"
+            android:src="@drawable/ic_add" />
+    </LinearLayout>
+
+
+</LinearLayout>

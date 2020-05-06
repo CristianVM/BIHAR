@@ -36,12 +36,13 @@
                 android:resource="@xml/file_provider"/>
         </provider>
 
-        <activity android:name=".view.activities.Egela"></activity>
+        <activity android:name=".view.activities.Egela"/>
         <activity android:name=".view.activities.Tutorias" />
         <activity android:name=".view.activities.Matricula" />
         <activity android:name=".view.activities.LibroInformacion" />
         <activity android:name=".view.activities.Biblioteca" />
         <activity android:name=".view.activities.MenuPrincipal" />
+        <activity android:name=".view.activities.DatosTutoria"/>
         <activity android:name=".MainActivity" />
         <activity android:name=".view.activities.InicioSesion">
             <intent-filter>

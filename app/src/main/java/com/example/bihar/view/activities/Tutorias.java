@@ -10,6 +10,7 @@ import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -228,7 +229,9 @@ public class Tutorias extends AppCompatActivity {
                 vista.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(Tutorias.this, ids.get(position), Toast.LENGTH_SHORT).show();
+                        Intent i = new Intent(Tutorias.this, DatosTutoria.class);
+                        i.putExtra("idPersona",ids.get(position));
+                        startActivity(i);
                     }
                 });
                 return vista;
