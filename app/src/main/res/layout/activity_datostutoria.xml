@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,30 +8,113 @@
     android:orientation="vertical"
     tools:context=".view.activities.DatosTutoria">
 
-    <fragment
-        android:id="@+id/frgmt_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:name="com.example.bihar.view.fragments.ToolBar"
-        tools:layout="@layout/fragment_toolbar"/>
+    <ProgressBar
+        android:id="@+id/tutoriasProgressBar"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/imgProfesor"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            tools:src="@tools:sample/avatars"/>
+        <fragment
+            android:id="@+id/frgmt_toolbar"
+            android:name="com.example.bihar.view.fragments.ToolBar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            tools:layout="@layout/fragment_toolbar" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imgProfesor"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/defecto" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/nombreProfesor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="27dp"
+                    android:textColor="@color/negro"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    tools:text="Mikel Villamañe Girones" />
+
+                <TextView
+                    android:id="@+id/departamentoProfesor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:textSize="15sp"
+                    android:textStyle="bold|italic"
+                    tools:text="Lenguajes y Sistemas Informáticos" />
+
+                <TextView
+                    android:id="@+id/despachoProfesor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="19dp"
+                    android:textColor="#AA0000"
+                    tools:text="PI18A" />
+
+                <TextView
+                    android:id="@+id/nombreCentroProfesor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="19dp"
+                    android:textColor="#3333FF"
+                    tools:text="Facultad de Informática de San Sebastián" />
+
+            </LinearLayout>
+
+        </LinearLayout>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Unai Lopez Novoa"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/tutorias"
             android:textColor="@color/negro"
-            android:layout_alignRight="@id/imgProfesor"/>
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
-    </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/negro" />
 
-</LinearLayout>
+        <ExpandableListView
+            android:id="@+id/tutoriasExpandableListView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@color/blanco"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:groupIndicator="@null"/>
+
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

@@ -1,5 +1,7 @@
 package com.example.bihar.controller;
 
+import android.widget.ProgressBar;
+
 import com.example.bihar.model.Profesor;
 
 import java.util.ArrayList;
@@ -56,5 +58,7 @@ public class GestorProfesores {
     public void limpiar(){
         profesores.clear();
     }
+
+    public Profesor getProfesor(String id){return profesores.get(id);}
 
 }
