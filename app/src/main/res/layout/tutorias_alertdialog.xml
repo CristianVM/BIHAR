@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="RESERVA"
+            android:text="@string/reserva"
             android:textSize="25sp"
             android:textStyle="bold"
             android:textColor="@color/blanco"/>
@@ -34,10 +34,12 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:gravity="center"
-            android:text="¿Estás seguro de que quieres reservar?"
+            android:text="@string/msgPreguntaConfirmar"
             android:textColor="@color/negro"
             android:textSize="18sp"
             android:textStyle="bold|italic"
+            android:layout_marginStart="20sp"
+            android:layout_marginEnd="20sp"
             android:layout_marginTop="10dp"/>
 
         <Space
@@ -97,10 +99,11 @@
             android:visibility="gone">
 
             <Button
+                android:id="@+id/alertBtnHecho"
                 android:layout_height="35dp"
                 android:layout_width="75dp"
                 android:background="@drawable/roundcorner"
-                android:text="Hecho"
+                android:text="@string/hecho"
                 android:textColor="@color/blanco"
                 android:gravity="center" />
 

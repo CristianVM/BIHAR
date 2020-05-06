@@ -15,7 +15,7 @@
         <TextView
             android:id="@+id/txtFecha"
             android:layout_width="wrap_content"
-            android:layout_height="35dp"
+            android:layout_height="40dp"
             tools:text="13 de marzo de 2020"
             android:textColor="@color/blanco"
             android:textSize="22sp"

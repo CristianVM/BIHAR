@@ -1,5 +1,6 @@
 package com.example.bihar.model;
 
+import android.net.Uri;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -13,18 +14,27 @@ public class Profesor {
 
     private static final int LONGITUD_MAXIMA = 75;
 
+    private Uri uriFoto;
     private String nombreCompleto;
     private String departamento;
     private String despacho;
     private String nombreCentro;
-    private ArrayList<Tutoria> tutorias;
+    private ArrayList<FechaTutoria> fechaTutorias;
     private Map<Integer, String> asignaturas;
 
     public Profesor(String pNombreCompleto, int pIdAsignatura, String pNombreAsignatura){
-        tutorias = new ArrayList<>();
+        fechaTutorias = new ArrayList<>();
         asignaturas = new HashMap<>();
         nombreCompleto = pNombreCompleto;
         asignaturas.put(pIdAsignatura,pNombreAsignatura);
+    }
+
+    public void setFoto(Uri foto){
+        uriFoto = foto;
+    }
+
+    public Uri getFoto(){
+        return uriFoto;
     }
 
     public void anadirAsignatura(int pIdAsignatura, String pNombreAsignatura){
@@ -78,8 +88,8 @@ public class Profesor {
         return nombreCentro;
     }
 
-    public Tutoria[] getTutorias() {
-        return tutorias.toArray(new Tutoria[0]);
+    public FechaTutoria[] getFechaTutorias() {
+        return fechaTutorias.toArray(new FechaTutoria[0]);
     }
 
     public void setDepartamento(String departamento) {
@@ -94,17 +104,18 @@ public class Profesor {
         this.nombreCentro = nombreCentro;
     }
 
-    public void anadirTutoria(int pIdTutoria, String pFecha, String pHoraInicio, String pHoraFin){
-        for(Tutoria tutoria: tutorias){
-            if(tutoria.getFecha().equals(pFecha)){
-                tutoria.anadirHora(pIdTutoria, pHoraInicio, pHoraFin);
+    public void anadirTutoria(int pIdTutoria, String pFecha, String pHoraInicio, String pHoraFin, boolean pReservado){
+        for(FechaTutoria fechaTutoria : fechaTutorias){
+            if(fechaTutoria.getFecha().equals(pFecha)){
+                fechaTutoria.anadirHora(pIdTutoria, pHoraInicio, pHoraFin, pReservado);
                 return;
             }
         }
-        this.tutorias.add(new Tutoria(pIdTutoria, pFecha, pHoraInicio, pHoraFin));
+        this.fechaTutorias.add(new FechaTutoria(pIdTutoria, pFecha, pHoraInicio, pHoraFin, pReservado));
     }
 
+
     public void limpiarTutorias(){
-        tutorias.clear();
+        fechaTutorias.clear();
     }
 }

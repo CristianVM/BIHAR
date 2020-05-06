@@ -1,28 +1,29 @@
 package com.example.bihar.model;
 
-import java.util.HashMap;
+public class Tutoria{
+    private int idTutoria;
+    private String hora;
+    private boolean reservado;
 
-public class Tutoria {
-    private String fecha;
-    private HashMap<Integer, String> horas;
-
-    Tutoria(int pIdTutoria, String pFecha, String pHoraInicio, String pHoraFin){
-        fecha = pFecha;
-
-        horas = new HashMap<>();
-        horas.put(pIdTutoria, pHoraInicio + " - " + pHoraFin);
+    public Tutoria (int pId, String pHora, boolean pReservado){
+        idTutoria = pId;
+        hora = pHora;
+        reservado = pReservado;
     }
 
-    void anadirHora(int pIdTutoria, String pHoraInicio, String pHoraFin){
-        horas.put(pIdTutoria,pHoraInicio + " - " + pHoraFin);
+    public int getIdTutoria() {
+        return idTutoria;
     }
 
-
-    public String getFecha() {
-        return fecha;
+    public String getHora() {
+        return hora;
     }
 
-    public HashMap<Integer, String> getHoras(){
-        return horas;
+    public boolean isReservado() {
+        return reservado;
+    }
+
+    public void setReservado(boolean b) {
+        reservado = b;
     }
 }

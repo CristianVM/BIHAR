@@ -2,24 +2,25 @@ package com.example.bihar.view.activities;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.work.Constraints;
 import androidx.work.Data;
 import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -32,6 +33,7 @@ import com.example.bihar.R;
 import com.example.bihar.controller.GestorProfesores;
 import com.example.bihar.controller.WorkerBihar;
 import com.example.bihar.model.Profesor;
+import com.example.bihar.model.FechaTutoria;
 import com.example.bihar.model.Tutoria;
 
 import org.json.simple.JSONArray;
@@ -39,6 +41,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -127,9 +130,12 @@ public class DatosTutoria extends AppCompatActivity {
     }
 
     private void cargarTutorias(){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String idUsuario = prefs.getString("idUsuario", "");
         Map<String, String> map = new HashMap<>();
         map.put("accion","obtenerTutoriasProfesor");
         map.put("idPersona", idPersona);
+        map.put("idUsuario", idUsuario);
         JSONObject json = new JSONObject(map);
 
         Data.Builder data = new Data.Builder();
@@ -163,8 +169,8 @@ public class DatosTutoria extends AppCompatActivity {
                                 String fecha = (String) obj.get("fecha");
                                 String horaInicio = (String) obj.get("horaInicio");
                                 String horaFin = (String) obj.get("horaFin");
-
-                                profesor.anadirTutoria(idTutoria,fecha,horaInicio,horaFin);
+                                boolean reservado = (boolean) obj.get("reservado");
+                                profesor.anadirTutoria(idTutoria,fecha,horaInicio,horaFin,reservado);
                             }
 
                             cargarFotoProfesor();
@@ -178,8 +184,40 @@ public class DatosTutoria extends AppCompatActivity {
     }
 
     private void cargarFotoProfesor(){
-        progressBar.setVisibility(View.INVISIBLE);
-        mostrarDatos();
+
+        JSONObject parametrosJSON = new JSONObject();
+        parametrosJSON.put("accion", "obtenerImagen");
+        parametrosJSON.put("idUsuario", idPersona);
+
+        Data datos = new Data.Builder()
+                .putString("datos", parametrosJSON.toJSONString())
+                .build();
+
+        Constraints restricciones = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
+
+        OneTimeWorkRequest trabajo = new OneTimeWorkRequest.Builder(WorkerBihar.class)
+                .setConstraints(restricciones)
+                .setInputData(datos)
+                .build();
+
+        WorkManager.getInstance(this).getWorkInfoByIdLiveData(trabajo.getId()).observe(
+                this, status -> {
+                    if (status != null && status.getState().isFinished()) {
+                        String resultado = status.getOutputData().getString("result");
+                        if (resultado == null || resultado.isEmpty()) {
+                            return;
+                        }
+                        File file = new File(getApplicationContext().getFilesDir(), idPersona + ".png");
+                        GestorProfesores.getGestorProfesores().getProfesor(idPersona).setFoto(Uri.fromFile(file));
+                        progressBar.setVisibility(View.INVISIBLE);
+                        mostrarDatos();
+                    }
+                }
+        );
+
+        WorkManager.getInstance(this).enqueue(trabajo);
     }
 
     private void mostrarDatos(){
@@ -189,6 +227,7 @@ public class DatosTutoria extends AppCompatActivity {
         departamentoProfesor.setText(p.getDepartamento());
         despachoProfesor.setText(p.getDespacho());
         nombreCentroProfesor.setText(p.getNombreCentro());
+        imgProfesor.setImageURI(p.getFoto());
 
         adapter = new MyExpandableListAdapter(this, idPersona);
         expandableListView.setAdapter(adapter);
@@ -199,33 +238,33 @@ public class DatosTutoria extends AppCompatActivity {
 
 class MyExpandableListAdapter extends BaseExpandableListAdapter{
 
-    private Tutoria[] tutorias;
+    private FechaTutoria[] fechaTutorias;
     private Activity activity;
     private AlertDialog alertDialog;
 
     MyExpandableListAdapter(Activity pActivity, String idPersona){
         activity = pActivity;
-        tutorias = GestorProfesores.getGestorProfesores().getProfesor(idPersona).getTutorias();
+        fechaTutorias = GestorProfesores.getGestorProfesores().getProfesor(idPersona).getFechaTutorias();
     }
 
     @Override
     public int getGroupCount() {
-        return tutorias.length;
+        return fechaTutorias.length;
     }
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return tutorias[groupPosition].getHoras().size();
+        return fechaTutorias[groupPosition].getHoras().size();
     }
 
     @Override
     public Object getGroup(int groupPosition) {
-        return tutorias[groupPosition];
+        return fechaTutorias[groupPosition];
     }
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        return tutorias[groupPosition].getHoras().values().toArray(new String[0])[childPosition];
+        return fechaTutorias[groupPosition].getHoras().get(childPosition);
     }
 
     @Override
@@ -254,7 +293,7 @@ class MyExpandableListAdapter extends BaseExpandableListAdapter{
             convertView.setPadding(0,0,0,0);
 
         TextView fecha = convertView.findViewById(R.id.txtFecha);
-        fecha.setText(tutorias[groupPosition].getFecha());
+        fecha.setText(fechaTutorias[groupPosition].getFecha());
         return convertView;
     }
 
@@ -269,52 +308,167 @@ class MyExpandableListAdapter extends BaseExpandableListAdapter{
             convertView.setPadding(0,0,0,0);
         }
 
+        Tutoria t = (Tutoria) getChild(groupPosition,childPosition);
         TextView hora = convertView.findViewById(R.id.txtHora);
-        String[] horas = tutorias[groupPosition].getHoras().values().toArray(new String[0]);
-        hora.setText(horas[childPosition]);
+        hora.setText(t.getHora());
 
         ImageView imgReservar = convertView.findViewById(R.id.imgReservar);
-        imgReservar.setOnClickListener(v -> {
-            Toast.makeText(parent.getContext(), ""+tutorias[groupPosition].getHoras().keySet().toArray(new Integer[0])[childPosition], Toast.LENGTH_SHORT).show();
+        if(t.isReservado()){
+            imgReservar.setImageResource(R.drawable.ic_cancel);
+            imgReservar.setOnClickListener(v -> {
+                final int idTutoria = t.getIdTutoria();
+                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                LayoutInflater inflater = activity.getLayoutInflater();
+                View elAspecto = inflater.inflate(R.layout.tutorias_alertdialog,null);
+                builder.setView(elAspecto);
 
+                TextView msg = elAspecto.findViewById(R.id.alertMsg);
+                Button si  = elAspecto.findViewById(R.id.alertBtnSi);
+                Button no = elAspecto.findViewById(R.id.alertBtnNo);
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-            LayoutInflater inflater = activity.getLayoutInflater();
-            View elAspecto = inflater.inflate(R.layout.tutorias_alertdialog,null);
-            builder.setView(elAspecto);
+                msg.setText(activity.getString(R.string.preguntaCancelar));
 
-            TextView msg = elAspecto.findViewById(R.id.alertMsg);
-            Button si  = elAspecto.findViewById(R.id.alertBtnSi);
-            Button no = elAspecto.findViewById(R.id.alertBtnNo);
-            Space space = elAspecto.findViewById(R.id.alertSpace);
-            EditText edt = elAspecto.findViewById(R.id.alertEditText);
-            LinearLayout ll1 = elAspecto.findViewById(R.id.alertLL1);
-            LinearLayout ll2 = elAspecto.findViewById(R.id.alertLL2);
+                si.setOnClickListener(v14 -> {
+                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity.getApplicationContext());
+                    String idPersona = prefs.getString("idUsuario",null);
+                    cancelarReserva(idPersona, idTutoria, groupPosition, childPosition);
+                });
+                no.setOnClickListener(v15 -> {
+                    alertDialog.dismiss();
+                });
 
-
-            si.setOnClickListener(v1 -> {
-                space.setVisibility(View.GONE);
-                edt.setVisibility(View.VISIBLE);
-                msg.setText("Escribe, si lo deseas, el tema que vas a tratar en la tutoria.");
-                ll1.setVisibility(View.GONE);
-                ll2.setVisibility(View.VISIBLE);
+                alertDialog = builder.create();
+                alertDialog.show();
             });
+        }else{
+            imgReservar.setImageResource(R.drawable.ic_add);
+            imgReservar.setOnClickListener(v -> {
+
+                final int idTutoria = t.getIdTutoria();
+                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                LayoutInflater inflater = activity.getLayoutInflater();
+                View elAspecto = inflater.inflate(R.layout.tutorias_alertdialog,null);
+                builder.setView(elAspecto);
+
+                TextView msg = elAspecto.findViewById(R.id.alertMsg);
+                Button si  = elAspecto.findViewById(R.id.alertBtnSi);
+                Button no = elAspecto.findViewById(R.id.alertBtnNo);
+                Button hecho = elAspecto.findViewById(R.id.alertBtnHecho);
+                Space space = elAspecto.findViewById(R.id.alertSpace);
+                EditText edt = elAspecto.findViewById(R.id.alertEditText);
+                LinearLayout ll1 = elAspecto.findViewById(R.id.alertLL1);
+                LinearLayout ll2 = elAspecto.findViewById(R.id.alertLL2);
 
 
-            no.setOnClickListener(v12 -> {
-                alertDialog.dismiss();
+
+                si.setOnClickListener(v1 -> {
+                    space.setVisibility(View.GONE);
+                    edt.setVisibility(View.VISIBLE);
+                    msg.setText(activity.getString(R.string.msgConfirmar));
+                    ll1.setVisibility(View.GONE);
+                    ll2.setVisibility(View.VISIBLE);
+                });
+
+
+                no.setOnClickListener(v12 -> {
+                    alertDialog.dismiss();
+                });
+
+                hecho.setOnClickListener(v13 -> {
+                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity.getApplicationContext());
+                    String idPersona = prefs.getString("idUsuario",null);
+                    reservarTutoria(idPersona,idTutoria,edt.getText().toString(), groupPosition, childPosition);
+                });
+
+                alertDialog = builder.create();
+                alertDialog.show();
+
             });
+        }
 
-            alertDialog = builder.create();
-            alertDialog.show();
-
-        });
         return convertView;
     }
 
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return false;
+    }
+
+    private void reservarTutoria(String idPersona, int idTutoria, String msg, int groupPosition, int childPosition){
+        Map<String, String> map = new HashMap<>();
+        map.put("accion","reservarTutoria");
+        map.put("idPersona", idPersona);
+        map.put("idTutoria",String.valueOf(idTutoria));
+        map.put("msg",msg);
+        JSONObject json = new JSONObject(map);
+
+        Data.Builder data = new Data.Builder();
+        data.putString("datos",json.toString());
+
+        Constraints restricciones = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
+        OneTimeWorkRequest trabajo = new OneTimeWorkRequest.Builder(WorkerBihar.class)
+                .setConstraints(restricciones)
+                .setInputData(data.build())
+                .build();
+
+        WorkManager.getInstance(activity).getWorkInfoByIdLiveData(trabajo.getId()).observe(
+                (LifecycleOwner) activity, status -> {
+                    if (status != null && status.getState().isFinished()) {
+                        String resultado = status.getOutputData().getString("result");
+                        if (status.getState() == WorkInfo.State.FAILED) {
+                            activity.finish();
+                            return;
+                        }
+
+                        alertDialog.dismiss();
+                        Toast.makeText(activity, activity.getString(R.string.tutoriaReservada),Toast.LENGTH_SHORT).show();
+                        Tutoria t = (Tutoria) getChild(groupPosition,childPosition);
+                        t.setReservado(true);
+                        notifyDataSetChanged();
+                    }
+                }
+        );
+
+        WorkManager.getInstance(activity).enqueue(trabajo);
+    }
+
+    private void cancelarReserva(String idPersona, int idTutoria, int groupPosition, int childPosition){
+        Map<String, String> map = new HashMap<>();
+        map.put("accion","borrarReservaTutoria");
+        map.put("idPersona", idPersona);
+        map.put("idTutoria",String.valueOf(idTutoria));
+        JSONObject json = new JSONObject(map);
+
+        Data.Builder data = new Data.Builder();
+        data.putString("datos",json.toString());
+
+        Constraints restricciones = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
+        OneTimeWorkRequest trabajo = new OneTimeWorkRequest.Builder(WorkerBihar.class)
+                .setConstraints(restricciones)
+                .setInputData(data.build())
+                .build();
+
+        WorkManager.getInstance(activity).getWorkInfoByIdLiveData(trabajo.getId()).observe(
+                (LifecycleOwner) activity, status -> {
+                    if (status != null && status.getState().isFinished()) {
+                        if(status.getState() == WorkInfo.State.SUCCEEDED){
+                            alertDialog.dismiss();
+                            Toast.makeText(activity, activity.getString(R.string.reservaCancelada),Toast.LENGTH_SHORT).show();
+                            Tutoria t = (Tutoria) getChild(groupPosition,childPosition);
+                            t.setReservado(false);
+                            notifyDataSetChanged();
+                        }else{
+                            Toast.makeText(activity, activity.getString(R.string.error_general),Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+        );
+
+        WorkManager.getInstance(activity).enqueue(trabajo);
     }
 }
 

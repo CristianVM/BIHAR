@@ -47,10 +47,19 @@
 
 
     <!--TUTORIAS -->
-    <string name="tutorias">TUTORIAS</string>
+    <string name="tutorias">TUTORÍAS</string>
     <string name="mostrarTodo">Mostrar todo</string>
     <string name="Si">Sí</string>
     <string name="No">No</string>
+    <string name="msgConfirmar">Escribe, si lo deseas, el tema que vas a tratar en la tutoría</string>
+    <string name="msgPreguntaConfirmar">¿Estás seguro de que quieres reservar esta tutoría?</string>
+    <string name="hecho">Hecho</string>
+    <string name="reserva">RESERVA</string>
+    <string name="tutoriaReservada">Tutoría reservada</string>
+    <string name="reservaCancelada">Reserva cancelada</string>
+    <string name="preguntaCancelar">¿Realmente deseas cancelar la reserva de la tutoría?</string>
 
     <string name="acceso_huella">Acceso con huella</string>
+
+
 </resources>
