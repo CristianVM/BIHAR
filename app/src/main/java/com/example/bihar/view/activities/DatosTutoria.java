@@ -1,5 +1,6 @@
 package com.example.bihar.view.activities;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.work.Constraints;
 import androidx.work.Data;
@@ -7,6 +8,7 @@ import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
+import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -15,11 +17,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.Space;
 
 import com.example.bihar.R;
 import com.example.bihar.controller.GestorProfesores;
@@ -183,7 +190,7 @@ public class DatosTutoria extends AppCompatActivity {
         despachoProfesor.setText(p.getDespacho());
         nombreCentroProfesor.setText(p.getNombreCentro());
 
-        adapter = new MyExpandableListAdapter(idPersona);
+        adapter = new MyExpandableListAdapter(this, idPersona);
         expandableListView.setAdapter(adapter);
     }
 
@@ -192,9 +199,12 @@ public class DatosTutoria extends AppCompatActivity {
 
 class MyExpandableListAdapter extends BaseExpandableListAdapter{
 
-    Tutoria[] tutorias;
+    private Tutoria[] tutorias;
+    private Activity activity;
+    private AlertDialog alertDialog;
 
-    public MyExpandableListAdapter(String idPersona){
+    MyExpandableListAdapter(Activity pActivity, String idPersona){
+        activity = pActivity;
         tutorias = GestorProfesores.getGestorProfesores().getProfesor(idPersona).getTutorias();
     }
 
@@ -205,7 +215,7 @@ class MyExpandableListAdapter extends BaseExpandableListAdapter{
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return tutorias[groupPosition].getHoras().length;
+        return tutorias[groupPosition].getHoras().size();
     }
 
     @Override
@@ -215,12 +225,12 @@ class MyExpandableListAdapter extends BaseExpandableListAdapter{
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        return tutorias[groupPosition].getHoras()[childPosition];
+        return tutorias[groupPosition].getHoras().values().toArray(new String[0])[childPosition];
     }
 
     @Override
     public long getGroupId(int groupPosition) {
-        return tutorias[groupPosition].getIdTutoria();
+        return groupPosition;
     }
 
     @Override
@@ -260,7 +270,45 @@ class MyExpandableListAdapter extends BaseExpandableListAdapter{
         }
 
         TextView hora = convertView.findViewById(R.id.txtHora);
-        hora.setText(tutorias[groupPosition].getHoras()[childPosition]);
+        String[] horas = tutorias[groupPosition].getHoras().values().toArray(new String[0]);
+        hora.setText(horas[childPosition]);
+
+        ImageView imgReservar = convertView.findViewById(R.id.imgReservar);
+        imgReservar.setOnClickListener(v -> {
+            Toast.makeText(parent.getContext(), ""+tutorias[groupPosition].getHoras().keySet().toArray(new Integer[0])[childPosition], Toast.LENGTH_SHORT).show();
+
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+            LayoutInflater inflater = activity.getLayoutInflater();
+            View elAspecto = inflater.inflate(R.layout.tutorias_alertdialog,null);
+            builder.setView(elAspecto);
+
+            TextView msg = elAspecto.findViewById(R.id.alertMsg);
+            Button si  = elAspecto.findViewById(R.id.alertBtnSi);
+            Button no = elAspecto.findViewById(R.id.alertBtnNo);
+            Space space = elAspecto.findViewById(R.id.alertSpace);
+            EditText edt = elAspecto.findViewById(R.id.alertEditText);
+            LinearLayout ll1 = elAspecto.findViewById(R.id.alertLL1);
+            LinearLayout ll2 = elAspecto.findViewById(R.id.alertLL2);
+
+
+            si.setOnClickListener(v1 -> {
+                space.setVisibility(View.GONE);
+                edt.setVisibility(View.VISIBLE);
+                msg.setText("Escribe, si lo deseas, el tema que vas a tratar en la tutoria.");
+                ll1.setVisibility(View.GONE);
+                ll2.setVisibility(View.VISIBLE);
+            });
+
+
+            no.setOnClickListener(v12 -> {
+                alertDialog.dismiss();
+            });
+
+            alertDialog = builder.create();
+            alertDialog.show();
+
+        });
         return convertView;
     }
 

@@ -1,33 +1,28 @@
 package com.example.bihar.model;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Tutoria {
-    private int idTutoria;
     private String fecha;
-    private ArrayList<String> horas;
+    private HashMap<Integer, String> horas;
 
-    public Tutoria (int pIdTutoria, String pFecha, String pHoraInicio, String pHoraFin){
-        idTutoria = pIdTutoria;
+    Tutoria(int pIdTutoria, String pFecha, String pHoraInicio, String pHoraFin){
         fecha = pFecha;
 
-        horas = new ArrayList<String>();
-        horas.add(pHoraInicio + " - " + pHoraFin);
+        horas = new HashMap<>();
+        horas.put(pIdTutoria, pHoraInicio + " - " + pHoraFin);
     }
 
-    public void anadirHora(String pHoraInicio, String pHoraFin){
-        horas.add(pHoraInicio + " - " + pHoraFin);
+    void anadirHora(int pIdTutoria, String pHoraInicio, String pHoraFin){
+        horas.put(pIdTutoria,pHoraInicio + " - " + pHoraFin);
     }
 
-    public int getIdTutoria() {
-        return idTutoria;
-    }
 
     public String getFecha() {
         return fecha;
     }
 
-    public String[] getHoras(){
-        return horas.toArray(new String[0]);
+    public HashMap<Integer, String> getHoras(){
+        return horas;
     }
 }

@@ -97,7 +97,7 @@ public class Profesor {
     public void anadirTutoria(int pIdTutoria, String pFecha, String pHoraInicio, String pHoraFin){
         for(Tutoria tutoria: tutorias){
             if(tutoria.getFecha().equals(pFecha)){
-                tutoria.anadirHora(pHoraInicio, pHoraFin);
+                tutoria.anadirHora(pIdTutoria, pHoraInicio, pHoraFin);
                 return;
             }
         }

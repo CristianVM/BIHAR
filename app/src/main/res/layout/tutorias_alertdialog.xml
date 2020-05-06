@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="350dp"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_gravity="center_horizontal">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/verde">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="RESERVA"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:textColor="@color/blanco"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#fdddca">
+
+        <TextView
+            android:id="@+id/alertMsg"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:text="¿Estás seguro de que quieres reservar?"
+            android:textColor="@color/negro"
+            android:textSize="18sp"
+            android:textStyle="bold|italic"
+            android:layout_marginTop="10dp"/>
+
+        <Space
+            android:id="@+id/alertSpace"
+            android:layout_width="0dp"
+            android:layout_height="50dp"/>
+
+        <EditText
+            android:id="@+id/alertEditText"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:gravity="top"
+            android:background="@color/blanco"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="10dp"
+            android:visibility="gone"/>
+
+
+        <LinearLayout
+            android:id="@+id/alertLL1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp">
+
+            <Button
+                android:id="@+id/alertBtnSi"
+                android:layout_width="75dp"
+                android:layout_height="35sp"
+                android:background="@drawable/roundcorner"
+                android:text="@string/Si"
+                android:textColor="@color/blanco"
+                android:layout_gravity="start"
+                android:layout_marginStart="45dp"/>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+            <Button
+                android:id="@+id/alertBtnNo"
+                android:layout_width="75dp"
+                android:layout_height="35sp"
+                android:background="@drawable/roundcorner"
+                android:text="@string/No"
+                android:textColor="@color/blanco"
+                android:layout_marginEnd="45sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/alertLL2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_marginBottom="20dp"
+            android:visibility="gone">
+
+            <Button
+                android:layout_height="35dp"
+                android:layout_width="75dp"
+                android:background="@drawable/roundcorner"
+                android:text="Hecho"
+                android:textColor="@color/blanco"
+                android:gravity="center" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</LinearLayout>

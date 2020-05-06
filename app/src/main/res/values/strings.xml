@@ -49,6 +49,8 @@
     <!--TUTORIAS -->
     <string name="tutorias">TUTORIAS</string>
     <string name="mostrarTodo">Mostrar todo</string>
+    <string name="Si">Sí</string>
+    <string name="No">No</string>
 
     <string name="acceso_huella">Acceso con huella</string>
 </resources>
