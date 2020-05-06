@@ -12,7 +12,7 @@ import java.util.StringTokenizer;
 
 public class Profesor {
 
-    private static final int LONGITUD_MAXIMA = 75;
+    private static final int LONGITUD_MAXIMA = 65;
 
     private Uri uriFoto;
     private String nombreCompleto;
