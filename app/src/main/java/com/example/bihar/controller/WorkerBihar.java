@@ -61,10 +61,10 @@ public class WorkerBihar extends Worker {
                 if (json.get("accion").equals("obtenerImagen")) {
                     // Transformamos el resultado de la llamada en un Bitmap
                     Bitmap bitmap = BitmapFactory.decodeStream(urlConnection.getInputStream());
-                    File directorio = getApplicationContext().getFilesDir();
-                    File.createTempFile("perfil", ".png", directorio);
+                    //File directorio = getApplicationContext().getFilesDir();
+                    //File.createTempFile(json.get("idUsuario").toString(), ".png", directorio);
 
-                    File imagenFichero = new File(getApplicationContext().getFilesDir(), "perfil" + ".png");
+                    File imagenFichero = new File(getApplicationContext().getFilesDir(), json.get("idUsuario") + ".png");
                     OutputStream os = new FileOutputStream(imagenFichero);
                     bitmap.compress(Bitmap.CompressFormat.PNG, 100, os);
                     os.flush();
