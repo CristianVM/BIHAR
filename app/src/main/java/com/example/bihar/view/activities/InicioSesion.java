@@ -45,7 +45,7 @@ public class InicioSesion extends AppCompatActivity {
             ImageView login2ImageUsuario = findViewById(R.id.login2ImageUsuario);
 
             try {
-                File file = new File(this.getFilesDir(), prefs.getString("idUsuario", "") + ".png");
+                File file = new File(this.getFilesDir(), "perfil.png");
                 if (file.exists()) {
                     login2ImageUsuario.setImageURI(Uri.fromFile(file));
                 } else {
@@ -188,21 +188,15 @@ public class InicioSesion extends AppCompatActivity {
     }
 
     public void cambiarUsuario(View v) {
-
-
-
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = prefs.edit();
-
-        File file = new File(this.getFilesDir(), prefs.getString("idUsuario", "") + ".png");
-        file.delete();
-
         String token = prefs.getString("token", "");
         editor.clear();
         editor.putString("token", token);
         editor.apply();
 
-
+        File file = new File(this.getFilesDir(), "perfil.png");
+        file.delete();
 
         finish();
         startActivity(getIntent());
@@ -260,7 +254,7 @@ public class InicioSesion extends AppCompatActivity {
                                     Log.i("MY-APP", "IMAGEN USUARIO OBTENIDA");
                                 } else {
                                     Log.i("MY-APP", "IMAGEN USUARIO NO OBTENIDA");
-                                    File file = new File(getApplicationContext().getFilesDir(), idUsuario + ".png");
+                                    File file = new File(getApplicationContext().getFilesDir(), "perfil.png");
                                     file.delete();
                                 }
                                 finish();
