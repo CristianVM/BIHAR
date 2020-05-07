@@ -92,6 +92,8 @@ public class WorkerBihar extends Worker {
                             GestorLibros.getGestorLibros().addLibro(result);
                         }else if(accion.equals("verMatricula")){
                             GestorMatriculas.gestorMatriculas().addMatriculas(result,getApplicationContext(),(String) jsonObject.get("idPersona"));
+                        }else if(accion.equals("obtenerPracticas")) {
+                            GestorPracticas.getGestorPracticas().addPracticas(result);
                         }
 
                         return Result.success(data.build());

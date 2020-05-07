@@ -13,4 +13,11 @@
     <string name="login_cambiar_usuario">Beste erabiltzailea erabili</string>
     <string name="contraseña_olvidada">Nire pasahitza ahaztu dut</string>
     <string name="acceso_huella">Sarrera hatz-markarekin</string>
+    <string name="practicas">PRAKTIKAK</string>
+    <string name="practica_apuntar">Apuntatu nahi dut</string>
+    <string name="practica_localizacion">Kokapena:</string>
+    <string name="practica_horas">Orduak guztira:</string>
+    <string name="practica_salario">Soldata osoa:</string>
+    <string name="practica_descripcion">Deskribapena:</string>
+    <string name="practica_fechas">Noiztik - Noiz arte:</string>
 </resources>

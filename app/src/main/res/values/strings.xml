@@ -61,5 +61,12 @@
 
     <string name="acceso_huella">Acceso con huella</string>
 
-
+    <!--PRACTICAS -->
+    <string name="practicas">PRÁCTICAS</string>
+    <string name="practica_apuntar">Quiero apuntarme</string>
+    <string name="practica_localizacion">Localización:</string>
+    <string name="practica_horas">Horas totales:</string>
+    <string name="practica_salario">Salario total:</string>
+    <string name="practica_descripcion">Descripción:</string>
+    <string name="practica_fechas">Desde - Hasta:</string>
 </resources>

@@ -89,8 +89,7 @@ public class MenuPrincipal extends AppCompatActivity {
                         break;
                     }
                     case "practicas":{
-                        //intent = new Intent(MenuPrincipal.this, Matricula.class);
-                        Toast.makeText(MenuPrincipal.this, "No hecho aún", Toast.LENGTH_SHORT).show();
+                        intent = new Intent(MenuPrincipal.this, Practicas.class);
                         break;
                     }
                     case "egela":{
