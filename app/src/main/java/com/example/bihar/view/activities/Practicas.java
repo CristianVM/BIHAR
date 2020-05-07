@@ -167,6 +167,7 @@ class AdapterPracticas extends RecyclerView.Adapter<ViewHolderPracticas> {
         holder.cardViewPractica.setOnClickListener(v -> {
             Intent intent = new Intent(elContexto, PracticaInformacion.class);
             intent.putExtra("IDPractica", holder.IDPractica.getText());
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             elContexto.startActivity(intent);
         });
     }
