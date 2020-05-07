@@ -14,37 +14,30 @@
         android:name="com.example.bihar.view.fragments.ToolBar"
         tools:layout="@layout/fragment_toolbar"/>
 
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:orientation="horizontal"
-        android:layout_marginBottom="20dp">
+        android:layout_marginBottom="20dp"
+        android:gravity="center">
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/verde">
-            <ImageView
-                android:id="@+id/horarios_biflechaIzq"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_biflecha_izquierda"
-                android:layout_margin="5dp"/>
-        </RelativeLayout>
+        <ImageView
+            android:id="@+id/horarios_biflechaIzq"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@color/verde"
+            android:src="@drawable/ic_biflecha_izquierda"/>
 
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/verde">
-            <ImageView
-                android:id="@+id/horarios_uniflechaIzq"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_uniflecha_izquierda"
-                android:layout_margin="5dp"/>
-        </RelativeLayout>
+        <ImageView
+            android:id="@+id/horarios_uniflechaIzq"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_uniflecha_izquierda"
+            android:background="@color/verde"/>
 
 
         <TextView
@@ -53,44 +46,31 @@
             android:layout_height="match_parent"
             android:textColor="@color/blanco"
             android:textSize="15sp"
+            tools:text="14-06-2020"
             android:textStyle="bold"
             android:background="@color/verde"
             android:gravity="center"/>
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/verde">
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_uniflecha_derecha"
-                android:layout_margin="5dp"
-                android:id="@+id/horarios_uniflechaDer"/>
-        </RelativeLayout>
-
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/verde">
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_biflecha_derecha"
-                android:layout_margin="5dp"
-                android:id="@+id/horarios_biflechaDer"/>
-        </RelativeLayout>
-
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_uniflecha_derecha"
+            android:id="@+id/horarios_uniflechaDer"
+            android:background="@color/verde"/>
 
 
         <ImageView
-            android:id="@+id/imageView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_uniflecha_derecha"/>
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_biflecha_derecha"
+            android:background="@color/verde"
+            android:id="@+id/horarios_biflechaDer"/>
+
+
 
     </LinearLayout>
+
+
 
 
     <ListView
