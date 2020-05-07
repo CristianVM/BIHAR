@@ -66,11 +66,17 @@
         android:layout_height="2dp"
         android:background="@color/negro" />
 
-    <ListView
-        android:layout_width="match_parent"
+    <RelativeLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/matricula_lista"
-        android:padding="15dp"/>
+        android:gravity="center"
+        android:padding="15dp">
+        <ListView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/matricula_lista"/>
+    </RelativeLayout>
+
 
     <Space
         android:layout_width="wrap_content"

@@ -1,8 +1,121 @@
 package com.example.bihar.view.activities;
 
-public class Practicas {
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.work.Constraints;
+import androidx.work.Data;
+import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkInfo;
+import androidx.work.WorkManager;
 
+import com.example.bihar.R;
+import com.example.bihar.controller.GestorPracticas;
+import com.example.bihar.controller.WorkerBihar;
+import com.example.bihar.model.Practica;
+
+import org.json.simple.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Map;
+
+public class Practicas extends AppCompatActivity {
+
+    private ArrayList<String> IDs = new ArrayList<>();
+    private ArrayList<String> lugares = new ArrayList<>();
+    private ArrayList<String> empresas = new ArrayList<>();
+    private ArrayList<String> descripciones = new ArrayList<>();
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        super.setContentView(R.layout.lista_practicas);
+
+        cargarPracticas();
+    }
+
+    private void cargarPracticas() {
+
+        comenzarCarga();
+
+        JSONObject parametrosJSON = new JSONObject();
+        parametrosJSON.put("accion", "obtenerPracticas");
+
+        Data datos = new Data.Builder()
+                .putString("datos", parametrosJSON.toJSONString())
+                .build();
+
+        Constraints restricciones = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
+
+        OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(WorkerBihar.class)
+                .setConstraints(restricciones)
+                .setInputData(datos)
+                .build();
+
+        WorkManager.getInstance(this)
+                .getWorkInfoByIdLiveData(otwr.getId())
+                .observe(this, new Observer<WorkInfo>() {
+                    @Override
+                    public void onChanged(WorkInfo workInfo) {
+                        if (workInfo != null && workInfo.getState().isFinished()) {
+                            try {
+                                Map<String, Practica> mapPracticas = GestorPracticas.getGestorPracticas().getPracticas();
+                                for (Map.Entry<String, Practica> datos : mapPracticas.entrySet()) {
+                                    IDs.add(datos.getKey());
+                                    lugares.add(datos.getValue().getProvincia() + "\n" + datos.getValue().getLocalidad());
+                                    empresas.add(datos.getValue().getNombreEmpresa());
+                                    descripciones.add(datos.getValue().getTitulo());
+                                }
+
+                                RecyclerView listaPracticas = findViewById(R.id.listaPracticas);
+
+                                AdapterPracticas adapterPracticas = new AdapterPracticas(IDs, lugares, empresas, descripciones, getApplicationContext());
+                                listaPracticas.setAdapter(adapterPracticas);
+
+                                GridLayoutManager elLayoutRejillaIgual = new GridLayoutManager(getApplicationContext(), 1, GridLayoutManager.VERTICAL, false);
+                                listaPracticas.setLayoutManager(elLayoutRejillaIgual);
+
+                                listaPracticas.addItemDecoration(new GridSpacingItemDecoration(1, 20, true));
+
+                                // Si salta algun error
+                            } catch (Exception e) {
+                                Toast.makeText(getApplicationContext(), R.string.error_general, Toast.LENGTH_LONG).show();
+                                e.printStackTrace();
+                            } finally {
+                                terminarCarga();
+                            }
+                        }
+                    }
+                });
+
+        WorkManager.getInstance(this).enqueue(otwr);
+    }
+
+    private void comenzarCarga() {
+        ProgressBar loginProgressBar = findViewById(R.id.progressBarPracticas);
+        loginProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    private void terminarCarga() {
+        ProgressBar loginProgressBar = findViewById(R.id.progressBarPracticas);
+        loginProgressBar.setVisibility(View.INVISIBLE);
+    }
 }
 
 class ViewHolderPracticas extends RecyclerView.ViewHolder {

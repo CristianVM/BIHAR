@@ -69,4 +69,15 @@
     <string name="practica_salario">Salario total:</string>
     <string name="practica_descripcion">Descripción:</string>
     <string name="practica_fechas">Desde - Hasta:</string>
+
+    <!-- HORARIOS-->
+    <string name="horario_diaLunes">Lunes</string>
+    <string name="horario_diaMartes">Martes</string>
+    <string name="horario_diaMiercoles">Miércoles</string>
+    <string name="horario_diaJueves">Jueves</string>
+    <string name="horario_diaViernes">Viernes</string>
+    <string name="lista_horario_horaInicio">Hora inicio</string>
+    <string name="lista_horario_horaFin">Hora fin</string>
+
+
 </resources>

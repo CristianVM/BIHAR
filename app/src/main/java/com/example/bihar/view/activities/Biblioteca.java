@@ -10,7 +10,9 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -51,8 +53,9 @@ public class Biblioteca extends AppCompatActivity implements DialogFiltradoLibro
     private AdapterListaLibros adapterListaLibros;
 
     private TextView tituloToolbar;
-    private CircleImageView imagenAtras;
+    private CircleImageView imagenBusqueda;
     private SearchView searchView;
+    private CircleImageView imagenAtras;
 
     private String temaEconomia;
     private String temaInformatica;
@@ -65,6 +68,7 @@ public class Biblioteca extends AppCompatActivity implements DialogFiltradoLibro
 
         listView = (ListView) findViewById(R.id.biblioteca_lista);
         tituloToolbar = (TextView) findViewById(R.id.biblioteca_tituloToolbar);
+        imagenBusqueda = (CircleImageView) findViewById(R.id.biblioteca_imgBusqueda);
         imagenAtras = (CircleImageView) findViewById(R.id.biblioteca_imgAtras);
         searchView = (SearchView) findViewById(R.id.biblioteca_searchView);
 
@@ -85,13 +89,13 @@ public class Biblioteca extends AppCompatActivity implements DialogFiltradoLibro
         //Cuando pulsamos la lupa debemos hacer invisible el titulo del ToolBar y la imagen
         searchView.setOnSearchClickListener(v -> {
             tituloToolbar.setVisibility(View.INVISIBLE);
-            imagenAtras.setVisibility(View.INVISIBLE);
+            imagenBusqueda.setVisibility(View.INVISIBLE);
         });
 
         //Cuando salimos de la búsqueda volvemos a hacer visible el titulo y la imagen
         searchView.setOnCloseListener(() -> {
             tituloToolbar.setVisibility(View.VISIBLE);
-            imagenAtras.setVisibility(View.VISIBLE);
+            imagenBusqueda.setVisibility(View.VISIBLE);
             return false;
         });
 
@@ -115,7 +119,6 @@ public class Biblioteca extends AppCompatActivity implements DialogFiltradoLibro
 
         Map<String, String> map = new HashMap<>();
         map.put("accion", "consultarLibros");
-        map.put("filtrado", "NO");
         JSONObject jsonWorker = new JSONObject(map);
 
         Data.Builder data = new Data.Builder();

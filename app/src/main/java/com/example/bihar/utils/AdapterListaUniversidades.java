@@ -6,8 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.net.Uri;
-import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,7 +45,6 @@ public class AdapterListaUniversidades extends BaseAdapter {
     private LifecycleOwner lifecycleOwner;
     private String[] latitudes;
     private String[] longitudes;
-
     private Activity activity;
 
     public AdapterListaUniversidades(Context context, String[] universidades, String[] disponibilidades,

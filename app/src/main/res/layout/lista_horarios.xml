@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textColor="@color/negro"
+        android:id="@+id/lista_horario_asignatura"
+        android:textSize="18sp"
+        android:layout_marginBottom="10dp"/>
+
+    <TableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TableRow
+            android:background="@drawable/titulos_tablerow_verde"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp">
+            <!--<TextView
+                android:theme="@style/matricula_tableRows"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Día"
+                android:textColor="@color/blanco"/> -->
+            <TextView
+                android:theme="@style/matricula_tableRows"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/lista_horario_horaInicio"
+                android:textColor="@color/blanco"/>
+
+            <TextView
+                android:theme="@style/matricula_tableRows"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/lista_horario_horaFin"
+                android:textColor="@color/blanco"/>
+        </TableRow>
+
+        <TableRow
+            android:background="@drawable/contenido_tablerow_blanco"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp">
+            <!--<TextView
+                android:theme="@style/matricula_tableRows"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/lista_horario_dia"/>-->
+            <TextView
+                android:theme="@style/matricula_tableRows"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/lista_horario_hInicio"/>
+            <TextView
+                android:theme="@style/matricula_tableRows"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/lista_horario_hFin"/>
+        </TableRow>
+    </TableLayout>
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"/>
+</LinearLayout>

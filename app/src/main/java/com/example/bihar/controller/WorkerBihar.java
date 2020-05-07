@@ -90,8 +90,13 @@ public class WorkerBihar extends Worker {
                         String accion = (String) jsonObject.get("accion");
                         if(accion.equals("consultarLibros")){
                             GestorLibros.getGestorLibros().addLibro(result);
+                            return Result.success();
                         }else if(accion.equals("verMatricula")){
                             GestorMatriculas.gestorMatriculas().addMatriculas(result,getApplicationContext(),(String) jsonObject.get("idPersona"));
+                            return Result.success();
+                        }else if(accion.equals("consultarHorario")){
+                            GestorHorarios.gestorHorarios().anadirHorarios(result,getApplicationContext());
+                            return Result.success();
                         }else if(accion.equals("obtenerPracticas")) {
                             GestorPracticas.getGestorPracticas().addPracticas(result);
                         }

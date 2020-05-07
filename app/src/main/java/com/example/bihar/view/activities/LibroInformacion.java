@@ -8,7 +8,9 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -38,10 +40,15 @@ public class LibroInformacion extends AppCompatActivity {
     private String[] disponibles;
     private boolean[] estaDisponible;
 
+    private String usuario;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_libro_informacion);
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        usuario = prefs.getString("idUsuario","");
 
         Bundle bundle = getIntent().getExtras();
 
@@ -124,7 +131,7 @@ public class LibroInformacion extends AppCompatActivity {
 
                             // SE INICIALIZA EL LISTVIEW
                             AdapterListaUniversidades adapter = new AdapterListaUniversidades(this, universidades,
-                                    disponibles, estaDisponible,idLibros,"ulopez",this,latitudes,
+                                    disponibles, estaDisponible,idLibros,usuario,this,latitudes,
                                     longitudes,this);
                             ListView listView = (ListView) findViewById(R.id.libroInformacion_listaUniversidades);
                             listView.setScrollContainer(false);

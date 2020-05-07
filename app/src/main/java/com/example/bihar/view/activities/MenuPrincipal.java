@@ -76,8 +76,8 @@ public class MenuPrincipal extends AppCompatActivity {
                         break;
                     }
                     case "horarios":{
-                        //intent = new Intent(MenuPrincipal.this, Matricula.class);
-                        Toast.makeText(MenuPrincipal.this, "No hecho aún", Toast.LENGTH_SHORT).show();
+                        Log.i("HORARIOS","AAAA");
+                        intent = new Intent(MenuPrincipal.this, Horarios.class);
                         break;
                     }
                     case "tutorias":{

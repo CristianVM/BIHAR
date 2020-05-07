@@ -18,10 +18,17 @@ public class GestorLibros {
     private static GestorLibros gestorLibros;
     private Map<String,Libro> libros;
 
+    /**
+     * Constructor
+     */
     private GestorLibros(){
         libros = new HashMap<>();
     }
 
+    /**
+     * Se obtiene el gestor de libros
+     * @return: gestor de libros
+     */
     public static GestorLibros getGestorLibros(){
         if(gestorLibros == null){
             gestorLibros = new GestorLibros();
@@ -29,10 +36,18 @@ public class GestorLibros {
         return gestorLibros;
     }
 
+    /**
+     * Devuelve el mapa que contiene todos los libros
+     * @return
+     */
     public Map<String,Libro> getLibros(){
         return libros;
     }
 
+    /**
+     * Añade los libros al map
+     * @param jsonString: El json en String con los datos de los libros
+     */
     public void addLibro(String jsonString){
         JSONParser parser = new JSONParser();
         try{
@@ -55,10 +70,20 @@ public class GestorLibros {
         }
     }
 
+    /**
+     * Se obtiene la información de un libro en concreto
+     * @param idLibro: id del libro
+     * @return: La información del libro
+     */
     public Libro getInfoLibro(String idLibro){
         return libros.get(idLibro);
     }
 
+    /**
+     * Se busca el libro por nombre del titulo
+     * @param busqueda: lo que se ha escrito en la búsqueda
+     * @return: La lista de todos los libros que contienen lo escrito
+     */
     public List<String> buscarLibro(String busqueda){
         Set<String> idLibros = libros.keySet();
         List<String> filtro = new ArrayList<>();
@@ -72,6 +97,11 @@ public class GestorLibros {
         return filtro;
     }
 
+    /**
+     * Se obtienen los libros dependiendo del tema elegido
+     * @param jsonFiltro: Los temas elegidos
+     * @return: la lista con los libros que coincide con el tema escogido
+     */
     public List<String> filtrarLibro(String jsonFiltro){
         Set<String> idLibros = libros.keySet();
         List<String> filtro = new ArrayList<>();

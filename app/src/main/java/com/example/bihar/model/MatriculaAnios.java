@@ -2,14 +2,11 @@ package com.example.bihar.model;
 
 import android.content.Context;
 
-import com.example.bihar.R;
-
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class MatriculaAnios {
