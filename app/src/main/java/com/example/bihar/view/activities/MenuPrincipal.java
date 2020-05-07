@@ -7,14 +7,20 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.bihar.model.CardOpcion;
@@ -23,6 +29,8 @@ import com.example.bihar.R;
 
 public class MenuPrincipal extends AppCompatActivity {
 
+    private static final int TIEMPO_ANIMACION_MS = 1250;
+
     RecyclerView recyclerView;
 
     @Override
@@ -30,9 +38,26 @@ public class MenuPrincipal extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menuprincipal);
 
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        boolean esAlumno = prefs.getBoolean("esAlumno",false);
+        CardOpcion[] opciones = null;
+        if(esAlumno) {
+            opciones = ListaOpcionesMenu.getListaOpcionesUsuario();
+            Bundle bundle = getIntent().getExtras();
+            if(bundle != null){
+                boolean expediente = bundle.getBoolean("expediente");
+                if(expediente) {
+                    opciones = ListaOpcionesMenu.getListaOpcionesExpediente();
+                    animacionCreditos(60);
+                }
+            }
+        }
+        else
+            opciones = ListaOpcionesMenu.getListaOpcionesProfesor();
+
         recyclerView = findViewById(R.id.menuRecyclerView);
 
-        ElAdaptadorRecycler elAdaptadorRecycler = new ElAdaptadorRecycler(ListaOpcionesMenu.getListaOpcionesUsuario());
+        ElAdaptadorRecycler elAdaptadorRecycler = new ElAdaptadorRecycler(opciones);
         recyclerView.setAdapter(elAdaptadorRecycler);
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false);
@@ -41,6 +66,43 @@ public class MenuPrincipal extends AppCompatActivity {
         int spanCount = 2; // 2 columns
         int spacing = 50; // 50px
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, true));
+    }
+
+    public void animacionCreditos(int numCreditos){
+        LinearLayout linearLayout = findViewById(R.id.menuPrincipal_extraLayout);
+        linearLayout.setVisibility(View.VISIBLE);
+        ProgressBar progressBar = findViewById(R.id.progressBar);
+        progressBar.setMax(240);
+        TextView txtProgressBar = findViewById(R.id.progressBarTxt);
+        Handler h = new Handler();
+        final int[] i = {0};
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(i[0] < numCreditos) {
+
+                    h.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            progressBar.setProgress(i[0]);
+                            String s = i[0] + "/240";
+                            txtProgressBar.setText(s);
+                        }
+                    });
+
+                    try {
+                        Thread.sleep(TIEMPO_ANIMACION_MS/numCreditos);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    i[0]++;
+                }
+                progressBar.setProgress(numCreditos);
+                String s = numCreditos +"/240";
+                txtProgressBar.setText(s);
+            }
+        });
+        thread.start();
     }
 
 
@@ -71,8 +133,8 @@ public class MenuPrincipal extends AppCompatActivity {
                         break;
                     }
                     case "expediente":{
-                        //intent = new Intent(MenuPrincipal.this, Matricula.class);
-                        Toast.makeText(MenuPrincipal.this, "No hecho aún", Toast.LENGTH_SHORT).show();
+                        intent = new Intent(MenuPrincipal.this, MenuPrincipal.class);
+                        intent.putExtra("expediente",true);
                         break;
                     }
                     case "horarios":{
@@ -94,6 +156,28 @@ public class MenuPrincipal extends AppCompatActivity {
                     }
                     case "egela":{
                         intent = new Intent(MenuPrincipal.this, Egela.class);
+                        break;
+                    }
+                    case "foro":{
+                        break;
+                    }
+                    case "asignaturas":{
+                        break;
+                    }
+                    case "creditos":{
+                        break;
+                    }
+                    case "logros":{
+                        Toast.makeText(MenuPrincipal.this, getString(R.string.noDisponible), Toast.LENGTH_SHORT).show();
+                        break;
+                    }
+                    case "foroProfesor":{
+                        break;
+                    }
+                    case "notasProfesor":{
+                        break;
+                    }
+                    case "tutoriasProfesor":{
                         break;
                     }
                 }
