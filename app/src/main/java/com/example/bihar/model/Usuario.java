@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Usuario {
 
-    private String usuario;
+    private String idUsuario;
     private String email;
     private String gmail;
     private double notaMedia;
@@ -15,7 +15,7 @@ public class Usuario {
     private HashMap<Integer, List<Asignatura>> asignaturas_por_anyo;
 
     public Usuario(String pUsuario, String pEmail){
-        usuario = pUsuario;
+        idUsuario = pUsuario;
         email = pEmail;
         asignaturas_por_curso = new HashMap<>();
         asignaturas_por_anyo = new HashMap<>();
@@ -47,8 +47,8 @@ public class Usuario {
 
     }
 
-    public String getUsuario() {
-        return usuario;
+    public String getIdUsuario() {
+        return idUsuario;
     }
 
     public String getEmail() {
@@ -67,8 +67,8 @@ public class Usuario {
         return asignaturas_por_anyo;
     }
 
-    public void setUsuario(String usuario) {
-        this.usuario = usuario;
+    public void setIdUsuario(String idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     public void setEmail(String email) {
@@ -89,5 +89,10 @@ public class Usuario {
 
     public int getNumCreditos() {
         return numCreditos;
+    }
+
+    public void limpiarAsignaturas(){
+        asignaturas_por_anyo.clear();
+        asignaturas_por_curso.clear();
     }
 }
