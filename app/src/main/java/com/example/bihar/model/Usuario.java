@@ -9,6 +9,8 @@ public class Usuario {
     private String usuario;
     private String email;
     private String gmail;
+    private double notaMedia;
+    private int numCreditos;
     private HashMap<Integer, List<Asignatura>> asignaturas_por_curso;
     private HashMap<Integer, List<Asignatura>> asignaturas_por_anyo;
 
@@ -63,5 +65,29 @@ public class Usuario {
 
     public HashMap<Integer, List<Asignatura>> getAsignaturas_por_anyo() {
         return asignaturas_por_anyo;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setNotaMedia(double notaMedia) {
+        this.notaMedia = notaMedia;
+    }
+
+    public void setNumCreditos(int numCreditos) {
+        this.numCreditos = numCreditos;
+    }
+
+    public double getNotaMedia() {
+        return notaMedia;
+    }
+
+    public int getNumCreditos() {
+        return numCreditos;
     }
 }
