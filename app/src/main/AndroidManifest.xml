@@ -13,6 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        <activity android:name=".view.activities.Asignaturas"/>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -43,20 +44,21 @@
         <activity android:name=".view.activities.LibroInformacion" />
         <activity android:name=".view.activities.Biblioteca" />
         <activity android:name=".view.activities.MenuPrincipal" />
-        <activity android:name=".view.activities.DatosTutoria"/>
+        <activity android:name=".view.activities.DatosTutoria" />
         <activity android:name=".view.activities.Practicas" />
         <activity android:name=".view.activities.PracticaInformacion" />
         <activity android:name=".MainActivity" />
         <activity android:name=".view.activities.InicioSesion">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".view.activities.MapsUniversidad"
             android:label="@string/title_activity_maps_universidad" />
-        <activity android:name=".view.activities.Horarios"/>
+        <activity android:name=".view.activities.Horarios" />
     </application>
 
 </manifest>

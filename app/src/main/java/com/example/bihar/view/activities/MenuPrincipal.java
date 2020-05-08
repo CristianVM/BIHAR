@@ -48,7 +48,7 @@ public class MenuPrincipal extends AppCompatActivity {
                 boolean expediente = bundle.getBoolean("expediente");
                 if(expediente) {
                     opciones = ListaOpcionesMenu.getListaOpcionesExpediente();
-                    animacionCreditos(60);
+                    animacionCreditos(156);
                 }
             }
         }
@@ -162,6 +162,7 @@ public class MenuPrincipal extends AppCompatActivity {
                         break;
                     }
                     case "asignaturas":{
+                        intent = new Intent(MenuPrincipal.this, Asignaturas.class);
                         break;
                     }
                     case "creditos":{

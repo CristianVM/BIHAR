@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="5dp"
+    android:layout_marginEnd="5dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/carne">
+
+        <TextView
+            android:id="@+id/nombreAsignatura"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            tools:text="Análisis y Diseño de Sistemas de Información"
+            android:gravity="center_vertical"
+            android:textColor="@color/negro"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:layout_marginStart="10dp"/>
+    </LinearLayout>
+
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:stretchColumns="*">
+
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/contenido_tablerow_blanco">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Curso"
+                android:textColor="@color/negro"
+                android:textStyle="italic|bold"
+                android:gravity="center"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Año"
+                android:textColor="@color/negro"
+                android:textStyle="italic|bold"
+                android:gravity="center"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Tipo"
+                android:textColor="@color/negro"
+                android:textStyle="italic|bold"
+                android:gravity="center"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Conv."
+                android:textColor="@color/negro"
+                android:textStyle="italic|bold"
+                android:gravity="center"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Nota"
+                android:textColor="@color/negro"
+                android:textStyle="italic|bold"
+                android:gravity="center"/>
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/contenido_tablerow_blanco">
+            <TextView
+                android:id="@+id/txtCurso"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="1º"
+                android:textColor="@color/negro"
+                android:gravity="center"/>
+
+            <TextView
+                android:id="@+id/txtAnyo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="2018"
+                android:textColor="@color/negro"
+                android:gravity="center"/>
+
+            <TextView
+                android:id="@+id/txtTipo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Básica de rama"
+                android:textColor="@color/negro"
+                android:gravity="center"/>
+
+            <TextView
+                android:id="@+id/txtConv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="3"
+                android:textColor="@color/negro"
+                android:gravity="center"/>
+
+            <TextView
+                android:id="@+id/txtNota"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="5.0"
+                android:textColor="@color/negro"
+                android:gravity="center"/>
+
+        </TableRow>
+    </TableLayout>
+
+</LinearLayout>

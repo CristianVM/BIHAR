@@ -63,7 +63,6 @@
     <string name="preguntaCancelar">¿Realmente deseas cancelar la reserva de la tutoría?</string>
 
 
-
     <!--PRACTICAS -->
     <string name="practicas">PRÁCTICAS</string>
     <string name="practica_apuntar">Quiero apuntarme</string>
@@ -81,6 +80,14 @@
     <string name="horario_diaViernes">Viernes</string>
     <string name="lista_horario_horaInicio">Hora inicio</string>
     <string name="lista_horario_horaFin">Hora fin</string>
+
+    <!-- ASIGNATURAS-->
+    <string name="asignaturas_curso">Curso: %s</string>
+    <string name="primero">Primero</string>
+    <string name="segundo">Segundo</string>
+    <string name="tercero">Tercero</string>
+    <string name="cuarto">Cuarto</string>
+    <string name="quinto">Quinto</string>
 
 
 </resources>
