@@ -27,6 +27,8 @@ import com.example.bihar.R;
 import com.example.bihar.controller.GestorPracticas;
 import com.example.bihar.controller.WorkerBihar;
 import com.example.bihar.model.Practica;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 
 import org.json.simple.JSONObject;
 
@@ -39,6 +41,7 @@ public class Practicas extends AppCompatActivity {
     private ArrayList<String> lugares = new ArrayList<>();
     private ArrayList<String> empresas = new ArrayList<>();
     private ArrayList<String> descripciones = new ArrayList<>();
+    private AdapterPracticas adapterPracticas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +88,7 @@ public class Practicas extends AppCompatActivity {
 
                                 RecyclerView listaPracticas = findViewById(R.id.listaPracticas);
 
-                                AdapterPracticas adapterPracticas = new AdapterPracticas(IDs, lugares, empresas, descripciones, getApplicationContext());
+                                adapterPracticas = new AdapterPracticas(IDs, lugares, empresas, descripciones, getApplicationContext());
                                 listaPracticas.setAdapter(adapterPracticas);
 
                                 GridLayoutManager elLayoutRejillaIgual = new GridLayoutManager(getApplicationContext(), 1, GridLayoutManager.VERTICAL, false);
@@ -108,13 +111,47 @@ public class Practicas extends AppCompatActivity {
     }
 
     private void comenzarCarga() {
-        ProgressBar loginProgressBar = findViewById(R.id.progressBarPracticas);
-        loginProgressBar.setVisibility(View.VISIBLE);
+        ProgressBar progressBarPracticas = findViewById(R.id.progressBarPracticas);
+        progressBarPracticas.setVisibility(View.VISIBLE);
     }
 
     private void terminarCarga() {
-        ProgressBar loginProgressBar = findViewById(R.id.progressBarPracticas);
-        loginProgressBar.setVisibility(View.INVISIBLE);
+        ProgressBar progressBarPracticas = findViewById(R.id.progressBarPracticas);
+        progressBarPracticas.setVisibility(View.INVISIBLE);
+    }
+
+    // https://stackoverflow.com/questions/58224630/how-to-get-selected-chips-from-chipgroup
+    public void filtrarPracticas(View v) {
+        ArrayList<String> provinciasSeleccionadas = new ArrayList<>();
+        ChipGroup chipGroup = findViewById(R.id.chipGroup);
+        for (int i = 0; i < chipGroup.getChildCount(); i++) {
+            Chip chip = (Chip) chipGroup.getChildAt(i);
+            if (chip.isChecked()) {
+                provinciasSeleccionadas.add((String) chip.getText());
+            }
+        }
+
+        vaciarDatos();
+
+        Map<String, Practica> mapPracticas = GestorPracticas.getGestorPracticas().getPracticas();
+
+        for (Map.Entry<String, Practica> datos : mapPracticas.entrySet()) {
+            if(provinciasSeleccionadas.contains(datos.getValue().getProvincia())) {
+                IDs.add(datos.getKey());
+                lugares.add(datos.getValue().getProvincia() + "\n" + datos.getValue().getLocalidad());
+                empresas.add(datos.getValue().getNombreEmpresa());
+                descripciones.add(datos.getValue().getTitulo());
+            }
+        }
+
+        adapterPracticas.notifyDataSetChanged();
+    }
+
+    private void vaciarDatos() {
+        IDs.clear();
+        lugares.clear();
+        empresas.clear();
+        descripciones.clear();
     }
 }
 

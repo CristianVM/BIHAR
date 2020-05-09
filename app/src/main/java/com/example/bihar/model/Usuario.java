@@ -10,7 +10,7 @@ public class Usuario {
     private String email;
     private String gmail;
     private double notaMedia;
-    private int numCreditos;
+    private double numCreditos;
     private HashMap<Integer, List<Asignatura>> asignaturas_por_curso;
     private HashMap<Integer, List<Asignatura>> asignaturas_por_anyo;
 
@@ -79,7 +79,7 @@ public class Usuario {
         this.notaMedia = notaMedia;
     }
 
-    public void setNumCreditos(int numCreditos) {
+    public void setNumCreditos(double numCreditos) {
         this.numCreditos = numCreditos;
     }
 
@@ -87,7 +87,7 @@ public class Usuario {
         return notaMedia;
     }
 
-    public int getNumCreditos() {
+    public double getNumCreditos() {
         return numCreditos;
     }
 

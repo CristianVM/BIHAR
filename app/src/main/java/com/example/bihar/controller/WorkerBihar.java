@@ -71,6 +71,19 @@ public class WorkerBihar extends Worker {
                     Data.Builder data = new Data.Builder();
                     data.putString("result", "OK");
                     return Result.success(data.build());
+                } else if (json.get("accion").equals("obtenerImagenEmpresa")) {
+                    // Transformamos el resultado de la llamada en un Bitmap
+                    Bitmap bitmap = BitmapFactory.decodeStream(urlConnection.getInputStream());
+
+                    File imagenFichero = new File(getApplicationContext().getFilesDir(), json.get("idPractica").toString() + ".png");
+                    OutputStream os = new FileOutputStream(imagenFichero);
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, os);
+                    os.flush();
+                    os.close();
+
+                    Data.Builder data = new Data.Builder();
+                    data.putString("result", "OK");
+                    return Result.success(data.build());
                 } else {
                     BufferedInputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
                     BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));

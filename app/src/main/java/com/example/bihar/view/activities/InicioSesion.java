@@ -25,7 +25,9 @@ import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
 import com.example.bihar.R;
+import com.example.bihar.controller.GestorUsuario;
 import com.example.bihar.controller.WorkerBihar;
+import com.example.bihar.model.Usuario;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.json.simple.JSONObject;
@@ -40,7 +42,7 @@ public class InicioSesion extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        if(prefs.contains("nombreUsuario")) {
+        if (prefs.contains("nombreUsuario")) {
             setContentView(R.layout.inicio_sesion_usuario);
             ImageView login2ImageUsuario = findViewById(R.id.login2ImageUsuario);
 
@@ -55,12 +57,12 @@ public class InicioSesion extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            String nombreUsuario = prefs.getString("nombreUsuario",null);
+            String nombreUsuario = prefs.getString("nombreUsuario", null);
             TextView textViewNombreUsuario = findViewById(R.id.login2NombreUsuario);
             textViewNombreUsuario.setText(nombreUsuario);
 
-            if(prefs.contains("password")) {
-                String password = prefs.getString("password",null);
+            if (prefs.contains("password")) {
+                String password = prefs.getString("password", null);
                 EditText loginEditPassword = findViewById(R.id.loginEditPassword);
                 loginEditPassword.setText(password);
                 Switch loginSwitchRecordar = findViewById(R.id.loginSwitchRecordar);
@@ -86,16 +88,16 @@ public class InicioSesion extends AppCompatActivity {
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-        if(login1EditUsuario == null) {
-            usuario = prefs.getString("idUsuario",null);
+        if (login1EditUsuario == null) {
+            usuario = prefs.getString("idUsuario", null);
         } else {
             usuario = login1EditUsuario.getText().toString();
         }
 
 
-        if(usuario.isEmpty()) {
+        if (usuario.isEmpty()) {
             Toast.makeText(this, R.string.usuario_vacio, Toast.LENGTH_LONG).show();
-        } else if(password.isEmpty()) {
+        } else if (password.isEmpty()) {
             Toast.makeText(this, R.string.password_vacia, Toast.LENGTH_LONG).show();
         } else {
             comenzarCarga();
@@ -139,6 +141,16 @@ public class InicioSesion extends AppCompatActivity {
                                             String idUsuario = (String) json.get("idUsuario");
                                             String nombre = (String) json.get("nombre");
                                             boolean esAlumno = (boolean) json.get("esAlumno");
+                                            String emailEHU = (String) json.get("emailEHU");
+                                            String gmail = (String) json.get("gmail");
+                                            double creditos = Double.parseDouble((String) json.get("creditos"));
+                                            double media = Double.parseDouble((String) json.get("media"));
+
+                                            Usuario u = new Usuario(idUsuario, emailEHU);
+                                            u.setNotaMedia(media);
+                                            u.setNumCreditos(creditos);
+                                            u.setGmail(gmail);
+                                            GestorUsuario.getGestorUsuario().setUsuario(u);
 
                                             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                                             SharedPreferences.Editor editor = prefs.edit();
@@ -148,14 +160,14 @@ public class InicioSesion extends AppCompatActivity {
 
                                             // Si ha marcado recordar contraseña
                                             Switch login1SwitchRecordar = findViewById(R.id.loginSwitchRecordar);
-                                            if(login1SwitchRecordar.isChecked()) {
+                                            if (login1SwitchRecordar.isChecked()) {
                                                 editor.putString("password", password);
                                                 editor.putString("fingerprintPassword", password);
                                             }
 
                                             editor.apply();
 
-                                            if(login1EditUsuario != null) {
+                                            if (login1EditUsuario != null) {
                                                 obtenerImagenUsuario();
                                             } else {
                                                 terminarCarga();
@@ -195,8 +207,15 @@ public class InicioSesion extends AppCompatActivity {
         file.delete();
 
         String token = prefs.getString("token", "");
+        String idioma = prefs.getString("idioma", "");
+        String iniciado = prefs.getString("iniciado", "");
+        String notificacion = prefs.getString("notificacion", "");
+
         editor.clear();
         editor.putString("token", token);
+        editor.putString("idioma", idioma);
+        editor.putString("iniciado", iniciado);
+        editor.putString("notificacion", notificacion);
         editor.apply();
 
         finish();
@@ -206,7 +225,7 @@ public class InicioSesion extends AppCompatActivity {
     public void cambiarOpcionSwitch(View v) {
         Switch loginSwitchRecordar = findViewById(R.id.loginSwitchRecordar);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        if(!loginSwitchRecordar.isChecked() && prefs.contains("password")) {
+        if (!loginSwitchRecordar.isChecked() && prefs.contains("password")) {
             SharedPreferences.Editor editor = prefs.edit();
             editor.remove("password");
             editor.apply();

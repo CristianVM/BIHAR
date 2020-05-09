@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         parametrosJSON.put("accion", "actualizarImagen");
         parametrosJSON.put("idUsuario", "ulopez");
 
-        Bitmap src = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.blanco);
+        Bitmap src = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.bruss);
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         src.compress(Bitmap.CompressFormat.PNG, 100, stream);
         byte[] imagen = stream.toByteArray();
@@ -54,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         byte[] fotoTransformada = stream.toByteArray();
         String foto64 = Base64.encodeToString(fotoTransformada, Base64.DEFAULT);
+        closeOptionsMenu();
+
 
         // Insertamos el String en base 64 al JSON
         parametrosJSON.put("foto", foto64);
