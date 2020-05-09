@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.Transformation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -72,25 +74,10 @@ public class MenuPrincipal extends AppCompatActivity {
         progressBar.setMax(240);
         TextView txtProgressBar = findViewById(R.id.progressBarTxt);
         final int[] i = {0};
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while(i[0] <= numCreditos) {
+        ProgressBarAnimation anim = new ProgressBarAnimation(txtProgressBar, progressBar, 0, numCreditos);
+        anim.setDuration(TIEMPO_ANIMACION_MS);
+        progressBar.startAnimation(anim);
 
-                    progressBar.setProgress(i[0]);
-                    String s = i[0] + "/240";
-                    txtProgressBar.setText(s);
-
-                    try {
-                        Thread.sleep(TIEMPO_ANIMACION_MS/numCreditos);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    i[0]++;
-                }
-            }
-        });
-        thread.start();
     }
 
 
@@ -235,4 +222,29 @@ class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
             }
         }
     }
+}
+
+class ProgressBarAnimation extends Animation {
+    private ProgressBar progressBar;
+    private TextView textView;
+    private float from;
+    private float  to;
+
+    public ProgressBarAnimation(TextView textView, ProgressBar progressBar, float from, float to) {
+        super();
+        this.textView = textView;
+        this.progressBar = progressBar;
+        this.from = from;
+        this.to = to;
+    }
+
+    @Override
+    protected void applyTransformation(float interpolatedTime, Transformation t) {
+        super.applyTransformation(interpolatedTime, t);
+        float value = from + (to - from) * interpolatedTime;
+        progressBar.setProgress((int) value);
+        String strProgreso = progressBar.getProgress() + "/" + 240;
+        textView.setText(strProgreso);
+    }
+
 }
