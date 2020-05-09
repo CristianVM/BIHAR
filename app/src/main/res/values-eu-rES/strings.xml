@@ -86,8 +86,6 @@
     <string name="matricula">MATRIKULA</string>
     <string name="horario">ORDUTEGIA</string>
     <string name="ajustes_notificacion">Jakinarazpenak</string>
-    <string name="Si">Bai</string>
-    <string name="No">Ez</string>
     <string name="ajustes_notificacion_descripcion">Aktibatu edo desaktibatu jakinarazpenak</string>
     <string name="dialog_foto_eleccion">Aukeratu argazkia nondik atera nahi duzun</string>
     <string name="dialog_foto_capturar">Argazkia ateratu</string>
