@@ -74,21 +74,15 @@ public class MenuPrincipal extends AppCompatActivity {
         ProgressBar progressBar = findViewById(R.id.progressBar);
         progressBar.setMax(240);
         TextView txtProgressBar = findViewById(R.id.progressBarTxt);
-        Handler h = new Handler();
         final int[] i = {0};
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                while(i[0] < numCreditos) {
+                while(i[0] <= numCreditos) {
 
-                    h.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            progressBar.setProgress(i[0]);
-                            String s = i[0] + "/240";
-                            txtProgressBar.setText(s);
-                        }
-                    });
+                    progressBar.setProgress(i[0]);
+                    String s = i[0] + "/240";
+                    txtProgressBar.setText(s);
 
                     try {
                         Thread.sleep(TIEMPO_ANIMACION_MS/numCreditos);
@@ -97,9 +91,6 @@ public class MenuPrincipal extends AppCompatActivity {
                     }
                     i[0]++;
                 }
-                progressBar.setProgress(numCreditos);
-                String s = numCreditos +"/240";
-                txtProgressBar.setText(s);
             }
         });
         thread.start();
