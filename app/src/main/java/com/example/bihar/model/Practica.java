@@ -8,16 +8,18 @@ public class Practica {
     private String horasTotales;
     private String salarioTotal;
     private String titulo;
+    private String tareas;
     private String fechaInicio;
     private String fechaFin;
 
-    public Practica(String nombreEmpresa, String provincia, String localidad, String horasTotales, String salarioTotal, String titulo, String fechaInicio, String fechaFin) {
+    public Practica(String nombreEmpresa, String provincia, String localidad, String horasTotales, String salarioTotal, String titulo, String tareas, String fechaInicio, String fechaFin) {
         this.nombreEmpresa = nombreEmpresa;
         this.provincia = provincia;
         this.localidad = localidad;
         this.horasTotales = horasTotales;
         this.salarioTotal = salarioTotal;
         this.titulo = titulo;
+        this.tareas = tareas;
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
     }
@@ -44,6 +46,10 @@ public class Practica {
 
     public String getTitulo() {
         return this.titulo;
+    }
+
+    public String getTareas() {
+        return this.tareas;
     }
 
     public String getFechaInicio() {

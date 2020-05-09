@@ -51,6 +51,7 @@ public class GestorPracticas {
                             (String) json.get("horasTotales"),
                             (String) json.get("salarioTotal"),
                             (String) json.get("titulo"),
+                            (String) json.get("tareas"),
                             (String) json.get("fechaInicio"),
                             (String) json.get("fechaFin")));
                 }

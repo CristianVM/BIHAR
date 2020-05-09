@@ -63,15 +63,22 @@
     <string name="reservaCancelada">Reserva cancelada</string>
     <string name="preguntaCancelar">¿Realmente deseas cancelar la reserva de la tutoría?</string>
 
-
     <!--PRACTICAS -->
     <string name="practicas">PRÁCTICAS</string>
-    <string name="practica_apuntar">Quiero apuntarme</string>
+    <string name="practica_apuntar">Quiero inscribirme</string>
     <string name="practica_localizacion">Localización:</string>
     <string name="practica_horas">Horas totales:</string>
     <string name="practica_salario">Salario total:</string>
     <string name="practica_descripcion">Descripción:</string>
+    <string name="practica_tareas">Tareas:</string>
     <string name="practica_fechas">Desde - Hasta:</string>
+    <string name="practica_bizkaia">Vizcaya</string>
+    <string name="practica_gipuzkoa">Guipúzcoa</string>
+    <string name="practica_araba">Álava</string>
+    <string name="practica_inscripcion_titulo">Inscripción práctica</string>
+    <string name="practica_inscripcion_mensaje">¿Deseas inscribirte en la práctica? Cualquier inscripción anterior quedará anulada.</string>
+    <string name="practica_inscripcion_cancelada">Inscripción cancelada</string>
+    <string name="practica_inscripcion_realizada">Inscripción realizada</string>
 
     <!-- HORARIOS-->
     <string name="horario_diaLunes">Lunes</string>

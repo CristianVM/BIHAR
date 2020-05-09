@@ -2,252 +2,233 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout2"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/verde"
+    <ProgressBar
+        android:id="@+id/infoPracticaProgressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/linearLayout5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/imgAtras"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_back"
-            app:civ_border_width="2dp"
-            app:civ_circle_background_color="@color/naranja"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.05"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/practicas"
-            android:textColor="@color/blanco"
-            android:textSize="30sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/imgAjustes"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_nada"
-            app:civ_border_width="2dp"
-            app:civ_circle_background_color="@color/naranja"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.957"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.appcompat.widget.SearchView
-            android:id="@+id/tutoriasSearchView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:closeIcon="@drawable/ic_close"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-
-            app:layout_constraintHorizontal_bias="0.975"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:searchHintIcon="@drawable/ic_search"
-            app:searchIcon="@drawable/ic_search" />
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <TextView
-        android:id="@+id/infoPracticaEmpresa"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:gravity="center"
-        android:text="TextView"
-        android:textAllCaps="true"
-        android:textColor="@color/verde"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/guideline12"
-        app:layout_constraintEnd_toStartOf="@+id/guideline16"
-        app:layout_constraintStart_toStartOf="@+id/guideline17"
-        app:layout_constraintTop_toTopOf="@+id/guideline11" />
-
-    <ImageView
-        android:id="@+id/infoPracticaLogoEmpresa"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline12"
-        app:layout_constraintEnd_toStartOf="@+id/guideline17"
-        app:layout_constraintStart_toStartOf="@+id/guideline15"
-        app:layout_constraintTop_toTopOf="@+id/guideline11"
-        app:srcCompat="@drawable/common_google_signin_btn_icon_light" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/guideline19"
-        app:layout_constraintEnd_toStartOf="@+id/guideline16"
-        app:layout_constraintHorizontal_bias="0.588"
-        app:layout_constraintStart_toStartOf="@+id/guideline15"
-        app:layout_constraintTop_toTopOf="@+id/guideline18">
+        android:id="@+id/linearLayout5"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/textLocalizacion1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:drawableLeft="@drawable/ic_location_on_black_24dp"
-            android:drawablePadding="5dp"
-            android:text="@string/practica_localizacion"
-            android:textStyle="bold" />
+        <fragment
+            android:id="@+id/frgmt_toolbar"
+            android:name="com.example.bihar.view.fragments.ToolBar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:focusableInTouchMode="true"
+            tools:layout="@layout/fragment_toolbar" />
 
-        <TextView
-            android:id="@+id/textLocalizacion2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"
-            android:text="TextView" />
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nestedScrollViewInfoPractica"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:scrollbars="vertical"
+            android:visibility="invisible">
 
-        <TextView
-            android:id="@+id/textDescripcion1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:drawableLeft="@drawable/ic_info_black_24dp"
-            android:drawablePadding="5dp"
-            android:text="@string/practica_descripcion"
-            android:textStyle="bold" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/textDescripcion2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"
-            android:text="TextView" />
+                <ImageView
+                    android:id="@+id/infoPracticaLogoEmpresa"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintBottom_toTopOf="@+id/guideline30"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline12"
+                    app:layout_constraintStart_toStartOf="@+id/guideline11"
+                    app:layout_constraintTop_toTopOf="@+id/guideline29" />
 
-        <TextView
-            android:id="@+id/textFechas1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:drawableLeft="@drawable/ic_libroinformacion_publicacion"
-            android:drawablePadding="5dp"
-            android:text="@string/practica_fechas"
-            android:textStyle="bold" />
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toTopOf="@+id/guideline35"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline32"
+                    app:layout_constraintStart_toStartOf="@+id/guideline31"
+                    app:layout_constraintTop_toTopOf="@+id/guideline34"
+                    app:layout_constraintVertical_bias="0.0">
 
-        <TextView
-            android:id="@+id/textFechas2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"
-            android:text="TextView" />
+                    <TextView
+                        android:id="@+id/textLocalizacion1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:drawableLeft="@drawable/ic_location_on_black_24dp"
+                        android:drawablePadding="5dp"
+                        android:text="@string/practica_localizacion"
+                        android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/textHoras1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:drawableLeft="@drawable/ic_access_time_black_24dp"
-            android:drawablePadding="5dp"
-            android:text="@string/practica_horas"
-            android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/textLocalizacion2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp" />
 
-        <TextView
-            android:id="@+id/textHoras2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"
-            android:text="TextView" />
+                    <TextView
+                        android:id="@+id/textDescripcion1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:drawableLeft="@drawable/ic_info_black_24dp"
+                        android:drawablePadding="5dp"
+                        android:text="@string/practica_descripcion"
+                        android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/textSalario1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:drawableLeft="@drawable/ic_monetization_on_black_24dp"
-            android:drawablePadding="5dp"
-            android:text="@string/practica_salario"
-            android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/textDescripcion2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp" />
 
-        <TextView
-            android:id="@+id/textSalario2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TextView" />
+                    <TextView
+                        android:id="@+id/textTareas1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:drawableLeft="@drawable/ic_assignment_black_24dp"
+                        android:drawablePadding="5dp"
+                        android:text="@string/practica_tareas"
+                        android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/buttonApuntarsePractica"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/boton_redondo_naranja"
-            android:text="@string/practica_apuntar"
-            android:textAllCaps="false"
-            android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/textTareas2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp" />
+
+                    <TextView
+                        android:id="@+id/textFechas1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:drawableLeft="@drawable/ic_libroinformacion_publicacion"
+                        android:drawablePadding="5dp"
+                        android:text="@string/practica_fechas"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/textFechas2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp" />
+
+                    <TextView
+                        android:id="@+id/textHoras1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:drawableLeft="@drawable/ic_access_time_black_24dp"
+                        android:drawablePadding="5dp"
+                        android:text="@string/practica_horas"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/textHoras2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp" />
+
+                    <TextView
+                        android:id="@+id/textSalario1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:drawableLeft="@drawable/ic_monetization_on_black_24dp"
+                        android:drawablePadding="5dp"
+                        android:text="@string/practica_salario"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/textSalario2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <Button
+                        android:id="@+id/buttonApuntarsePractica"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="30dp"
+                        android:layout_marginBottom="15dp"
+                        android:background="@drawable/boton_redondo_naranja"
+                        android:onClick="avisoInscripcion"
+                        android:text="@string/practica_apuntar"
+                        android:textAllCaps="false"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline29"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_percent="0.05" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline30"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_percent="0.22" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline31"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.08272506" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline32"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.92" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline34"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_percent="0.24" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline35"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_percent="0.95" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.18248175" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.82" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
     </LinearLayout>
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline11"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.12" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline12"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.32" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline15"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.08" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline16"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.92" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline17"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.5" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline18"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.38" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline19"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.96" />
 </androidx.constraintlayout.widget.ConstraintLayout>
