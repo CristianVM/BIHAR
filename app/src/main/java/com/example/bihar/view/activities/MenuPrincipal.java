@@ -224,6 +224,11 @@ class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
     }
 }
 
+/**
+ * Clase para la animacion a la hora de mostrar el numero de créditos. Código adaptado para insertar un TextView
+ * Pregunta: https://stackoverflow.com/questions/8035682/animate-progressbar-update-in-android
+ * Autor: https://stackoverflow.com/users/102092/eli-konky
+ */
 class ProgressBarAnimation extends Animation {
     private ProgressBar progressBar;
     private TextView textView;
