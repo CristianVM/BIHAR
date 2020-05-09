@@ -5,6 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardUseCompatPadding="true"
     app:cardCornerRadius="30dp"
+    app:cardBackgroundColor="@color/verde"
     android:background="@android:color/transparent">
 
     <ImageView

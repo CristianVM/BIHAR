@@ -93,6 +93,8 @@
     <!-- RESERVAS-->
     <string name="aceptada">Aceptada</string>
     <string name="rechazada">Rechazada</string>
+    <string name="creditos_superados">CRÉDITOS SUPERADOS:</string>
+    <string name="nota_media">NOTA MEDIA:</string>
 
 
 </resources>

@@ -24,7 +24,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="CREDITOS SUPERADOS:"
+            android:text="@string/creditos_superados"
             android:textStyle="bold"
             android:textColor="@color/negro"
             android:layout_marginTop="20sp"
@@ -68,7 +68,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="NOTA MEDIA:"
+                android:text="@string/nota_media"
                 android:textStyle="bold"
                 android:textColor="@color/negro"
                 android:layout_marginBottom="5dp"
