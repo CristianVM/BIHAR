@@ -53,4 +53,5 @@
     <string name="horario_diaViernes">Ostirala</string>
     <string name="lista_horario_horaInicio">Orduaren hasiera</string>
     <string name="lista_horario_horaFin">Orduaren amaiera</string>
+    <string name="formatoFechaDia">EEEE, YYYY\'ko\' MMMM\'ren\' dd</string>
 </resources>

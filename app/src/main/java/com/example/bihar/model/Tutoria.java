@@ -3,12 +3,12 @@ package com.example.bihar.model;
 public class Tutoria{
     private int idTutoria;
     private String hora;
-    private boolean reservado;
+    private int estado;
 
-    public Tutoria (int pId, String pHora, boolean pReservado){
+    public Tutoria (int pId, String pHora, int pEstado){
         idTutoria = pId;
         hora = pHora;
-        reservado = pReservado;
+        estado = pEstado;
     }
 
     public int getIdTutoria() {
@@ -19,11 +19,11 @@ public class Tutoria{
         return hora;
     }
 
-    public boolean isReservado() {
-        return reservado;
+    public int getEstado() {
+        return estado;
     }
 
-    public void setReservado(boolean b) {
-        reservado = b;
+    public void setEstado(int b) {
+        estado = b;
     }
 }

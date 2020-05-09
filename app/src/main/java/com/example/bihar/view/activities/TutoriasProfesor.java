@@ -1,6 +1,23 @@
 package com.example.bihar.view.activities;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.icu.text.SimpleDateFormat;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.work.Constraints;
 import androidx.work.Data;
 import androidx.work.NetworkType;
@@ -8,23 +25,10 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
-import android.app.Activity;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TextView;
-
 import com.example.bihar.R;
-import com.example.bihar.controller.GestorProfesores;
 import com.example.bihar.controller.GestorReservas;
 import com.example.bihar.controller.GestorUsuario;
 import com.example.bihar.controller.WorkerBihar;
-import com.example.bihar.model.Profesor;
 import com.example.bihar.model.Usuario;
 
 import org.json.simple.JSONArray;
@@ -32,8 +36,10 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class TutoriasProfesor extends AppCompatActivity {
@@ -114,6 +120,7 @@ class MiListAdapter extends BaseAdapter{
 
     private ArrayList<Integer> indices;
     private Activity activity;
+    private int estadoActual;
 
     public MiListAdapter(Activity pActivity){
         activity = pActivity;
@@ -121,6 +128,7 @@ class MiListAdapter extends BaseAdapter{
         indices.addAll(GestorReservas.getGestorReservas().getIndices(0));
         indices.addAll(GestorReservas.getGestorReservas().getIndices(1));
         indices.addAll(GestorReservas.getGestorReservas().getIndices(2));
+        estadoActual = -1;
     }
 
     @Override
@@ -143,26 +151,106 @@ class MiListAdapter extends BaseAdapter{
         if(convertView == null)
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.tutorias_profesor_listitem,null);
 
+        int estado = GestorReservas.getGestorReservas().getEstado(indices.get(position));
+        if(estadoActual != estado){
+            if(estadoActual != -1) {
+                convertView.setPadding(0, 50, 0, 0);
+            }
+            estadoActual = estado;
+        }else{
+            convertView.setPadding(0, 0, 0, 0);
+        }
+
         TextView nombreC = convertView.findViewById(R.id.reservaNombreCompleto);
         nombreC.setText(GestorReservas.getGestorReservas().getNombreCompleto(indices.get(position)));
 
-        TextView estado = convertView.findViewById(R.id.reservaEstado);
+        TextView txtestado = convertView.findViewById(R.id.reservaEstado);
         LinearLayout linearLayout = convertView.findViewById(R.id.reservaBotonesLayout);
-        switch (GestorReservas.getGestorReservas().getEstado(indices.get(position))){
+        switch (estado){
             case 0:
-                estado.setVisibility(View.GONE);
+                txtestado.setVisibility(View.GONE);
                 linearLayout.setVisibility(View.VISIBLE);
+
+                ImageView accept = convertView.findViewById(R.id.reservaAccept);
+                ImageView deny = convertView.findViewById(R.id.reservaDeny);
+
+                accept.setOnClickListener(v -> cambiarEstado(indices.get(position), 1));
+                deny.setOnClickListener(v -> cambiarEstado(indices.get(position),2));
                 break;
             case 1:
-                estado.setText("Aceptada");
-                estado.setTextColor(Color.GREEN);
+                txtestado.setVisibility(View.VISIBLE);
+                linearLayout.setVisibility(View.GONE);
+                txtestado.setText(convertView.getContext().getString(R.string.aceptada));
+                txtestado.setTextColor(Color.GREEN);
                 break;
             case 2:
-                estado.setText("Rechazada");
-                estado.setTextColor(Color.RED);
+                txtestado.setVisibility(View.VISIBLE);
+                linearLayout.setVisibility(View.GONE);
+                txtestado.setText(convertView.getContext().getString(R.string.rechazada));
+                txtestado.setTextColor(Color.RED);
                 break;
         }
 
+        TextView reservaFecha = convertView.findViewById(R.id.reservaFecha);
+        String fecha = GestorReservas.getGestorReservas().getFecha(indices.get(position));
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            Date d = Date.valueOf(fecha);
+
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(convertView.getContext());
+            String idioma = prefs.getString("idioma","es");
+
+            Locale locale = new Locale(idioma,"es");
+            SimpleDateFormat simpleDateformat = new SimpleDateFormat(convertView.getContext().getString(R.string.formatoFechaDia), locale);
+            String strFecha = simpleDateformat.format(d);
+            fecha = strFecha.substring(0,1).toUpperCase() + strFecha.substring(1);
+        }
+
+        reservaFecha.setText(fecha);
+
         return convertView;
+    }
+
+    private void cambiarEstado(int position, int estado){
+
+        Map<String, String> map = new HashMap<>();
+        map.put("accion","cambiarEstadoReserva");
+        map.put("idPersona", GestorReservas.getGestorReservas().getIdPersona(position));
+        map.put("idTutoria", String.valueOf(GestorReservas.getGestorReservas().getIdTutoria(position)));
+        map.put("estado", String.valueOf(estado));
+        JSONObject json = new JSONObject(map);
+
+        Data.Builder data = new Data.Builder();
+        data.putString("datos",json.toString());
+
+        Constraints restricciones = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
+        OneTimeWorkRequest trabajo = new OneTimeWorkRequest.Builder(WorkerBihar.class)
+                .setConstraints(restricciones)
+                .setInputData(data.build())
+                .build();
+
+
+        WorkManager.getInstance(activity).getWorkInfoByIdLiveData(trabajo.getId()).observe(
+                (LifecycleOwner) activity, status -> {
+                    if (status != null && status.getState().isFinished()) {
+
+                        if (status.getState() == WorkInfo.State.FAILED) {
+                            activity.finish();
+                            return;
+                        }
+
+                        GestorReservas.getGestorReservas().setEstado(position,estado);
+                        indices = new ArrayList<>();
+                        indices.addAll(GestorReservas.getGestorReservas().getIndices(0));
+                        indices.addAll(GestorReservas.getGestorReservas().getIndices(1));
+                        indices.addAll(GestorReservas.getGestorReservas().getIndices(2));
+                        notifyDataSetChanged();
+                    }
+                }
+        );
+
+        WorkManager.getInstance(activity).enqueue(trabajo);
     }
 }

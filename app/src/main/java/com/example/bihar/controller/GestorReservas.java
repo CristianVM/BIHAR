@@ -1,6 +1,9 @@
 package com.example.bihar.controller;
 
+import android.os.Build;
+
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class GestorReservas {
@@ -31,7 +34,15 @@ public class GestorReservas {
 
         }
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            indices.sort((o1, o2) -> reservas.get(o1).getFecha().compareTo(reservas.get(o2).getFecha()));
+        }
+
         return indices;
+    }
+
+    public void setEstado(int index, int estado){
+        reservas.get(index).setEstado(estado);
     }
 
     public int getIdTutoria(int index) {
@@ -79,6 +90,10 @@ class Reserva{
         this.estado = estado;
         this.msg = msg;
         this.nombreCompleto = nombreCompleto;
+    }
+
+    public void setEstado(int estado){
+        this.estado = estado;
     }
 
     public int getIdTutoria() {

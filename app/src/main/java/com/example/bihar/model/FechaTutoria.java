@@ -6,15 +6,15 @@ public class FechaTutoria {
     private String fecha;
     private ArrayList<Tutoria> tutorias;
 
-    FechaTutoria(int pIdTutoria, String pFecha, String pHoraInicio, String pHoraFin, boolean pReservado){
+    FechaTutoria(int pIdTutoria, String pFecha, String pHoraInicio, String pHoraFin, int pEstado){
         fecha = pFecha;
 
         tutorias = new ArrayList<>();
-        tutorias.add(new Tutoria(pIdTutoria,pHoraFin +" - "+pHoraFin, pReservado));
+        tutorias.add(new Tutoria(pIdTutoria,pHoraFin +" - "+pHoraFin, pEstado));
     }
 
-    void anadirHora(int pIdTutoria, String pHoraInicio, String pHoraFin, boolean pReservado){
-        tutorias.add(new Tutoria(pIdTutoria,pHoraFin +" - "+pHoraFin, pReservado));
+    void anadirHora(int pIdTutoria, String pHoraInicio, String pHoraFin, int pEstado){
+        tutorias.add(new Tutoria(pIdTutoria,pHoraFin +" - "+pHoraFin, pEstado));
     }
 
 

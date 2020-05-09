@@ -104,14 +104,14 @@ public class Profesor {
         this.nombreCentro = nombreCentro;
     }
 
-    public void anadirTutoria(int pIdTutoria, String pFecha, String pHoraInicio, String pHoraFin, boolean pReservado){
+    public void anadirTutoria(int pIdTutoria, String pFecha, String pHoraInicio, String pHoraFin, int pEstado){
         for(FechaTutoria fechaTutoria : fechaTutorias){
             if(fechaTutoria.getFecha().equals(pFecha)){
-                fechaTutoria.anadirHora(pIdTutoria, pHoraInicio, pHoraFin, pReservado);
+                fechaTutoria.anadirHora(pIdTutoria, pHoraInicio, pHoraFin, pEstado);
                 return;
             }
         }
-        this.fechaTutorias.add(new FechaTutoria(pIdTutoria, pFecha, pHoraInicio, pHoraFin, pReservado));
+        this.fechaTutorias.add(new FechaTutoria(pIdTutoria, pFecha, pHoraInicio, pHoraFin, pEstado));
     }
 
 

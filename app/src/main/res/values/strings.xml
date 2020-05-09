@@ -5,6 +5,7 @@
     <string name="Si">Sí</string>
     <string name="No">No</string>
     <string name="noDisponible">No disponible</string>
+    <string name="formatoFechaDia">EEEE, dd \'de\' MMMM \'de\' YYYY</string>
 
     <!-- Actividad Matricula -->
     <string name="matricula_curso">Curso</string>
@@ -88,6 +89,10 @@
     <string name="tercero">Tercero</string>
     <string name="cuarto">Cuarto</string>
     <string name="quinto">Quinto</string>
+
+    <!-- RESERVAS-->
+    <string name="aceptada">Aceptada</string>
+    <string name="rechazada">Rechazada</string>
 
 
 </resources>

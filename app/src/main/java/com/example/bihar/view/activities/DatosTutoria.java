@@ -169,8 +169,8 @@ public class DatosTutoria extends AppCompatActivity {
                                 String fecha = (String) obj.get("fecha");
                                 String horaInicio = (String) obj.get("horaInicio");
                                 String horaFin = (String) obj.get("horaFin");
-                                boolean reservado = (boolean) obj.get("reservado");
-                                profesor.anadirTutoria(idTutoria,fecha,horaInicio,horaFin,reservado);
+                                int estado = Integer.parseInt(String.valueOf(obj.get("estado")));
+                                profesor.anadirTutoria(idTutoria,fecha,horaInicio,horaFin,estado);
                             }
 
                             cargarFotoProfesor();
@@ -313,8 +313,12 @@ class MyExpandableListAdapter extends BaseExpandableListAdapter{
         hora.setText(t.getHora());
 
         ImageView imgReservar = convertView.findViewById(R.id.imgReservar);
-        if(t.isReservado()){
-            imgReservar.setImageResource(R.drawable.ic_cancel);
+        if(t.getEstado() == 0 || t.getEstado() == 1){
+            if(t.getEstado() == 0)
+                imgReservar.setImageResource(R.drawable.ic_pending);
+            else
+                imgReservar.setImageResource(R.drawable.ic_check);
+
             imgReservar.setOnClickListener(v -> {
                 final int idTutoria = t.getIdTutoria();
                 AlertDialog.Builder builder = new AlertDialog.Builder(activity);
@@ -340,7 +344,7 @@ class MyExpandableListAdapter extends BaseExpandableListAdapter{
                 alertDialog = builder.create();
                 alertDialog.show();
             });
-        }else{
+        }else if(t.getEstado() == -1){
             imgReservar.setImageResource(R.drawable.ic_add);
             imgReservar.setOnClickListener(v -> {
 
@@ -384,6 +388,9 @@ class MyExpandableListAdapter extends BaseExpandableListAdapter{
                 alertDialog.show();
 
             });
+        }else if(t.getEstado() == 2){
+            imgReservar.setImageResource(R.drawable.ic_close_red);
+            imgReservar.setOnClickListener(null);
         }
 
         return convertView;
@@ -425,7 +432,7 @@ class MyExpandableListAdapter extends BaseExpandableListAdapter{
                         alertDialog.dismiss();
                         Toast.makeText(activity, activity.getString(R.string.tutoriaReservada),Toast.LENGTH_SHORT).show();
                         Tutoria t = (Tutoria) getChild(groupPosition,childPosition);
-                        t.setReservado(true);
+                        t.setEstado(0);
                         notifyDataSetChanged();
                     }
                 }
@@ -459,7 +466,7 @@ class MyExpandableListAdapter extends BaseExpandableListAdapter{
                             alertDialog.dismiss();
                             Toast.makeText(activity, activity.getString(R.string.reservaCancelada),Toast.LENGTH_SHORT).show();
                             Tutoria t = (Tutoria) getChild(groupPosition,childPosition);
-                            t.setReservado(false);
+                            t.setEstado(-1);
                             notifyDataSetChanged();
                         }else{
                             Toast.makeText(activity, activity.getString(R.string.error_general),Toast.LENGTH_SHORT).show();
