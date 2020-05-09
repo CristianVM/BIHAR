@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".view.activities.Asignaturas"/>
+        <activity android:name=".view.activities.TutoriasProfesor"></activity>
+        <activity android:name=".view.activities.Asignaturas" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

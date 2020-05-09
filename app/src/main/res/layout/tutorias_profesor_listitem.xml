@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/carne">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginStart="5dp">
+
+        <TextView
+            android:id="@+id/reservaNombreCompleto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Iker Nafarrate Bilbao"
+            android:textSize="20sp"
+            android:textColor="@color/negro"
+            android:textStyle="italic" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Viernes, 18/05/2020"
+            android:textSize="12sp"/>
+    </LinearLayout>
+
+
+    <Space
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="2"/>
+
+    <LinearLayout
+        android:id="@+id/reservaBotonesLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_libro_disponible"
+            android:layout_gravity="center_vertical"
+            />
+
+        <Space
+            android:layout_width="15dp"
+            android:layout_height="0dp" />
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_libro_nodisponible"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="5dp"
+            />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/reservaEstado"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:text="Aceptada"
+        android:textStyle="bold|italic"
+        android:textColor="#00ff00"
+        android:gravity="center_vertical"
+        android:layout_marginEnd="5dp"
+        android:visibility="visible"/>
+
+
+
+
+</LinearLayout>

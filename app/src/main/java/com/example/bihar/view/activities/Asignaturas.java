@@ -47,6 +47,7 @@ public class Asignaturas extends AppCompatActivity {
         expandableListView = findViewById(R.id.asignaturasExpandableListView);
 
         /*
+           Listener para que solo haya un Grupo expandido.
          * Pregunta: https://stackoverflow.com/questions/7862396/show-only-one-child-of-expandable-list-at-a-time/15856032
          * Autor: https://stackoverflow.com/users/413127/blundell
          */

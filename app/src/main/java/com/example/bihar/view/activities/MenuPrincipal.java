@@ -179,6 +179,7 @@ public class MenuPrincipal extends AppCompatActivity {
                         break;
                     }
                     case "tutoriasProfesor":{
+                        intent = new Intent(MenuPrincipal.this,TutoriasProfesor.class);
                         break;
                     }
                 }
