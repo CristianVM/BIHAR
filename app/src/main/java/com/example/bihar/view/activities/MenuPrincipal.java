@@ -250,7 +250,7 @@ class ProgressBarAnimation extends Animation {
         progressBar.setProgress((int) value);
         String strProgreso = progressBar.getProgress() + "/" + 240;
         textView.setText(strProgreso);
-        
+
     }
 
 }

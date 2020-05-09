@@ -28,6 +28,8 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -136,7 +138,9 @@ class MyExpandableListAdapterAsignaturas extends BaseExpandableListAdapter {
     MyExpandableListAdapterAsignaturas(Activity pActivity){
         activity = pActivity;
         asignaturas = GestorUsuario.getGestorUsuario().getUsuario().getAsignaturas_por_curso();
-        cursos = asignaturas.keySet().toArray(new Integer[0]);
+        List<Integer> lista = new ArrayList<>(asignaturas.keySet());
+        Collections.sort(lista);
+        cursos = lista.toArray(new Integer[0]);
     }
 
     @Override
