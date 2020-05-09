@@ -227,14 +227,14 @@ public class InicioSesion extends AppCompatActivity {
 
         String token = prefs.getString("token", "");
         String idioma = prefs.getString("idioma", "");
-        String iniciado = prefs.getString("iniciado", "");
-        String notificacion = prefs.getString("notificacion", "");
+        boolean iniciado = prefs.getBoolean("iniciado", true);
+        boolean notificacion = prefs.getBoolean("notificacion", true);
 
         editor.clear();
         editor.putString("token", token);
         editor.putString("idioma", idioma);
-        editor.putString("iniciado", iniciado);
-        editor.putString("notificacion", notificacion);
+        editor.putBoolean("iniciado", iniciado);
+        editor.putBoolean("notificacion", notificacion);
         editor.apply();
 
         finish();
