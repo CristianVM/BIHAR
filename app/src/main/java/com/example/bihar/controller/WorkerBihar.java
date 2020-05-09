@@ -121,6 +121,7 @@ public class WorkerBihar extends Worker {
                             return Result.success();
                         }else if(accion.equals("obtenerPracticas")) {
                             GestorPracticas.getGestorPracticas().addPracticas(result);
+                            return Result.success();
                         }
 
                         return Result.success(data.build());
