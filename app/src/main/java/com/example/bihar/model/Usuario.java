@@ -9,8 +9,8 @@ public class Usuario {
     private String idUsuario;
     private String email;
     private String gmail;
-    private double notaMedia;
-    private double numCreditos;
+    private float notaMedia;
+    private float numCreditos;
     private HashMap<Integer, List<Asignatura>> asignaturas_por_curso;
     private HashMap<Integer, List<Asignatura>> asignaturas_por_anyo;
 
@@ -75,19 +75,19 @@ public class Usuario {
         this.email = email;
     }
 
-    public void setNotaMedia(double notaMedia) {
+    public void setNotaMedia(float notaMedia) {
         this.notaMedia = notaMedia;
     }
 
-    public void setNumCreditos(double numCreditos) {
+    public void setNumCreditos(float numCreditos) {
         this.numCreditos = numCreditos;
     }
 
-    public double getNotaMedia() {
+    public float getNotaMedia() {
         return notaMedia;
     }
 
-    public double getNumCreditos() {
+    public float getNumCreditos() {
         return numCreditos;
     }
 

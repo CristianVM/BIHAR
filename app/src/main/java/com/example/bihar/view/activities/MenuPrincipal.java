@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bihar.R;
+import com.example.bihar.controller.GestorUsuario;
 import com.example.bihar.model.CardOpcion;
 import com.example.bihar.model.ListaOpcionesMenu;
 
@@ -46,8 +47,10 @@ public class MenuPrincipal extends AppCompatActivity {
             if(bundle != null){
                 boolean expediente = bundle.getBoolean("expediente");
                 if(expediente) {
+                    TextView notaMedia = findViewById(R.id.txtNotaMedia);
+                    notaMedia.setText(String.valueOf(GestorUsuario.getGestorUsuario().getUsuario().getNotaMedia()));
                     opciones = ListaOpcionesMenu.getListaOpcionesExpediente();
-                    animacionCreditos(156);
+                    animacionCreditos(GestorUsuario.getGestorUsuario().getUsuario().getNumCreditos());
                 }
             }
         }
@@ -67,7 +70,7 @@ public class MenuPrincipal extends AppCompatActivity {
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, true));
     }
 
-    public void animacionCreditos(int numCreditos){
+    public void animacionCreditos(float numCreditos){
         LinearLayout linearLayout = findViewById(R.id.menuPrincipal_extraLayout);
         linearLayout.setVisibility(View.VISIBLE);
         ProgressBar progressBar = findViewById(R.id.progressBar);

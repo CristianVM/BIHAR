@@ -143,8 +143,8 @@ public class InicioSesion extends AppCompatActivity {
                                             boolean esAlumno = (boolean) json.get("esAlumno");
                                             String emailEHU = (String) json.get("emailEHU");
                                             String gmail = (String) json.get("gmail");
-                                            double creditos = Double.parseDouble((String) json.get("creditos"));
-                                            double media = Double.parseDouble((String) json.get("media"));
+                                            float creditos = Float.parseFloat((String) json.get("creditos"));
+                                            float media = Float.parseFloat((String) json.get("media"));
 
                                             Usuario u = new Usuario(idUsuario, emailEHU);
                                             u.setNotaMedia(media);
