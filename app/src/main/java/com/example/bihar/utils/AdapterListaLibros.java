@@ -21,6 +21,14 @@ public class AdapterListaLibros extends BaseAdapter {
     private ArrayList<String> titulos;
     private ArrayList<String> fechas;
 
+    /**
+     * Constructor del adapter para la lista de los libros
+     * @param context: el contexto
+     * @param imagenes: las imagenes
+     * @param autores: los autores del libro
+     * @param titulos: los titulos del libro
+     * @param fechas: las fechas de publicacion
+     */
     public AdapterListaLibros(Context context,ArrayList<Integer> imagenes, ArrayList<String> autores,
                               ArrayList<String> titulos, ArrayList<String> fechas) {
         this.context = context;
@@ -31,21 +39,42 @@ public class AdapterListaLibros extends BaseAdapter {
         this.fechas = fechas;
     }
 
+    /**
+     * Devuelve el número de libros que hay
+     * @return número de libros
+     */
     @Override
     public int getCount() {
         return autores.size();
     }
 
+    /**
+     * Devuelve el objeto de la posición i
+     * @param i: la posición de la lista
+     * @return: el objeto
+     */
     @Override
     public Object getItem(int i) {
         return autores.get(i);
     }
 
+    /**
+     * Devuelve el identificador
+     * @param i: identificador
+     * @return: id
+     */
     @Override
     public long getItemId(int i) {
         return i;
     }
 
+    /**
+     * Devuelve el listView personalizado habiendole asignado valores
+     * @param i: posición
+     * @param view: la vista
+     * @param viewGroup
+     * @return
+     */
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         view = layoutInflater.inflate(R.layout.lista_libros, null);

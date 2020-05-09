@@ -7,7 +7,13 @@ import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -20,10 +26,12 @@ import com.example.bihar.model.AlmacenajeMatricula;
 import com.example.bihar.model.MatriculaAnios;
 import com.example.bihar.utils.AdapterListaAsignaturasMatricula;
 import com.example.bihar.view.dialog.DialogSelectAnioMatricula;
+import com.example.bihar.view.fragments.ToolBar;
 
 import org.json.simple.JSONObject;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class Matricula extends AppCompatActivity implements DialogSelectAnioMatricula.ListenerSelectAnioMatricula {
@@ -33,16 +41,36 @@ public class Matricula extends AppCompatActivity implements DialogSelectAnioMatr
     private String anioMatriculaMostrado;
     private String idPersona;
 
+    private String idiomaEstablecido;
+    private boolean listaAñadida;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        listaAñadida = false;
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        idiomaEstablecido = prefs.getString("idioma","es");
+        if(idiomaEstablecido.equals("es")){
+            Locale locale = new Locale("es");
+            cambiarIdiomaOnCreate(locale);
+        }else if(idiomaEstablecido.equals("eu")){
+            Locale locale = new Locale("eu");
+            cambiarIdiomaOnCreate(locale);
+        }
+
         setContentView(R.layout.activity_matricula);
 
         txtAnioSeleccionado = findViewById(R.id.matricula_seleccionAnio);
-        idPersona = "835334";
+        idPersona = prefs.getString("idUsuario","");
+
+        ToolBar toolBar = (ToolBar) getSupportFragmentManager().findFragmentById(R.id.frgmt_toolbarMatricula);
+        toolBar.cambiarTituloToolbar(getResources().getString(R.string.matricula));
+
 
         Map<String,String> map = new HashMap<>();
-        map.put("idPersona","835334");
+        map.put("idPersona",idPersona);
         map.put("accion","verMatricula");
         JSONObject json = new JSONObject(map);
 
@@ -61,25 +89,7 @@ public class Matricula extends AppCompatActivity implements DialogSelectAnioMatr
        WorkManager.getInstance(this).getWorkInfoByIdLiveData(trabajo.getId()).observe(
                 this, status -> {
                    if (status != null && status.getState().isFinished()) {
-                       MatriculaAnios matriculaAnios = GestorMatriculas.gestorMatriculas().getMatriculas(idPersona);
-                       Map<String, AlmacenajeMatricula> matriculaMap = matriculaAnios.getMatriculas();
-
-                       for (Map.Entry<String, AlmacenajeMatricula> datos : matriculaMap.entrySet()) {
-                           anioMatriculaMostrado = datos.getKey();
-                           txtAnioSeleccionado.setText(anioMatriculaMostrado + "-" + (Integer.parseInt(anioMatriculaMostrado) + 1));
-                           asignaturas = (ListView) findViewById(R.id.matricula_lista);
-                           AlmacenajeMatricula almacenajeMatricula = datos.getValue();
-
-                           AdapterListaAsignaturasMatricula adapter = new AdapterListaAsignaturasMatricula(
-                                   this, almacenajeMatricula.asignaturaNombres, almacenajeMatricula.asignaturaCursos,
-                                   almacenajeMatricula.asignaturasConvocatorias, almacenajeMatricula.asignaturasExtraordinarias,
-                                   almacenajeMatricula.asignaturasOrdinarias);
-                           asignaturas.setAdapter(adapter);
-
-                           // SE ASIGNA EL LISTENER PARA QUE ABRA EL DIALOG
-                           asignarListeners();
-                           break;
-                       }
+                       rellenarListView();
                    }
                });
     }
@@ -106,12 +116,99 @@ public class Matricula extends AppCompatActivity implements DialogSelectAnioMatr
         String anioSeleccionado = GestorMatriculas.gestorMatriculas().getMatriculas(idPersona).getAnios().get(i);
         AlmacenajeMatricula datos = GestorMatriculas.gestorMatriculas().getMatriculas(idPersona).getMatriculas().get(anioSeleccionado);
 
-        AdapterListaAsignaturasMatricula adapter = new AdapterListaAsignaturasMatricula(
-                this, datos.asignaturaNombres, datos.asignaturaCursos,
-                datos.asignaturasConvocatorias, datos.asignaturasExtraordinarias,
-                datos.asignaturasOrdinarias);
-        asignaturas.setAdapter(adapter);
+        asignaturas.setAdapter(crearAdapter(datos));
+
         txtAnioSeleccionado.setText(anioSeleccionado+"-"+(Integer.parseInt(anioSeleccionado)+1));
     }
 
+    /**
+     * Se comprueba el idioma que tenía la actividad con el de SharedPreferences: si es distinto se
+     * cambia el idioma cerrando y volviendo a iniciar la actividad.
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        String idiomaNuevo = sharedPreferences.getString("idioma","es");
+
+        if(!idiomaNuevo.equals(idiomaEstablecido)){
+            idiomaEstablecido = idiomaNuevo;
+            if(idiomaEstablecido.equals("es")){
+                Locale locale = new Locale("es");
+                cambiarIdiomaOnResume(locale);
+            }else if(idiomaEstablecido.equals("eu")){
+                Locale locale = new Locale("eu");
+                cambiarIdiomaOnResume(locale);
+            }
+        }
+        if(listaAñadida){
+            rellenarListView();
+        }
+
+    }
+
+    /**
+     * Cambia el idioma de la aplicación al reanudarse la actividad. Se destruye la actividad y se
+     * vuelve a iniciar
+     * @param locale: el idioma almacenado en SharedPreferences
+     */
+    public void cambiarIdiomaOnResume(Locale locale){
+        Locale.setDefault(locale);
+        Resources res = getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration conf = res.getConfiguration();
+        conf.locale = locale;
+        res.updateConfiguration(conf, dm);
+        recreate();
+    }
+
+    /**
+     * Cambia el idioma de la aplicación al crearse la actividad
+     * @param locale: el idioma almacenado en SharedPreferences
+     */
+    public void cambiarIdiomaOnCreate(Locale locale){
+        Locale.setDefault(locale);
+        Resources res = getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration conf = res.getConfiguration();
+        conf.locale = locale;
+        res.updateConfiguration(conf, dm);
+    }
+
+    private void rellenarListView(){
+        MatriculaAnios matriculaAnios = GestorMatriculas.gestorMatriculas().getMatriculas(idPersona);
+        Map<String, AlmacenajeMatricula> matriculaMap = matriculaAnios.getMatriculas();
+
+        for (Map.Entry<String, AlmacenajeMatricula> datos : matriculaMap.entrySet()) {
+            anioMatriculaMostrado = datos.getKey();
+            txtAnioSeleccionado.setText(anioMatriculaMostrado + "-" + (Integer.parseInt(anioMatriculaMostrado) + 1));
+            asignaturas = (ListView) findViewById(R.id.matricula_lista);
+            AlmacenajeMatricula almacenajeMatricula = datos.getValue();
+
+            asignaturas.setAdapter(crearAdapter(almacenajeMatricula));
+            // SE ASIGNA EL LISTENER PARA QUE ABRA EL DIALOG
+            asignarListeners();
+
+            listaAñadida = true;
+            break;
+        }
+    }
+
+    private AdapterListaAsignaturasMatricula crearAdapter(AlmacenajeMatricula almacenajeMatricula){
+        AdapterListaAsignaturasMatricula adapter = null;
+        if (idiomaEstablecido.equals("es")) {
+            adapter = new AdapterListaAsignaturasMatricula(
+                    this, almacenajeMatricula.asignaturaNombres, almacenajeMatricula.asignaturaCursos,
+                    almacenajeMatricula.asignaturasConvocatorias, almacenajeMatricula.asignaturasExtraordinarias,
+                    almacenajeMatricula.asignaturasOrdinarias);
+        } else {
+            adapter = new AdapterListaAsignaturasMatricula(
+                    this, almacenajeMatricula.asignaturasNombresEuskera, almacenajeMatricula.asignaturaCursos,
+                    almacenajeMatricula.asignaturasConvocatorias, almacenajeMatricula.asignaturasExtraordinarias,
+                    almacenajeMatricula.asignaturasOrdinarias);
+        }
+        return adapter;
+    }
 }

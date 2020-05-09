@@ -9,8 +9,11 @@ import androidx.work.WorkManager;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -23,6 +26,7 @@ import android.widget.TextView;
 import com.example.bihar.R;
 import com.example.bihar.controller.GestorLibros;
 import com.example.bihar.controller.WorkerBihar;
+import com.example.bihar.utils.AdapterListaAsignaturasMatricula;
 import com.example.bihar.utils.AdapterListaLibros;
 import com.example.bihar.utils.AdapterListaUniversidades;
 
@@ -31,31 +35,60 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class LibroInformacion extends AppCompatActivity {
 
     private String[] universidades;
+    private String[] universidadesEuskera;
     private String[] disponibles;
+    private String[] latitudes;
+    private String[] idLibros;
+    private String[] longitudes;
     private boolean[] estaDisponible;
 
     private String usuario;
+    private String idiomaEstablecido;
+    private boolean listaCargada;
 
+    private ListView listView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        idiomaEstablecido = prefs.getString("idioma", "es");
+        if (idiomaEstablecido.equals("es")) {
+            Locale locale = new Locale("es");
+            cambiarIdiomaOnCreate(locale);
+        } else if (idiomaEstablecido.equals("eu")) {
+            Locale locale = new Locale("eu");
+            cambiarIdiomaOnCreate(locale);
+        }
+
         setContentView(R.layout.activity_libro_informacion);
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        usuario = prefs.getString("idUsuario","");
-
+        usuario = prefs.getString("idUsuario", "");
+        listaCargada = false;
+        listView = (ListView) findViewById(R.id.libroInformacion_listaUniversidades);
         Bundle bundle = getIntent().getExtras();
 
         Map<String, String> map = new HashMap<>();
-        if(bundle !=null){
+        if (bundle != null) {
             map.put("accion", "consultarReservaLibro");
-            map.put("titulo",bundle.getString("titulo"));
+            map.put("titulo", bundle.getString("titulo"));
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Calendar calendar = Calendar.getInstance();
+            Date date = calendar.getTime();
+            map.put("fecha",dateFormat.format(date));
 
             rellenarDatosLibro(
                     bundle.getString("editorial"),
@@ -94,11 +127,12 @@ public class LibroInformacion extends AppCompatActivity {
 
                             // SE INICIALIZAN LOS ARRAYS
                             universidades = new String[jsonArrayUniversidades.size()];
+                            universidadesEuskera = new String[jsonArrayUniversidades.size()];
                             disponibles = new String[jsonArrayUniversidades.size()];
                             estaDisponible = new boolean[jsonArrayUniversidades.size()];
-                            String[] idLibros = new String[jsonArrayUniversidades.size()];
-                            String[] latitudes = new String[jsonArrayUniversidades.size()];
-                            String[] longitudes = new String[jsonArrayUniversidades.size()];
+                            idLibros = new String[jsonArrayUniversidades.size()];
+                            latitudes = new String[jsonArrayUniversidades.size()];
+                            longitudes = new String[jsonArrayUniversidades.size()];
 
                             // SE OBTIENEN LOS DATOS DEL JSON
                             for (int i = 0; i < jsonArrayUniversidades.size(); i++) {
@@ -130,15 +164,12 @@ public class LibroInformacion extends AppCompatActivity {
                             }
 
                             // SE INICIALIZA EL LISTVIEW
-                            AdapterListaUniversidades adapter = new AdapterListaUniversidades(this, universidades,
-                                    disponibles, estaDisponible,idLibros,usuario,this,latitudes,
-                                    longitudes,this);
-                            ListView listView = (ListView) findViewById(R.id.libroInformacion_listaUniversidades);
+
                             listView.setScrollContainer(false);
-                            listView.setAdapter(adapter);
-                        }catch (ParseException e){
+                            listView.setAdapter(crearAdapter());
+                        } catch (ParseException e) {
                             e.printStackTrace();
-                        }catch (ClassCastException e1) {
+                        } catch (ClassCastException e1) {
                             try {
                                 // CASO DE QUE TODOS LOS LIBROS ESTÁN DISPONIBLES, NO HAY NINGUNA RESERVA HECHA
                                 JSONObject jsonResultado = (JSONObject) parser.parse(resultado);
@@ -146,31 +177,31 @@ public class LibroInformacion extends AppCompatActivity {
 
                                 // SE INICIALIZAN LOS ARRAYS
                                 universidades = new String[jsonArrayUniversidades.size()];
+                                universidadesEuskera = new String[jsonArrayUniversidades.size()];
                                 disponibles = new String[jsonArrayUniversidades.size()];
                                 estaDisponible = new boolean[jsonArrayUniversidades.size()];
-                                String[] idLibros = new String[jsonArrayUniversidades.size()];
-                                String[] latitudes = new String[jsonArrayUniversidades.size()];
-                                String[] longitudes = new String[jsonArrayUniversidades.size()];
+                                idLibros = new String[jsonArrayUniversidades.size()];
+                                latitudes = new String[jsonArrayUniversidades.size()];
+                                longitudes = new String[jsonArrayUniversidades.size()];
 
                                 // SE OBTIENEN LOS DATOS DEL JSON
                                 for (int i = 0; i < jsonArrayUniversidades.size(); i++) {
                                     JSONObject universidad = (JSONObject) jsonArrayUniversidades.get(i);
 
                                     universidades[i] = (String) universidad.get("nombreCentro");
+                                    universidadesEuskera[i] = (String) universidad.get("nombreCentroEuskera");
                                     disponibles[i] = getResources().getText(R.string.libroInformacion_libroDisponible).toString();
                                     estaDisponible[i] = true;
                                     idLibros[i] = (String) universidad.get("idLibro");
                                     latitudes[i] = (String) universidad.get("latitud");
                                     longitudes[i] = (String) universidad.get("longitud");
 
-                                    // SE INICIALIZA EL LISTVIEW
-                                    AdapterListaUniversidades adapter = new AdapterListaUniversidades(this, universidades,
-                                            disponibles, estaDisponible, idLibros, "ulopez", this,latitudes,
-                                            longitudes,this);
-                                    ListView listView = (ListView) findViewById(R.id.libroInformacion_listaUniversidades);
-                                    listView.setScrollContainer(false);
-                                    listView.setAdapter(adapter);
                                 }
+
+                                // SE INICIALIZA EL LISTVIEW
+                                listView.setScrollContainer(false);
+                                listView.setAdapter(crearAdapter());
+
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -211,13 +242,14 @@ public class LibroInformacion extends AppCompatActivity {
 
     /**
      * Se rellena los TextView con la información del libro
-     * @param editorial: editorial del libro
-     * @param autor: autor del libro
+     *
+     * @param editorial:   editorial del libro
+     * @param autor:       autor del libro
      * @param descripcion: una descripción del libro
-     * @param fecha: fecha de publicación
-     * @param titulo: titulo del libro
+     * @param fecha:       fecha de publicación
+     * @param titulo:      titulo del libro
      */
-    private void rellenarDatosLibro(String editorial,String autor, String descripcion, String fecha,String titulo){
+    private void rellenarDatosLibro(String editorial, String autor, String descripcion, String fecha, String titulo) {
         TextView txtEditorial = (TextView) findViewById(R.id.libroInformacion_editorial);
         txtEditorial.setText(editorial);
         TextView txtAutor = (TextView) findViewById(R.id.libroInformacion_escritor);
@@ -229,5 +261,77 @@ public class LibroInformacion extends AppCompatActivity {
 
         TextView txtTitulo = (TextView) findViewById(R.id.libroInformacion_titulo);
         txtTitulo.setText(titulo);
+    }
+
+    /**
+     * Se comprueba el idioma que tenía la actividad con el de SharedPreferences: si es distinto se
+     * cambia el idioma cerrando y volviendo a iniciar la actividad.
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        String idiomaNuevo = sharedPreferences.getString("idioma", "es");
+
+        if (!idiomaNuevo.equals(idiomaEstablecido)) {
+            idiomaEstablecido = idiomaNuevo;
+            if (idiomaEstablecido.equals("es")) {
+                Locale locale = new Locale("es");
+                cambiarIdiomaOnResume(locale);
+            } else if (idiomaEstablecido.equals("eu")) {
+                Locale locale = new Locale("eu");
+                cambiarIdiomaOnResume(locale);
+            }
+        }
+
+        if(listaCargada){
+            crearAdapter();
+        }
+    }
+
+    /**
+     * Cambia el idioma de la aplicación al reanudarse la actividad. Se destruye la actividad y se
+     * vuelve a iniciar
+     *
+     * @param locale: el idioma almacenado en SharedPreferences
+     */
+    public void cambiarIdiomaOnResume(Locale locale) {
+        Locale.setDefault(locale);
+        Resources res = getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration conf = res.getConfiguration();
+        conf.locale = locale;
+        res.updateConfiguration(conf, dm);
+        recreate();
+    }
+
+    /**
+     * Cambia el idioma de la aplicación al crearse la actividad
+     *
+     * @param locale: el idioma almacenado en SharedPreferences
+     */
+    public void cambiarIdiomaOnCreate(Locale locale) {
+        Locale.setDefault(locale);
+        Resources res = getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration conf = res.getConfiguration();
+        conf.locale = locale;
+        res.updateConfiguration(conf, dm);
+    }
+
+    private AdapterListaUniversidades crearAdapter(){
+        AdapterListaUniversidades adapter = null;
+        if (idiomaEstablecido.equals("es")) {
+            adapter = new AdapterListaUniversidades(this, universidades,
+                    disponibles, estaDisponible, idLibros, usuario, this, latitudes,
+                    longitudes, this);
+        } else {
+            adapter = new AdapterListaUniversidades(this, universidadesEuskera,
+                    disponibles, estaDisponible, idLibros, usuario, this, latitudes,
+                    longitudes, this);
+        }
+        return adapter;
     }
 }

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        android:title="@string/ajustes_usuario"
+        android:key="keyUsuario"
+        android:selectable="false"
+        android:icon="@drawable/ic_ajustes_categoria_usuario">
+
+        <EditTextPreference
+            android:title="@string/ajustes_gmail"
+            android:summary="@string/ajustes_gmail_descripcion"
+            android:icon="@drawable/ic_ajustes_email"
+            android:key="gmail"
+            android:dialogTitle="@string/ajustes_gmail_dialog"/>
+
+        <EditTextPreference
+            android:title="@string/ajustes_contrasena"
+            android:summary="@string/ajustes_contrasena_descripcion"
+            android:icon="@drawable/ic_ajustes_contrasena"
+            android:key="contrasena"
+            android:dialogTitle="@string/ajustes_contrasena_dialog"/>
+
+        <PreferenceScreen
+            android:title="@string/ajustes_fotoPerfil"
+            android:summary="@string/ajustes_fotoPerfil_descripcion"
+            android:key="fotoPerfil"
+            android:icon="@drawable/ic_ajustes_camara"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/ajustes_aplicacion"
+        android:selectable="false"
+        android:icon="@drawable/ic_ajustes_categoria_bihar">
+        <ListPreference
+            android:title="@string/ajustes_idioma"
+            android:key="idioma"
+            android:summary="@string/ajustes_idioma_descripcion"
+            android:icon="@drawable/ic_ajustes_idioma"
+            android:entries="@array/idioma"
+            android:entryValues="@array/idiomaValores"
+            android:dialogTitle="@string/ajustes_idioma_descripcion"/>
+
+        <PreferenceScreen
+            android:title="@string/ajustes_web"
+            android:key="portalWeb"
+            android:summary="@string/ajustes_web_descripcion"
+            android:icon="@drawable/ic_ajustes_web"/>
+
+        <SwitchPreference
+            android:title="@string/ajustes_notificacion"
+            android:summary="@string/ajustes_notificacion_descripcion"
+            android:key="notificacion"
+            android:icon="@drawable/ic_ajustes_notificacion"/>
+    </PreferenceCategory>
+
+
+
+</PreferenceScreen>

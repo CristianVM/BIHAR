@@ -2,9 +2,13 @@ package com.example.bihar.view.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.DisplayMetrics;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,18 +31,37 @@ import com.example.bihar.controller.GestorUsuario;
 import com.example.bihar.model.CardOpcion;
 import com.example.bihar.model.ListaOpcionesMenu;
 
+import java.util.Locale;
+
 public class MenuPrincipal extends AppCompatActivity {
 
     private static final int TIEMPO_ANIMACION_MS = 1250;
 
     RecyclerView recyclerView;
+    private String idiomaEstablecido;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        idiomaEstablecido = prefs.getString("idioma","es");
+        if(idiomaEstablecido.equals("es")){
+            Locale locale = new Locale("es");
+            cambiarIdiomaOnCreate(locale);
+        }else if(idiomaEstablecido.equals("eu")){
+            Locale locale = new Locale("eu");
+            cambiarIdiomaOnCreate(locale);
+        }
+
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean("iniciado",true);
+        editor.apply();
+
         setContentView(R.layout.activity_menuprincipal);
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         boolean esAlumno = prefs.getBoolean("esAlumno",false);
         CardOpcion[] opciones = null;
         if(esAlumno) {
@@ -174,6 +197,58 @@ public class MenuPrincipal extends AppCompatActivity {
         }
     }
 
+
+    /**
+     * Se comprueba el idioma que tenía la actividad con el de SharedPreferences: si es distinto se
+     * cambia el idioma cerrando y volviendo a iniciar la actividad.
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        String idiomaNuevo = sharedPreferences.getString("idioma","es");
+
+        if(!idiomaNuevo.equals(idiomaEstablecido)){
+            idiomaEstablecido = idiomaNuevo;
+            if(idiomaEstablecido.equals("es")){
+                Locale locale = new Locale("es");
+                cambiarIdiomaOnResume(locale);
+            }else if(idiomaEstablecido.equals("eu")){
+                Locale locale = new Locale("eu");
+                cambiarIdiomaOnResume(locale);
+            }
+        }
+    }
+
+    /**
+     * Cambia el idioma de la aplicación al reanudarse la actividad. Se destruye la actividad y se
+     * vuelve a iniciar
+     * @param locale: el idioma almacenado en SharedPreferences
+     */
+    public void cambiarIdiomaOnResume(Locale locale){
+        Locale.setDefault(locale);
+        Resources res = getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration conf = res.getConfiguration();
+        conf.locale = locale;
+        res.updateConfiguration(conf, dm);
+        recreate();
+    }
+
+    /**
+     * Cambia el idioma de la aplicación al crearse la actividad
+     * @param locale: el idioma almacenado en SharedPreferences
+     */
+    public void cambiarIdiomaOnCreate(Locale locale){
+        Locale.setDefault(locale);
+        Resources res = getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration conf = res.getConfiguration();
+        conf.locale = locale;
+        res.updateConfiguration(conf, dm);
+    }
 
 }
 

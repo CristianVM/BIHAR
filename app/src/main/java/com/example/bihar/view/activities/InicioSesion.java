@@ -2,9 +2,12 @@ package com.example.bihar.view.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -28,21 +31,36 @@ import com.example.bihar.R;
 import com.example.bihar.controller.GestorUsuario;
 import com.example.bihar.controller.WorkerBihar;
 import com.example.bihar.model.Usuario;
+import com.example.bihar.view.fragments.ToolBar;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import java.io.File;
+import java.util.Locale;
 
 public class InicioSesion extends AppCompatActivity {
+
+    private String idiomaEstablecido;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        if (prefs.contains("nombreUsuario")) {
+
+        idiomaEstablecido = prefs.getString("idioma","es");
+        if(idiomaEstablecido.equals("es")){
+            Locale locale = new Locale("es");
+            cambiarIdiomaOnCreate(locale);
+        }else if(idiomaEstablecido.equals("eu")){
+            Locale locale = new Locale("eu");
+            cambiarIdiomaOnCreate(locale);
+        }
+        prefs.getBoolean("notificacion",true);
+
+        if(prefs.contains("nombreUsuario")) {
             setContentView(R.layout.inicio_sesion_usuario);
             ImageView login2ImageUsuario = findViewById(R.id.login2ImageUsuario);
 
@@ -77,6 +95,7 @@ public class InicioSesion extends AppCompatActivity {
 
         ProgressBar loginProgressBar = findViewById(R.id.loginProgressBar);
         loginProgressBar.setVisibility(View.INVISIBLE);
+
     }
 
     public void iniciarSesion(View v) {
@@ -309,5 +328,65 @@ public class InicioSesion extends AppCompatActivity {
 
         Button login1BotonEntrar = findViewById(R.id.loginBotonEntrar);
         login1BotonEntrar.setClickable(true);
+    }
+
+    /**
+     * Se comprueba el idioma que tenía la actividad con el de SharedPreferences: si es distinto se
+     * cambia el idioma cerrando y volviendo a iniciar la actividad.
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String idiomaNuevo = sharedPreferences.getString("idioma","es");
+        if(!idiomaNuevo.equals(idiomaEstablecido)){
+            idiomaEstablecido = idiomaNuevo;
+            if(idiomaEstablecido.equals("es")){
+                Locale locale = new Locale("es");
+                cambiarIdiomaOnResume(locale);
+            }else if(idiomaEstablecido.equals("eu")){
+                Locale locale = new Locale("eu");
+                cambiarIdiomaOnResume(locale);
+            }
+        }
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("iniciado",false);
+
+        if(sharedPreferences.getBoolean("imagenCambiada",false)){
+            editor.putBoolean("imagenCambiada",false);
+            recreate();
+        }
+
+        editor.apply();
+    }
+
+    /**
+     * Cambia el idioma de la aplicación al reanudarse la actividad. Se destruye la actividad y se
+     * vuelve a iniciar
+     * @param locale: el idioma almacenado en SharedPreferences
+     */
+    public void cambiarIdiomaOnResume(Locale locale){
+        Locale.setDefault(locale);
+        Resources res = getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration conf = res.getConfiguration();
+        conf.locale = locale;
+        res.updateConfiguration(conf, dm);
+        recreate();
+    }
+
+    /**
+     * Cambia el idioma de la aplicación al crearse la actividad
+     * @param locale: el idioma almacenado en SharedPreferences
+     */
+    public void cambiarIdiomaOnCreate(Locale locale){
+        Locale.setDefault(locale);
+        Resources res = getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration conf = res.getConfiguration();
+        conf.locale = locale;
+        res.updateConfiguration(conf, dm);
     }
 }

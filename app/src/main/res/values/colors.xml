@@ -10,4 +10,5 @@
     <color name="negro">#000000</color>
     <color name="verdeDisponible">#05ec28</color>
     <color name="carne">#fdddca</color>
+    <color name="desplegableLibroInformacion">#ecf8ee</color>
 </resources>

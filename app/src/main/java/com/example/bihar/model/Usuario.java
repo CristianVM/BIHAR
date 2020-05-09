@@ -9,6 +9,7 @@ public class Usuario {
     private String idUsuario;
     private String email;
     private String gmail;
+    private String foto64;
     private float notaMedia;
     private float numCreditos;
     private HashMap<Integer, List<Asignatura>> asignaturas_por_curso;
@@ -23,6 +24,10 @@ public class Usuario {
 
     public void setGmail(String pGmail){
         gmail = pGmail;
+    }
+
+    public void setFoto64(String foto64){
+        this.foto64 = foto64;
     }
 
     public void anadirAsignatura(Asignatura asignatura){

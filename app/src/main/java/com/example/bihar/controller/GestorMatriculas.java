@@ -52,6 +52,11 @@ public class GestorMatriculas {
         }
     }
 
+    /**
+     * Se obtiene todas las matriculas realizadas de la persona
+     * @param idPersona: id de la persona
+     * @return: todas las matriculas
+     */
     public MatriculaAnios getMatriculas(String idPersona){
         return matriculasPorUsuario.get(idPersona);
     }

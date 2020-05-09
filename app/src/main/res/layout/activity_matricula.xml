@@ -8,7 +8,7 @@
     android:orientation="vertical">
 
     <fragment
-        android:id="@+id/frgmt_toolbar"
+        android:id="@+id/frgmt_toolbarMatricula"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:name="com.example.bihar.view.fragments.ToolBar"
@@ -69,8 +69,8 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="15dp">
+        android:padding="15dp"
+        android:gravity="center_vertical">
         <ListView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

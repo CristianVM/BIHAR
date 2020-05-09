@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".view.activities.LibroInformacion"
-    android:fillViewport="true">
+    android:orientation="vertical">
+
+    <fragment
+        android:id="@+id/frgmt_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:name="com.example.bihar.view.fragments.ToolBar"
+        tools:layout="@layout/fragment_toolbar"
+        android:layout_marginBottom="15dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
-        <fragment
-            android:id="@+id/frgmt_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:name="com.example.bihar.view.fragments.ToolBar"
-            tools:layout="@layout/fragment_toolbar"
-            android:layout_marginBottom="15dp"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -75,13 +75,14 @@
         <!-- ################### INFORMACION DEL LIBRO DESPLEGABLE ##############-->
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:id="@+id/libroInformacion_linearLayoutContenidoInfo"
             android:visibility="gone"
             android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp">
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/desplegable_libroinformacion">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -202,16 +203,18 @@
             android:visibility="gone"
             android:id="@+id/libroInformacion_layoutListaUniversidades"
             android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp">
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/desplegable_libroinformacion">
             <ListView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/libroInformacion_listaUniversidades"
-                android:layout_marginTop="10dp"/>
+                android:layout_margin="10dp"/>
         </RelativeLayout>
 
         <Space
             android:layout_width="wrap_content"
             android:layout_height="20dp"/>
     </LinearLayout>
-</ScrollView>
+
+</LinearLayout>

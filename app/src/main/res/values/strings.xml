@@ -15,6 +15,7 @@
     <string name="matricula_texto_anioMatricula">"Año de matrícula: "</string>
     <string name="dialog_matricaTxtSelectAnio">Seleccione el año de la matrícula</string>
     <string name="matricula_notaNP">NP</string>
+    <string name="matricula">MATRICULA</string>
 
     <!-- LOGIN -->
     <string name="login_usuario">Usuario</string>
@@ -49,7 +50,7 @@
     <string name="libroInformacion_reservaFallo">Error al reservar el libro</string>
     <string name="title_activity_maps_universidad">Map</string>
     <string name="libroInformacion_explPermiso">Necesario el permiso para ver la localización</string>
-    <string name="biblioteca">Biblioteca</string>
+    <string name="biblioteca">BIBLIOTECA</string>
 
 
     <!--TUTORIAS -->
@@ -88,6 +89,35 @@
     <string name="horario_diaViernes">Viernes</string>
     <string name="lista_horario_horaInicio">Hora inicio</string>
     <string name="lista_horario_horaFin">Hora fin</string>
+    <string name="horario">HORARIO</string>
+
+
+    <!--  AJUSTES -->
+    <string name="ajustes_usuario">USUARIO</string>
+    <string name="ajustes_aplicacion">BIHAR</string>
+    <string name="ajustes_idioma">Idioma</string>
+    <string name="ajustes_idioma_descripcion">Elija el idioma de la descripción</string>
+    <string name="ajustes_idioma_castellano">Español</string>
+    <string name="ajustes_idioma_euskera">Euskera</string>
+    <string name="ajustes_web">Portal Web UPV - EHU</string>
+    <string name="ajustes_web_descripcion">Accede a la web de UPV-EHU</string>
+    <string name="ajustes_gmail">Otro correo electrónico</string>
+    <string name="ajustes_gmail_descripcion">Vincula otra cuenta de correo electrónico</string>
+    <string name="ajustes_emailError">Introduzca un correo electrónico correcto</string>
+    <string name="ajustes_emailVacio">Campo vacío</string>
+    <string name="ajustes_contrasena">Cambiar contraseña</string>
+    <string name="ajustes_contrasena_descripcion">Cambias la contraseña por una nueva</string>
+    <string name="ajustes_gmail_dialog">Escriba el correo electrónico</string>
+    <string name="ajustes_contrasena_dialog">Escriba una nueva contraseña</string>
+    <string name="ajustes_fotoPerfil">Cambiar foto perfil</string>
+    <string name="ajustes_fotoPerfil_descripcion">Cambias la foto de perfil por otro</string>
+    <string name="ajustes_notificacion_descripcion">Activar o desactivar notificaciones</string>
+    <string name="ajustes_notificacion">Notificaciones</string>
+    <string name="dialog_foto_eleccion">Elija desde donde quieres obtener la foto</string>
+    <string name="dialog_foto_capturar">Capturar foto</string>
+    <string name="dialog_foto_galeria">Galeria</string>
+    <string name="dialog_foto_cancelar">Cancelar</string>
+    <string name="dialog_foto_seleccionar">Seleccione un método</string>
 
     <!-- ASIGNATURAS-->
     <string name="asignaturas_curso">Curso: %s</string>

@@ -22,6 +22,15 @@ public class AdapterListaHorarios extends BaseAdapter {
     private LayoutInflater layoutInflater;
 
 
+    /**
+     * Constructor del adapter del adapter de los horarios
+     * @param nombresAsignaturas: nombres de las aignaturas
+     * @param hInicios: horas iniciales
+     * @param hFinales: horas finales
+     * @param diasSemanas: dias de la semana (Lunes, martes, miercoles...)
+     * @param semanas: semanas
+     * @param context: el contexto
+     */
     public AdapterListaHorarios(ArrayList<String> nombresAsignaturas, ArrayList<String> hInicios, ArrayList<String> hFinales,
                                 ArrayList<String> diasSemanas, ArrayList<String> semanas, Context context) {
         this.nombresAsignaturas = nombresAsignaturas;
@@ -33,21 +42,42 @@ public class AdapterListaHorarios extends BaseAdapter {
         this.layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
+    /**
+     * Devuelve el número de asignatura que hay
+     * @return número de asignatura
+     */
     @Override
     public int getCount() {
         return nombresAsignaturas.size();
     }
 
+    /**
+     * Devuelve el objeto de la posición i
+     * @param i: la posición de la lista
+     * @return: el objeto
+     */
     @Override
     public Object getItem(int i) {
         return nombresAsignaturas.get(i);
     }
 
+    /**
+     * Devuelve el identificador
+     * @param i: identificador
+     * @return: id
+     */
     @Override
     public long getItemId(int i) {
         return i;
     }
 
+    /**
+     * Devuelve el listView personalizado habiendole asignado valores
+     * @param i: posición
+     * @param view: la vista
+     * @param viewGroup
+     * @return
+     */
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         view = layoutInflater.inflate(R.layout.lista_horarios,null);

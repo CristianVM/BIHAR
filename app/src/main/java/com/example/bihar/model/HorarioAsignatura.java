@@ -73,7 +73,7 @@ public class HorarioAsignatura {
      * Autor: http://stackoverflow.com/users/2306915/azuneca
      *
      * @param diaSemana: dia de la semana. 0 es Lunes, 1 Martes...
-     * @param semana:    la fecha de la semana
+     * @param semana: la fecha de la semana
      */
     private void procesarDiaClase(String diaSemana, String semana) {
 

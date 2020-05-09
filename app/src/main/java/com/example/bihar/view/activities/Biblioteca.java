@@ -109,10 +109,7 @@ public class Biblioteca extends AppCompatActivity implements DialogFiltradoLibro
             public boolean onQueryTextChange(String newText) {
                 limpiarArrayLists();
                 List<String> filtradoLibros = GestorLibros.getGestorLibros().buscarLibro(newText);
-                actualizarListadoLibros(filtradoLibros);
-                if(adapterListaLibros !=null){
-                    adapterListaLibros.notifyDataSetChanged();
-                }
+                listView.setAdapter(actualizarListadoLibros(filtradoLibros));
                 return false;
             }
         });
@@ -223,20 +220,24 @@ public class Biblioteca extends AppCompatActivity implements DialogFiltradoLibro
         titulares.clear();
         fechas.clear();
         imagenes.clear();
+        idLibros.clear();
     }
 
     /**
      * Rellena los ArrayList para el ListView con los libros recogidos.
      * @param listaFiltrada: Lista de ids de los libros
      */
-    private void actualizarListadoLibros(List<String> listaFiltrada){
+    private AdapterListaLibros actualizarListadoLibros(List<String> listaFiltrada){
         for(String id: listaFiltrada){
             Libro libro = GestorLibros.getGestorLibros().getInfoLibro(id);
+            Log.i("BIBLIO",libro.getTitulo());
             autores.add(libro.getAutor());
             titulares.add(libro.getTitulo());
             fechas.add(libro.getFecha());
             imagenes.add(R.drawable.ic_laptop_black_24dp);
+            idLibros.add(id);
         }
+        return new AdapterListaLibros(this, imagenes, autores, titulares, fechas);
     }
 
     @Override

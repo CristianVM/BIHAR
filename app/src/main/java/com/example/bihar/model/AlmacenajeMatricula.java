@@ -1,6 +1,9 @@
 package com.example.bihar.model;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+
+import androidx.preference.PreferenceManager;
 
 import com.example.bihar.R;
 
@@ -11,6 +14,7 @@ import java.util.ArrayList;
 public class AlmacenajeMatricula {
 
     public ArrayList<String> asignaturaNombres;
+    public ArrayList<String> asignaturasNombresEuskera;
     public ArrayList<String> asignaturaCursos;
     public ArrayList<String> asignaturasConvocatorias;
     public ArrayList<String> asignaturasOrdinarias;
@@ -18,7 +22,7 @@ public class AlmacenajeMatricula {
     public Context context;
 
     /**
-     * Constructor de AlmacenajeDatos
+     * Constructor de AlmacenajeDatos. Se almacenan las matriculas con sus asignaturas y las notas
      */
     public AlmacenajeMatricula(Context context) {
         asignaturaNombres = new ArrayList<>();
@@ -26,16 +30,17 @@ public class AlmacenajeMatricula {
         asignaturasConvocatorias = new ArrayList<>();
         asignaturasExtraordinarias = new ArrayList<>();
         asignaturasOrdinarias = new ArrayList<>();
+        asignaturasNombresEuskera = new ArrayList<>();
         this.context = context;
     }
 
     /**
      * Se almacenan en las listas el nombre, el curso, la convocatoria y las notas de la asignatura
-     *
      * @param jsonDato: el json con los datos de la asignatura
      */
     public void setDato(JSONObject jsonDato) {
         asignaturaNombres.add((String) jsonDato.get("nombreAsignatura"));
+        asignaturasNombresEuskera.add((String) jsonDato.get("nombreAsignaturaEuskera"));
         asignaturaCursos.add((String) jsonDato.get("curso"));
         asignaturasConvocatorias.add((String) jsonDato.get("convocatoria"));
 
@@ -46,8 +51,8 @@ public class AlmacenajeMatricula {
 
     /**
      * Con los datos obtenidos del json se añade la nota obtenida o un no presentado o aún no ha
-     * realizado el examen
-     *
+     * realizado el examen. Si la nota es "-1" entonces no se ha realizado el examen aún. SI es "-2"
+     * entonces tendrá un no presentado
      * @param notaOrd:    nota obtenida en la convocatoria ordinaria
      * @param notaExtrad: nota obtenida en la convocatoria extraordinaria
      */

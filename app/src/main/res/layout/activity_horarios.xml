@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,13 +7,11 @@
     android:orientation="vertical">
 
     <fragment
-        android:id="@+id/frgmt_toolbar"
+        android:id="@+id/frgmt_toolbarhorario"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:name="com.example.bihar.view.fragments.ToolBar"
         tools:layout="@layout/fragment_toolbar"/>
-
-
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -31,7 +28,6 @@
             android:background="@color/verde"
             android:src="@drawable/ic_biflecha_izquierda"/>
 
-
         <ImageView
             android:id="@+id/horarios_uniflechaIzq"
             android:layout_width="50dp"
@@ -39,14 +35,12 @@
             android:src="@drawable/ic_uniflecha_izquierda"
             android:background="@color/verde"/>
 
-
         <TextView
             android:id="@+id/horario_diaSemana"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:textColor="@color/blanco"
             android:textSize="15sp"
-            tools:text="14-06-2020"
             android:textStyle="bold"
             android:background="@color/verde"
             android:gravity="center"/>
@@ -58,20 +52,13 @@
             android:id="@+id/horarios_uniflechaDer"
             android:background="@color/verde"/>
 
-
         <ImageView
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:src="@drawable/ic_biflecha_derecha"
             android:background="@color/verde"
             android:id="@+id/horarios_biflechaDer"/>
-
-
-
     </LinearLayout>
-
-
-
 
     <ListView
         android:layout_width="match_parent"

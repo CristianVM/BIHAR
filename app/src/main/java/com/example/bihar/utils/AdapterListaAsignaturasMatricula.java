@@ -21,6 +21,15 @@ public class AdapterListaAsignaturasMatricula extends BaseAdapter {
     private ArrayList<String> notasOrdinarias;
     private ArrayList<String> notasExtraordinarias;
 
+    /**
+     * Constructor del adapter del adapter de las asignaturas de la sección de Matrícula
+     * @param context: el contexto de la aplicación
+     * @param asignaturas: nombres de las asignaturas
+     * @param cursos: cursos
+     * @param convocatorias: convocatorias realizadas
+     * @param notasExtraordinarias: notas extraordinarias
+     * @param notasOrdinarias: notas ordinarias
+     */
     public AdapterListaAsignaturasMatricula(Context context, ArrayList<String> asignaturas, ArrayList<String> cursos,
           ArrayList<String> convocatorias, ArrayList<String> notasExtraordinarias,ArrayList<String> notasOrdinarias){
 
@@ -33,21 +42,42 @@ public class AdapterListaAsignaturasMatricula extends BaseAdapter {
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
+    /**
+     * Devuelve el número de asignaturas de la matrícula
+     * @return número de asignaturas
+     */
     @Override
     public int getCount() {
         return asignaturas.size();
     }
 
+    /**
+     * Devuelve el objeto de la posición i
+     * @param i: la posición de la lista
+     * @return: el objeto
+     */
     @Override
     public Object getItem(int i) {
         return asignaturas.get(i);
     }
 
+    /**
+     * Devuelve el identificador
+     * @param i: identificador
+     * @return: id
+     */
     @Override
     public long getItemId(int i) {
         return i;
     }
 
+    /**
+     * Devuelve el listView personalizado habiendole asignado valores
+     * @param i: posición
+     * @param view: la vista
+     * @param viewGroup
+     * @return
+     */
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         view = inflater.inflate(R.layout.lista_matriculas, null);

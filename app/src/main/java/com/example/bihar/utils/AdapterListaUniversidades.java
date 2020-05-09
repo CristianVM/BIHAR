@@ -47,6 +47,19 @@ public class AdapterListaUniversidades extends BaseAdapter {
     private String[] longitudes;
     private Activity activity;
 
+    /**
+     * Constructor del adapter que muestra las universidades donde está el libro
+     * @param context: el contexto
+     * @param universidades: los nombres de las universidades
+     * @param disponibilidades: las fechas si no estan disponible
+     * @param estanDisponibles: si están disponible o no los libros
+     * @param idLibros: id de los libros
+     * @param idPersona: id de la persona
+     * @param lifecycleOwner: el lifecycler
+     * @param latitudes: las latitudes de la universidades
+     * @param longitudes: las longitudes de las universidades
+     * @param activity: la actividad
+     */
     public AdapterListaUniversidades(Context context, String[] universidades, String[] disponibilidades,
                                      boolean[] estanDisponibles, String[] idLibros, String idPersona,
                                      LifecycleOwner lifecycleOwner, String[] latitudes, String[] longitudes,
@@ -64,21 +77,42 @@ public class AdapterListaUniversidades extends BaseAdapter {
         this.activity = activity;
     }
 
+    /**
+     * Devuelve el número de universidades que hay
+     * @return: número de universidades
+     */
     @Override
     public int getCount() {
         return universidades.length;
     }
 
+    /**
+     * Devuelve el objeto de la posición i
+     * @param i: la posición de la lista
+     * @return: el objeto
+     */
     @Override
     public Object getItem(int i) {
         return universidades[i];
     }
 
+    /**
+     * Devuelve el identificador
+     * @param i: identificador
+     * @return: id
+     */
     @Override
     public long getItemId(int i) {
         return i;
     }
 
+    /**
+     * Devuelve el listView personalizado habiendole asignado valores
+     * @param i: posición
+     * @param view: la vista
+     * @param viewGroup
+     * @return
+     */
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         view = layoutInflater.inflate(R.layout.lista_universidades_libro, null);
@@ -91,16 +125,19 @@ public class AdapterListaUniversidades extends BaseAdapter {
 
         txtUni.setText(universidades[i]);
 
+        // SI ESTÁ DISPONIBLE
         if (estanDisponibles[i]) {
             imageView.setImageResource(R.drawable.ic_libro_disponible);
             txtDisponible.setTextColor(context.getResources().getColor(R.color.verdeDisponible));
         } else {
+            // SI NO ESTÁ DISPONIBLE
             imageView.setImageResource(R.drawable.ic_libro_nodisponible);
             txtDisponible.setTextColor(Color.RED);
             btnReserva.setEnabled(false);
         }
         txtDisponible.setText(disponibilidades[i]);
 
+        // LISTENER AL PULSAR EL BOTON DE LOCALIZACION DE LA UNI
         btnLocalizacion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -108,6 +145,7 @@ public class AdapterListaUniversidades extends BaseAdapter {
             }
         });
 
+        // LISTENER AL PULSAR EL BOTON DE RESERVAR EL LIBRO
         btnReserva.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -118,7 +156,17 @@ public class AdapterListaUniversidades extends BaseAdapter {
         return view;
     }
 
+    /**
+     * Se reserva el libro en cuestión en la universidad indicada. Si se ha podido realizar la reserva
+     * entonces ese libro queda reservado y no se puede reservar hasta que se quede libre
+     * @param i: la posicion del libro en el la lista
+     * @param imageView: el imageview
+     * @param txtDisponible: el textview de disponible
+     * @param btnReserva: el boton de reservar
+     */
     private void realizarReserva(int i, ImageView imageView, TextView txtDisponible, Button btnReserva) {
+
+        // SE LANZA LA PETICION A LA BASE DE DATOS
         Map<String, String> map = new HashMap<>();
         map.put("accion", "reservarLibro");
         map.put("idLibro", idLibros[i]);
@@ -143,6 +191,7 @@ public class AdapterListaUniversidades extends BaseAdapter {
                         String resultado = status.getOutputData().getString("result");
 
                         if (!resultado.equals("NO")) {
+                            // SI NO HAY ERRORES, EL LIBRO QUEDA RESERVADO
                             imageView.setImageResource(R.drawable.ic_libro_nodisponible);
                             txtDisponible.setTextColor(Color.RED);
                             btnReserva.setEnabled(false);
@@ -152,6 +201,7 @@ public class AdapterListaUniversidades extends BaseAdapter {
                             Toast.makeText(context.getApplicationContext(),
                                     context.getResources().getString(R.string.libroInformacion_reservaRealizada), Toast.LENGTH_SHORT).show();
                         } else {
+                            //HA HABIDO ALGUN ERROR
                             Toast.makeText(context.getApplicationContext(),
                                     context.getResources().getString(R.string.libroInformacion_reservaFallo), Toast.LENGTH_SHORT).show();
                         }
@@ -159,6 +209,11 @@ public class AdapterListaUniversidades extends BaseAdapter {
                 });
     }
 
+    /**
+     * Al pulsar el botón de 'Localización' se podrá ver la localización de la universidad gracias a
+     * Google Maps
+     * @param pos: la posición
+     */
     private void verLocalizacion(int pos){
         if(comprobarPermisos()){
             Intent i = new Intent(context, MapsUniversidad.class);
@@ -182,12 +237,6 @@ public class AdapterListaUniversidades extends BaseAdapter {
             if (ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.ACCESS_FINE_LOCATION)){
                 Toast.makeText(activity.getApplicationContext(),
                         context.getResources().getString(R.string.libroInformacion_explPermiso),Toast.LENGTH_LONG).show();
-            } else {
-                /*Intent i = new Intent();
-                i.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                Uri uri = Uri.fromParts("package", activity.getPackageName(), null);
-                i.setData(uri);
-                activity.startActivity(i);*/
             }
             ActivityCompat.requestPermissions(activity, new String[]
                     {Manifest.permission.ACCESS_FINE_LOCATION}, 200);

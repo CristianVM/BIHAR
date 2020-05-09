@@ -1,5 +1,6 @@
 package com.example.bihar.view.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,8 +8,12 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.bihar.R;
+import com.example.bihar.view.activities.Ajustes;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 /**
@@ -17,6 +22,8 @@ import com.example.bihar.R;
  * create an instance of this fragment.
  */
 public class ToolBar extends Fragment {
+
+    private TextView txtTitulo;
 
     public ToolBar() {
         // Required empty public constructor
@@ -32,6 +39,20 @@ public class ToolBar extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_toolbar, container, false);
+        View view =  inflater.inflate(R.layout.fragment_toolbar, container, false);
+
+        CircleImageView ajustes = view.findViewById(R.id.imgAjustesToolbar);
+        txtTitulo = view.findViewById(R.id.textView);
+
+        ajustes.setOnClickListener( vista -> {
+            Intent i = new Intent(getActivity(), Ajustes.class);
+            startActivity(i);
+        });
+
+        return view;
+    }
+
+    public void cambiarTituloToolbar(String titulo){
+        txtTitulo.setText(titulo);
     }
 }
