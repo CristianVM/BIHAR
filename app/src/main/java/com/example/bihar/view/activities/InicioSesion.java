@@ -98,6 +98,8 @@ public class InicioSesion extends AppCompatActivity {
 
     }
 
+
+
     public void iniciarSesion(View v) {
         EditText login1EditUsuario = findViewById(R.id.login1EditUsuario);
         EditText loginEditPassword = findViewById(R.id.loginEditPassword);
@@ -354,12 +356,16 @@ public class InicioSesion extends AppCompatActivity {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean("iniciado",false);
 
+
         if(sharedPreferences.getBoolean("imagenCambiada",false)){
             editor.putBoolean("imagenCambiada",false);
-            recreate();
+            finish();
+            startActivity(getIntent());
         }
 
         editor.apply();
+
+
     }
 
     /**

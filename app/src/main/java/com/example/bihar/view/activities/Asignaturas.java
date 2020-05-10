@@ -43,9 +43,6 @@ public class Asignaturas extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_asignaturas);
 
-        //TODO: QUITAR
-        GestorUsuario.getGestorUsuario().setUsuario(new Usuario("837448","i@i.com"));
-
         expandableListView = findViewById(R.id.asignaturasExpandableListView);
 
         /*

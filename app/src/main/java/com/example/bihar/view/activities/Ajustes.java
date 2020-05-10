@@ -12,6 +12,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.work.Constraints;
@@ -21,7 +22,15 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
 import com.example.bihar.R;
+import com.example.bihar.controller.GestorUsuario;
 import com.example.bihar.controller.WorkerBihar;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 import org.json.simple.JSONObject;
 
@@ -118,16 +127,11 @@ public class Ajustes extends AppCompatActivity {
             switch (requestCode){
                 case 80:
                     // FOTO DE LA GALERIA
-                    try{
-                        Uri miPath  = data.getData();
-                        insertImageBD(true,miPath.toString());
-                    }catch(Exception e){
-                        Toast.makeText(getApplicationContext(),"ERROR",Toast.LENGTH_LONG).show();
-                    }
+
                     break;
                 case 81:
                     //FOTO DE LA CAMARA
-                    String path = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("path","");
+                    /*String path = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("path","");
                     MediaScannerConnection.scanFile(this, new String[]{path}, null,
                             new MediaScannerConnection.OnScanCompletedListener() {
                                 @Override
@@ -135,103 +139,11 @@ public class Ajustes extends AppCompatActivity {
                                     Log.i("Ruta almacenamiento","Path:"+path);
                                 }
                             });
-                    insertImageBD(false,path);
+                    insertImageBD(false,path);*/
                     break;
             }
         }
     }
 
-    /**
-     * Se inserta la imagen en la BD remota dependiendo de si es desde la galeria o desde la cámara.
-     */
-    private void insertImageBD(boolean esGaleria,String path){
 
-        // SE MANDA LA IMAGEN A LA BASE DE DATOS GRACIAS AL WORKER
-        Map<String,String> map = new HashMap<>();
-        map.put("idPersona","835334");
-        map.put("path",path);
-        map.put("accion","insertarFotoPerfil");
-        if(esGaleria){
-            map.put("esGaleria","true");
-        }else{
-            map.put("esGaleria","false");
-        }
-
-        JSONObject json = new JSONObject(map);
-
-        Data.Builder data = new Data.Builder();
-        data.putString("datos",json.toString());
-
-        Constraints restricciones = new Constraints.Builder()
-                .setRequiredNetworkType(NetworkType.CONNECTED)
-                .build();
-        OneTimeWorkRequest trabajo = new OneTimeWorkRequest.Builder(WorkerBihar.class)
-                .setConstraints(restricciones)
-                .setInputData(data.build())
-                .build();
-        WorkManager.getInstance(this).enqueue(trabajo);
-
-        WorkManager.getInstance(this)
-                .getWorkInfoByIdLiveData(trabajo.getId())
-                .observe(this, workInfo -> {
-                    if (workInfo != null && workInfo.getState().isFinished()) {
-                        String resultado = workInfo.getOutputData().getString("result");
-
-                        if(resultado.equals("Ok")){
-                            obtenerImagenUsuario();
-                        }else{
-                            Toast.makeText(getApplicationContext(),"ERROR",Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-    }
-
-    private void obtenerImagenUsuario() {
-        SharedPreferences prefs = android.preference.PreferenceManager.getDefaultSharedPreferences(this);
-        String idUsuario = prefs.getString("idUsuario", "");
-
-        JSONObject parametrosJSON = new JSONObject();
-        parametrosJSON.put("accion", "obtenerImagen");
-        parametrosJSON.put("idUsuario", idUsuario);
-
-        Data datos = new Data.Builder()
-                .putString("datos", parametrosJSON.toJSONString())
-                .build();
-
-        Constraints restricciones = new Constraints.Builder()
-                .setRequiredNetworkType(NetworkType.CONNECTED)
-                .build();
-
-        OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(WorkerBihar.class)
-                .setConstraints(restricciones)
-                .setInputData(datos)
-                .build();
-
-        WorkManager.getInstance(this)
-                .getWorkInfoByIdLiveData(otwr.getId())
-                .observe(this, workInfo -> {
-                    if (workInfo != null && workInfo.getState().isFinished()) {
-                        try {
-                            String resultado = workInfo.getOutputData().getString("result");
-                            // Si se ha obtenido la imagen correctamente
-                            if (resultado.equals("OK")) {
-                                Log.i("MY-APP", "IMAGEN USUARIO OBTENIDA");
-                                SharedPreferences.Editor editor = prefs.edit();
-                                editor.putBoolean("imagenCambiada",true);
-                                editor.apply();
-                            } else {
-                                Log.i("MY-APP", "IMAGEN USUARIO NO OBTENIDA");
-                                File file = new File(getApplicationContext().getFilesDir(), idUsuario + ".png");
-                                file.delete();
-                            }
-                            // Si salta algun error
-                        } catch (Exception e) {
-                            Toast.makeText(getApplicationContext(), R.string.error_general, Toast.LENGTH_LONG).show();
-                            e.printStackTrace();
-                        }
-                    }
-                });
-
-        WorkManager.getInstance(this).enqueue(otwr);
-    }
 }

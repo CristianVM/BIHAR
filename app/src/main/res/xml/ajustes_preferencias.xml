@@ -8,7 +8,7 @@
         android:selectable="false"
         android:icon="@drawable/ic_ajustes_categoria_usuario">
 
-        <EditTextPreference
+        <Preference
             android:title="@string/ajustes_gmail"
             android:summary="@string/ajustes_gmail_descripcion"
             android:icon="@drawable/ic_ajustes_email"

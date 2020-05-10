@@ -118,6 +118,7 @@
     <string name="dialog_foto_galeria">Galeria</string>
     <string name="dialog_foto_cancelar">Cancelar</string>
     <string name="dialog_foto_seleccionar">Seleccione un método</string>
+    <string name="avisoImagen">Imagen cambiada</string>
 
     <!-- ASIGNATURAS-->
     <string name="asignaturas_curso">Curso: %s</string>
