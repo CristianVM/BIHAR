@@ -85,15 +85,11 @@ public class AjustesPreferencias extends PreferenceFragmentCompat implements Sha
             String gmail = GestorUsuario.getGestorUsuario().getUsuario().getGmail();
             if (gmail != null && !gmail.isEmpty()) {
                 editTextPreference.setSummary(gmail);
-            } else {
-                editTextPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                    @Override
-                    public boolean onPreferenceClick(Preference preference) {
-                        inicioSesionGoogle();
-                        return true;
-                    }
-                });
             }
+            editTextPreference.setOnPreferenceClickListener(preference -> {
+                inicioSesionGoogle();
+                return true;
+            });
         }
 
     }
