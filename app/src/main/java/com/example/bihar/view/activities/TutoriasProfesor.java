@@ -218,6 +218,14 @@ class MiListAdapter extends BaseAdapter{
         map.put("idPersona", GestorReservas.getGestorReservas().getIdPersona(position));
         map.put("idTutoria", String.valueOf(GestorReservas.getGestorReservas().getIdTutoria(position)));
         map.put("estado", String.valueOf(estado));
+        map.put("titulo",activity.getString(R.string.tutorias));
+
+        SharedPreferences sharedPreferences = androidx.preference.PreferenceManager.getDefaultSharedPreferences(activity);
+        String nombre = sharedPreferences.getString("nombreUsuario","");
+
+        String aceptado_rechazado = estado==1?activity.getString(R.string.aceptado):activity.getString(R.string.rechazado);
+        String msg = activity.getString(R.string.notificacionEstado,nombre, aceptado_rechazado);
+        map.put("msg", msg);
         JSONObject json = new JSONObject(map);
 
         Data.Builder data = new Data.Builder();

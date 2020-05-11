@@ -44,7 +44,7 @@ public class Egela extends AppCompatActivity {
         webView = findViewById(R.id.webview);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebViewClient(new WebViewClient());
-        webView.loadUrl(URL_EGELA);
+        webView.loadUrl(URL_EGELA + "?lang=" + idiomaEstablecido);
     }
 
     @Override
