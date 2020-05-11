@@ -52,7 +52,6 @@
     <string name="libroInformacion_explPermiso">Necesario el permiso para ver la localización</string>
     <string name="biblioteca">BIBLIOTECA</string>
 
-
     <!--TUTORIAS -->
     <string name="tutorias">TUTORÍAS</string>
     <string name="mostrarTodo">Mostrar todo</string>
@@ -63,6 +62,18 @@
     <string name="tutoriaReservada">Tutoría reservada</string>
     <string name="reservaCancelada">Reserva cancelada</string>
     <string name="preguntaCancelar">¿Realmente deseas cancelar la reserva de la tutoría?</string>
+
+    <!-- FORO -->
+    <string name="foro_escribir">Escribe un mensaje</string>
+    <string name="foro_pregunta_acceso">¿A qué foro deseas acceder?</string>
+    <string name="foro_vacio">No hay mensajes en este foro</string>
+
+    <!-- CREDITOS -->
+    <string name="creditos">Créditos</string>
+    <string name="creditos_obligatorios">Obligatorios:</string>
+    <string name="creditos_basicos">Básicos de rama:</string>
+    <string name="creditos_optativos">Optativos:</string>
+    <string name="creditos_tfg">Trabajo Fin Grado:</string>
 
     <!--PRACTICAS -->
     <string name="practicas">PRÁCTICAS</string>
@@ -90,7 +101,6 @@
     <string name="lista_horario_horaInicio">Hora inicio</string>
     <string name="lista_horario_horaFin">Hora fin</string>
     <string name="horario">HORARIO</string>
-
 
     <!--  AJUSTES -->
     <string name="ajustes_usuario">USUARIO</string>

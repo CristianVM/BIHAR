@@ -160,6 +160,7 @@ public class MenuPrincipal extends AppCompatActivity {
                         break;
                     }
                     case "foro":{
+                        intent = new Intent(MenuPrincipal.this, ForoVirtual.class);
                         break;
                     }
                     case "asignaturas":{
@@ -167,6 +168,7 @@ public class MenuPrincipal extends AppCompatActivity {
                         break;
                     }
                     case "creditos":{
+                        intent = new Intent(MenuPrincipal.this, Creditos.class);
                         break;
                     }
                     case "logros":{
@@ -174,6 +176,7 @@ public class MenuPrincipal extends AppCompatActivity {
                         break;
                     }
                     case "foroProfesor":{
+                        intent = new Intent(MenuPrincipal.this, ForoVirtual.class);
                         break;
                     }
                     case "notasProfesor":{
@@ -326,7 +329,7 @@ class ProgressBarAnimation extends Animation {
         super.applyTransformation(interpolatedTime, t);
         float value = from + (to - from) * interpolatedTime;
         progressBar.setProgress((int) value);
-        String strProgreso = progressBar.getProgress() + "/" + 240;
+        String strProgreso = progressBar.getProgress() + "/" + progressBar.getMax();
         textView.setText(strProgreso);
 
     }
