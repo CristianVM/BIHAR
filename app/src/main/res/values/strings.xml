@@ -156,7 +156,7 @@
     <string name="imparte_nombreAlumno">Nombre del alumno</string>
     <string name="dialog_notaprofesor_alumno">"Alumno: "</string>
     <string name="dialog_notaprofesor_nota">"Nota: "</string>
-    <string name="dialog_notaprofesor_notaError">Error, nota pequeña o muy grande</string>
+    <string name="dialog_notaprofesor_notaError">Error, nota baja o muy alta</string>
     <string name="dialog_notaprofesor_vacio">Error, campo vacío</string>
     <string name="notasprofesor">NOTAS</string>
     <string name="dialog_cambioContrasena_persona">"Persona: "</string>

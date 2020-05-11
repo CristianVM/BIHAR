@@ -37,14 +37,13 @@ public class ServicioFirebase extends FirebaseMessagingService {
         if(remoteMessage.getNotification() !=null){
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             boolean notificacion = prefs.getBoolean("notificacion",true);
-            Log.i("NOTI",notificacion+"k");
             if(notificacion){
                 RemoteMessage.Notification notification = remoteMessage.getNotification();
 
                 NotificationCompat.Builder builder;
                 if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
                     builder = new NotificationCompat.Builder(getApplicationContext(),"Notas");
-                    builder.setLargeIcon(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.ic_notificacion));
+                    builder.setLargeIcon(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.ic_launcher));
                 }else{
                     builder = new NotificationCompat.Builder(getApplicationContext());
                     builder.setPriority(NotificationCompat.PRIORITY_HIGH);
@@ -53,7 +52,7 @@ public class ServicioFirebase extends FirebaseMessagingService {
 
                 builder.setContentTitle(notification.getTitle());
                 builder.setContentText(notification.getBody());
-                builder.setSmallIcon(R.drawable.ic_notificacion);
+                builder.setSmallIcon(R.drawable.ic_launcher);
                 builder.setAutoCancel(true);
                 builder.setStyle(new NotificationCompat.BigTextStyle().bigText(notification.getBody()));
 

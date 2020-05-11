@@ -107,4 +107,17 @@
     <string name="imparte_nombreAlumno">Ikaslearen izena</string>
     <string name="dialog_notaprofesor_alumno">Ikaslea:</string>
     <string name="dialog_notaprofesor_nota">Nota:</string>
+    <string name="dialog_notaprofesor_notaError">Errorea, nota baxua edo oso altua</string>
+    <string name="dialog_notaprofesor_vacio">Errorea, eremu hutsa</string>
+    <string name="notasprofesor">NOTAK</string>
+    <string name="dialog_cambioContrasena_persona">Pertsona</string>
+    <string name="dialog_cambioContrasena_contrasenaAnterior">Pasahitza zaharra</string>
+    <string name="dialog_cambioContrasena_contrasenaNueva">Pasahitza berria</string>
+    <string name="dialog_cambioContrasena">Pasahitza aldatu</string>
+    <string name="dialog_cambioContrasenaDistintos">Pasahitzak ez dira berdinak</string>
+    <string name="ajustes_contrasenaCambiada">Pasahitza aldatuta</string>
+    <string name="ajustes_contrasenaNoCambiada">Errorea, pasahitza ez da aldatu</string>
+    <string name="dialog_notaprofesor_ordinaria">Nota arrunta?</string>
+    <string name="notificacion_nota">Notak</string>
+    <string name="notificacion_descripcion">Noten argitalpenaren jakinarazpena erakusten du</string>
 </resources>

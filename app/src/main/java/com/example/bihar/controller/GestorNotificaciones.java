@@ -13,9 +13,18 @@ public class GestorNotificaciones {
     private static GestorNotificaciones gestorNotificaciones;
     private static Context context;
     private static NotificationManager notificationManager;
+
+    /**
+     * Constructor
+     */
     private GestorNotificaciones(){
     }
 
+    /**
+     * Devuelve el gestor de notificaciones. Cambia el contexto por el contexto actual
+     * @param pContext: el contexto
+     * @return: el gestor de notificaciones
+     */
     public static GestorNotificaciones getGestorNotificaciones(Context pContext){
         if(gestorNotificaciones==null){
             gestorNotificaciones = new GestorNotificaciones();
@@ -25,6 +34,9 @@ public class GestorNotificaciones {
         return gestorNotificaciones;
     }
 
+    /**
+     * Crea el canal de las notificaciones para las versiones Oreo en adelante
+     */
     public void createCanalNotificacion(){
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             CharSequence name = context.getResources().getString(R.string.notificacion_nota);
