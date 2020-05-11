@@ -1,5 +1,6 @@
 package com.example.bihar.view.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.work.Constraints;
 import androidx.work.Data;
@@ -274,5 +275,25 @@ public class Horarios extends AppCompatActivity {
         Configuration conf = res.getConfiguration();
         conf.locale = locale;
         res.updateConfiguration(conf, dm);
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Date date = fechaEscogida.getTime();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        outState.putString("fecha",dateFormat.format(date));
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String fecha = savedInstanceState.getString("fecha");
+        try{
+            fechaEscogida.setTime(dateFormat.parse(fecha));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }

@@ -7,7 +7,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
@@ -16,9 +16,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".view.activities.Asignaturas"/>
-        <activity android:name=".view.activities.Ajustes"/>
-        <activity android:name=".view.activities.TutoriasProfesor"></activity>
+        <activity android:name=".view.activities.NotasProfesor">
+
+        </activity>
+        <activity android:name=".view.activities.Asignaturas" />
+        <activity android:name=".view.activities.Ajustes" />
+        <activity android:name=".view.activities.TutoriasProfesor" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -32,6 +35,17 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_notificacion" />
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/colorAccent" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="Notas" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -66,7 +80,7 @@
         <activity
             android:name=".view.activities.MapsUniversidad"
             android:label="@string/title_activity_maps_universidad" />
-        <activity android:name=".view.activities.Horarios"/>
+        <activity android:name=".view.activities.Horarios" />
     </application>
 
 </manifest>

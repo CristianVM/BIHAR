@@ -28,6 +28,7 @@ import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
 import com.example.bihar.R;
+import com.example.bihar.controller.GestorNotificaciones;
 import com.example.bihar.controller.GestorUsuario;
 import com.example.bihar.controller.WorkerBihar;
 import com.example.bihar.model.Usuario;
@@ -96,6 +97,7 @@ public class InicioSesion extends AppCompatActivity {
         ProgressBar loginProgressBar = findViewById(R.id.loginProgressBar);
         loginProgressBar.setVisibility(View.INVISIBLE);
 
+        GestorNotificaciones.getGestorNotificaciones(this).createCanalNotificacion();
     }
 
 
@@ -229,9 +231,8 @@ public class InicioSesion extends AppCompatActivity {
 
         String token = prefs.getString("token", "");
         String idioma = prefs.getString("idioma", "");
-        boolean iniciado = prefs.getBoolean("iniciado", true);
+        boolean iniciado = prefs.getBoolean("iniciado",false);
         boolean notificacion = prefs.getBoolean("notificacion", true);
-
         editor.clear();
         editor.putString("token", token);
         editor.putString("idioma", idioma);

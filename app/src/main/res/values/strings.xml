@@ -148,6 +148,26 @@
     <string name="rechazada">Rechazada</string>
     <string name="creditos_superados">CRÉDITOS SUPERADOS:</string>
     <string name="nota_media">NOTA MEDIA:</string>
+    <string name="ajustes">AJUSTES</string>
 
+    <!-- AÑADIR NOTAS PROFESOR  -->
+    <string name="imparte_anadirNota">Añadir nota</string>
+    <string name="imparte_idPersona">ID Alumno</string>
+    <string name="imparte_nombreAlumno">Nombre del alumno</string>
+    <string name="dialog_notaprofesor_alumno">"Alumno: "</string>
+    <string name="dialog_notaprofesor_nota">"Nota: "</string>
+    <string name="dialog_notaprofesor_notaError">Error, nota pequeña o muy grande</string>
+    <string name="dialog_notaprofesor_vacio">Error, campo vacío</string>
+    <string name="notasprofesor">NOTAS</string>
+    <string name="dialog_cambioContrasena_persona">"Persona: "</string>
+    <string name="dialog_cambioContrasena_contrasenaAnterior">"Contraseña antigua: "</string>
+    <string name="dialog_cambioContrasena_contrasenaNueva">Contraseña nueva</string>
+    <string name="dialog_cambioContrasena">Cambiar contraseña</string>
+    <string name="dialog_cambioContrasenaDistintos">Las contraseñas no coinciden</string>
+    <string name="ajustes_contrasenaCambiada">Contraseña cambiada</string>
+    <string name="ajustes_contrasenaNoCambiada">Error, contraseña no modificada</string>
+    <string name="dialog_notaprofesor_ordinaria">C. Ordinaria?</string>
+    <string name="notificacion_nota">Notas</string>
+    <string name="notificacion_descripcion">Muestra la notificación de la publicación de las notas</string>
 
 </resources>

@@ -168,8 +168,8 @@ public class Biblioteca extends AppCompatActivity implements DialogFiltradoLibro
                             autores.add(datos.getValue().getAutor());
                             titulares.add(datos.getValue().getTitulo());
                             fechas.add(datos.getValue().getFecha());
-                            imagenes.add(R.drawable.ic_laptop_black_24dp);
                             idLibros.add(datos.getKey());
+                            imagenes.add(R.drawable.ic_laptop_black_24dp);
                         }
 
                         adapterListaLibros = new AdapterListaLibros(
@@ -186,6 +186,7 @@ public class Biblioteca extends AppCompatActivity implements DialogFiltradoLibro
                                 intent.putExtra("descripcion", libro.getDescripcion());
                                 intent.putExtra("fecha", libro.getFecha());
                                 intent.putExtra("titulo", libro.getTitulo());
+                                intent.putExtra("imagen",imagenes.get(i));
                                 startActivity(intent);
                             }
                         });

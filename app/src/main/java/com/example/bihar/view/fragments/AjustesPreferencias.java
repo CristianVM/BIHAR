@@ -12,12 +12,19 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.preference.EditTextPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
@@ -81,6 +88,7 @@ public class AjustesPreferencias extends PreferenceFragmentCompat implements Sha
 
     private String path;
     private AlertDialog dialog;
+    private LifecycleOwner lifecycleOwner;
 
     GoogleAccountCredential credential;
     private ArrayList<Evento> eventos;
@@ -128,13 +136,8 @@ public class AjustesPreferencias extends PreferenceFragmentCompat implements Sha
             // si detecta cambios en la key idioma cambia el idioma.
             String idioma = sharedPreferences.getString("idioma", Locale.getDefault().getLanguage());
             cambiarIdioma(idioma);
-        }else if(s.equals("contrasena")){
-            EditTextPreference editTextPreference = findPreference("contrasena");
-            String contrasena = editTextPreference.getText();
-            if(contrasena.trim().length()>0){
-                Map<String,String> map = new HashMap<>();
-            }
         }
+
     }
 
     @Override
@@ -145,15 +148,21 @@ public class AjustesPreferencias extends PreferenceFragmentCompat implements Sha
             SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getContext());
             Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.ehu.eus/"+pref.getString("idioma","")+"/"));
             startActivity(i);
-        }else if(key.equals("notificacion")){
+        }else if(key.equals("notificacion")) {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
-            boolean notificacion = prefs.getBoolean("notificacion",true);
+            boolean notificacion = prefs.getBoolean("notificacion", true);
 
             SharedPreferences.Editor editor = prefs.edit();
-            editor.putBoolean("notificacion",!notificacion);
+            SwitchPreference switchNotificacion = findPreference("notificacion");
+
+            if (switchNotificacion.isChecked()) {
+                editor.putBoolean("notificacion", true);
+            } else {
+                editor.putBoolean("notificacion", false);
+            }
             editor.apply();
 
-        }else if (key.equals("fotoPerfil")){
+        } else if (key.equals("fotoPerfil")){
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setTitle(getResources().getText(R.string.dialog_foto_eleccion));
             final CharSequence[] opciones =
@@ -170,6 +179,67 @@ public class AjustesPreferencias extends PreferenceFragmentCompat implements Sha
             });
 
             dialog = builder.create();
+            dialog.show();
+        }else if(key.equals("contrasena")){
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            LayoutInflater inflater = getActivity().getLayoutInflater();
+            View vista = inflater.inflate(R.layout.dialog_cambiocontrasenia,null);
+
+            builder.setView(vista);
+
+            TextView txtPersona = (TextView) vista.findViewById(R.id.dialog_cambioContrasena_persona);
+            txtPersona.setText(GestorUsuario.getGestorUsuario().getUsuario().getIdUsuario());
+            Button btn = (Button) vista.findViewById(R.id.dialog_cambioContrasena_boton);
+
+            AlertDialog dialog = builder.create();
+
+            btn.setOnClickListener(view -> {
+                EditText antigua = (EditText) vista.findViewById(R.id.dialog_cambioContrasena_contrasenaAnterior);
+                EditText nueva = (EditText) vista.findViewById(R.id.dialog_cambioContrasena_contrasenaNueva);
+                String txtAntigua = antigua.getText().toString();
+                String txtNueva = nueva.getText().toString();
+                if(!txtAntigua.equals("") && !txtNueva.equals("")){
+                        Map<String,String> map = new HashMap<>();
+                        map.put("idPersona",GestorUsuario.getGestorUsuario().getUsuario().getIdUsuario());
+                        map.put("antigua",txtAntigua);
+                        map.put("nueva",txtNueva);
+                        map.put("accion","cambioContrasena");
+
+                        JSONObject json = new JSONObject(map);
+
+                        Data.Builder data = new Data.Builder();
+                        data.putString("datos",json.toString());
+
+                    Constraints restricciones = new Constraints.Builder()
+                            .setRequiredNetworkType(NetworkType.CONNECTED)
+                            .build();
+                    OneTimeWorkRequest trabajo = new OneTimeWorkRequest.Builder(WorkerBihar.class)
+                            .setConstraints(restricciones)
+                            .setInputData(data.build())
+                            .build();
+                    WorkManager.getInstance(getActivity()).enqueue(trabajo);
+
+                    WorkManager.getInstance(getContext()).getWorkInfoByIdLiveData(trabajo.getId()).observe(
+                            lifecycleOwner, status -> {
+                                if (status != null && status.getState().isFinished()) {
+                                    String resultado = status.getOutputData().getString("result");
+                                    if(resultado.equals("Ok")){
+                                        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+                                        SharedPreferences.Editor editor = prefs.edit();
+                                        editor.putString("password",txtNueva);
+                                        editor.apply();
+                                        Toast.makeText(getContext(),getActivity().getResources().getString(R.string.ajustes_contrasenaCambiada),Toast.LENGTH_SHORT).show();
+                                    }else{
+                                        Toast.makeText(getContext(),getActivity().getResources().getString(R.string.ajustes_contrasenaNoCambiada),Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+                    dialog.dismiss();
+
+                }else{
+                    Toast.makeText(getActivity(),getActivity().getResources().getString(R.string.dialog_notaprofesor_vacio),Toast.LENGTH_SHORT).show();
+                }
+            });
             dialog.show();
         }
         return true;
@@ -510,6 +580,11 @@ public class AjustesPreferencias extends PreferenceFragmentCompat implements Sha
 
         WorkManager.getInstance(getActivity()).enqueue(otwr);
     }
+
+    public void setLifecycleOwner(LifecycleOwner lifecycleOwner){
+        this.lifecycleOwner = lifecycleOwner;
+    }
+}
 
     public void recogerEventos(){
         SharedPreferences prefs = android.preference.PreferenceManager.getDefaultSharedPreferences(getActivity());

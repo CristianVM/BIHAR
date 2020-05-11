@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -84,6 +85,9 @@ public class LibroInformacion extends AppCompatActivity {
         if (bundle != null) {
             map.put("accion", "consultarReservaLibro");
             map.put("titulo", bundle.getString("titulo"));
+            int imagen = bundle.getInt("imagen");
+            ImageView imageView = (ImageView) findViewById(R.id.libroInformacion_imagen);
+            imageView.setImageResource(imagen);
 
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             Calendar calendar = Calendar.getInstance();

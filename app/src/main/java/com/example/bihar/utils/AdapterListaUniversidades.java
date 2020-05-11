@@ -195,7 +195,7 @@ public class AdapterListaUniversidades extends BaseAdapter {
                             imageView.setImageResource(R.drawable.ic_libro_nodisponible);
                             txtDisponible.setTextColor(Color.RED);
                             btnReserva.setEnabled(false);
-                            disponibilidades[i] = context.getResources().getText(R.string.libroInformacion_libroNoDisponible).toString() + resultado;
+                            disponibilidades[i] = context.getResources().getText(R.string.libroInformacion_libroNoDisponible).toString() +" " + resultado;
                             txtDisponible.setText(disponibilidades[i]);
 
                             Toast.makeText(context.getApplicationContext(),

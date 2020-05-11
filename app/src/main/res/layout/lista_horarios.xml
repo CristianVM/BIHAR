@@ -15,7 +15,8 @@
 
     <TableLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:stretchColumns="*">
 
         <TableRow
             android:background="@drawable/titulos_tablerow_verde"

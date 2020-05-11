@@ -180,6 +180,7 @@ public class MenuPrincipal extends AppCompatActivity {
                         break;
                     }
                     case "notasProfesor":{
+                        intent = new Intent(MenuPrincipal.this,NotasProfesor.class);
                         break;
                     }
                     case "tutoriasProfesor":{

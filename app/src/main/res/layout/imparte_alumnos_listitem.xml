@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="5dp"
+    android:layout_marginEnd="5dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:descendantFocusability="blocksDescendants">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/desplegable_libroinformacion"
+        android:orientation="horizontal">
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:stretchColumns="*">
+
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/contenido_tablerow_blanco">
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/imparte_nombreAlumno"
+                    android:textColor="@color/negro"
+                    android:textStyle="italic|bold"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text=" "
+                    android:textColor="@color/negro"
+                    android:textStyle="italic|bold"
+                    android:gravity="center"/>
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/contenido_tablerow_blanco">
+
+                <TextView
+                    android:id="@+id/imparte_nombreAlumno"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textColor="@color/negro"
+                    android:gravity="center"/>
+                <Button
+                    android:layout_width="25dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/imparte_ponerNota"
+                    android:text="@string/imparte_anadirNota"
+                    android:textColor="@color/negro"
+                    android:background="@drawable/boton_redondo_addnota"
+                    android:layout_margin="10dp"/>
+            </TableRow>
+        </TableLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

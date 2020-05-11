@@ -31,6 +31,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.example.bihar.view.fragments.AjustesPreferencias;
+import com.example.bihar.view.fragments.ToolBar;
 
 import org.json.simple.JSONObject;
 
@@ -59,6 +61,13 @@ public class Ajustes extends AppCompatActivity {
             cambiarIdiomaOnCreate(locale);
         }
         setContentView(R.layout.activity_ajustes);
+
+        ToolBar toolBar = (ToolBar) getSupportFragmentManager().findFragmentById(R.id.frgmt_toolbarAjustes);
+        toolBar.cambiarTituloToolbar(getResources().getString(R.string.ajustes));
+        toolBar.ocultarAjustes();
+        
+        AjustesPreferencias ajustesPreferencias = (AjustesPreferencias) getSupportFragmentManager().findFragmentById(R.id.activity_ajustes);
+        ajustesPreferencias.setLifecycleOwner(this);
 
     }
 
@@ -144,6 +153,5 @@ public class Ajustes extends AppCompatActivity {
             }
         }
     }
-
 
 }

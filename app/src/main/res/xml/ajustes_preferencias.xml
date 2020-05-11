@@ -15,7 +15,7 @@
             android:key="gmail"
             android:dialogTitle="@string/ajustes_gmail_dialog"/>
 
-        <EditTextPreference
+        <PreferenceScreen
             android:title="@string/ajustes_contrasena"
             android:summary="@string/ajustes_contrasena_descripcion"
             android:icon="@drawable/ic_ajustes_contrasena"

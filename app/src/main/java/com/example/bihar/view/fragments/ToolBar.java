@@ -24,7 +24,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class ToolBar extends Fragment {
 
     private TextView txtTitulo;
-
+    private CircleImageView ajustes;
     public ToolBar() {
         // Required empty public constructor
     }
@@ -41,7 +41,7 @@ public class ToolBar extends Fragment {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_toolbar, container, false);
 
-        CircleImageView ajustes = view.findViewById(R.id.imgAjustesToolbar);
+        ajustes = view.findViewById(R.id.imgAjustesToolbar);
         txtTitulo = view.findViewById(R.id.textView);
 
         ajustes.setOnClickListener( vista -> {
@@ -54,5 +54,9 @@ public class ToolBar extends Fragment {
 
     public void cambiarTituloToolbar(String titulo){
         txtTitulo.setText(titulo);
+    }
+
+    public void ocultarAjustes(){
+        ajustes.setVisibility(View.INVISIBLE);
     }
 }

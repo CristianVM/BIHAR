@@ -123,7 +123,6 @@ public class WorkerBihar extends Worker {
                             GestorPracticas.getGestorPracticas().addPracticas(result);
                             return Result.success();
                         }
-
                         return Result.success(data.build());
                     }else{
                         Log.i("BDD","Vacio");

@@ -4,20 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.activities.Ajustes"
+    tools:context=".view.activities.NotasProfesor"
     android:orientation="vertical">
 
     <fragment
-        android:id="@+id/frgmt_toolbarAjustes"
+        android:id="@+id/frgmt_toolbarNotasProfesor"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:name="com.example.bihar.view.fragments.ToolBar"
         tools:layout="@layout/fragment_toolbar"/>
 
-    <fragment
+    <ExpandableListView
+        android:id="@+id/notasProfesor_ExpandableListView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/activity_ajustes"
-        android:name="com.example.bihar.view.fragments.AjustesPreferencias"/>
+        android:layout_height="wrap_content"
+        android:divider="@color/blanco"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:groupIndicator="@null"/>
 
 </LinearLayout>
