@@ -92,4 +92,7 @@
     <string name="dialog_foto_galeria">Galeria</string>
     <string name="dialog_foto_cancelar">Utzi</string>
     <string name="dialog_foto_seleccionar">Aukeratu metodo bat</string>
+    <string name="foro_escribir">Mezu bat idatzi</string>
+    <string name="foro_pregunta_acceso">Zein forotara jo nahi duzu?</string>
+    <string name="foro_vacio">Foro honetan ez dago mezurik</string>
 </resources>

@@ -160,6 +160,7 @@ public class MenuPrincipal extends AppCompatActivity {
                         break;
                     }
                     case "foro":{
+                        intent = new Intent(MenuPrincipal.this, ForoVirtual.class);
                         break;
                     }
                     case "asignaturas":{
@@ -167,6 +168,7 @@ public class MenuPrincipal extends AppCompatActivity {
                         break;
                     }
                     case "creditos":{
+                        intent = new Intent(MenuPrincipal.this, Creditos.class);
                         break;
                     }
                     case "logros":{
@@ -174,6 +176,7 @@ public class MenuPrincipal extends AppCompatActivity {
                         break;
                     }
                     case "foroProfesor":{
+                        intent = new Intent(MenuPrincipal.this, ForoVirtual.class);
                         break;
                     }
                     case "notasProfesor":{

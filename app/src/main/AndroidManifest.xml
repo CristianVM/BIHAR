@@ -52,6 +52,9 @@
         <activity android:name=".view.activities.DatosTutoria" />
         <activity android:name=".view.activities.Practicas" />
         <activity android:name=".view.activities.PracticaInformacion" />
+        <activity android:name=".view.activities.ForoVirtual" />
+        <activity android:name=".view.activities.ForoAsignatura" />
+        <activity android:name=".view.activities.Creditos" />
         <activity android:name=".MainActivity" />
         <activity android:name=".view.activities.InicioSesion">
             <intent-filter>

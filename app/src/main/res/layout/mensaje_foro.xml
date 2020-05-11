@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clipToPadding="false"
+    android:paddingVertical="10dp"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp">
+
+    <TextView
+        android:id="@+id/nombreProfesorForo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="4dp"
+        android:text="Rose"
+        android:textAlignment="viewStart"
+        android:textAllCaps="false"
+        android:textColor="@color/verde"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/mensajeProfesorForo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/nombreProfesorForo"
+        android:layout_alignLeft="@id/nombreProfesorForo"
+        android:background="@drawable/mensaje_foro"
+        android:elevation="5dp"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="12dp"
+        android:text="How are you doing? This is a long message that should probably wrap."
+        android:textColor="@color/negro"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/fechaMensajeForo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/mensajeProfesorForo"
+        android:layout_alignRight="@id/mensajeProfesorForo"
+        android:layout_alignParentStart="false"
+        android:paddingTop="4dp"
+        android:text="23/03/2020 15:00:00"
+        android:textAlignment="textEnd"
+        android:textColor="@color/verde"
+        android:textSize="12sp" />
+</RelativeLayout>

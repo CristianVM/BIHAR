@@ -64,6 +64,11 @@
     <string name="reservaCancelada">Reserva cancelada</string>
     <string name="preguntaCancelar">¿Realmente deseas cancelar la reserva de la tutoría?</string>
 
+    <!-- FORO -->
+    <string name="foro_escribir">Escribe un mensaje</string>
+    <string name="foro_pregunta_acceso">¿A qué foro deseas acceder?</string>
+    <string name="foro_vacio">No hay mensajes en este foro</string>
+
     <!--PRACTICAS -->
     <string name="practicas">PRÁCTICAS</string>
     <string name="practica_apuntar">Quiero inscribirme</string>
