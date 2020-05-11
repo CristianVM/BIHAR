@@ -584,7 +584,6 @@ public class AjustesPreferencias extends PreferenceFragmentCompat implements Sha
     public void setLifecycleOwner(LifecycleOwner lifecycleOwner){
         this.lifecycleOwner = lifecycleOwner;
     }
-}
 
     public void recogerEventos(){
         SharedPreferences prefs = android.preference.PreferenceManager.getDefaultSharedPreferences(getActivity());

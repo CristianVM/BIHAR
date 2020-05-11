@@ -103,4 +103,8 @@
     <string name="creditos_basicos">Adarreko oinarrizkoak:</string>
     <string name="creditos_obligatorios">Nahitaezkoak:</string>
     <string name="creditos">Kredituak</string>
+    <string name="imparte_idPersona">Ikaslearen ID:</string>
+    <string name="imparte_nombreAlumno">Ikaslearen izena</string>
+    <string name="dialog_notaprofesor_alumno">Ikaslea:</string>
+    <string name="dialog_notaprofesor_nota">Nota:</string>
 </resources>
