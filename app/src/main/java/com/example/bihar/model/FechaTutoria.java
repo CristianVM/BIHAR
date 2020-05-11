@@ -1,5 +1,6 @@
 package com.example.bihar.model;
 
+
 import java.util.ArrayList;
 
 public class FechaTutoria {
@@ -10,11 +11,11 @@ public class FechaTutoria {
         fecha = pFecha;
 
         tutorias = new ArrayList<>();
-        tutorias.add(new Tutoria(pIdTutoria,pHoraFin +" - "+pHoraFin, pEstado));
+        tutorias.add(new Tutoria(pIdTutoria,pHoraInicio +" - "+pHoraFin, pEstado));
     }
 
     void anadirHora(int pIdTutoria, String pHoraInicio, String pHoraFin, int pEstado){
-        tutorias.add(new Tutoria(pIdTutoria,pHoraFin +" - "+pHoraFin, pEstado));
+        tutorias.add(new Tutoria(pIdTutoria,pHoraInicio +" - "+pHoraFin, pEstado));
     }
 
 
