@@ -46,8 +46,10 @@ public class GestorPracticas {
                 if (!practicas.containsKey((String) json.get("idOferta"))) {
                     practicas.put((String) json.get("idOferta"), new Practica(
                             (String) json.get("nombreEmpresa"),
-                            (String) json.get("provincia"),
-                            (String) json.get("localidad"),
+                            (String) json.get("provincia_es"),
+                            (String) json.get("provincia_eu"),
+                            (String) json.get("localidad_es"),
+                            (String) json.get("localidad_eu"),
                             (String) json.get("horasTotales"),
                             (String) json.get("salarioTotal"),
                             (String) json.get("titulo"),

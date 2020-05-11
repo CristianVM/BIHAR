@@ -155,7 +155,11 @@ public class PracticaInformacion extends AppCompatActivity {
     private void mostrarDatos() {
         Practica practica = GestorPracticas.getGestorPracticas().getPractica(IDPractica);
         TextView textLocalizacion2 = findViewById(R.id.textLocalizacion2);
-        textLocalizacion2.setText(practica.getLocalidad() + " (" + practica.getProvincia() + ")");
+        if(idiomaEstablecido.equals("es")) {
+            textLocalizacion2.setText(practica.getLocalidad_es() + " (" + practica.getProvincia_es() + ")");
+        } else {
+            textLocalizacion2.setText(practica.getLocalidad_eu() + " (" + practica.getProvincia_eu() + ")");
+        }
         TextView textDescripcion2 = findViewById(R.id.textDescripcion2);
         textDescripcion2.setText(practica.getTitulo());
         TextView textTareas2 = findViewById(R.id.textTareas2);

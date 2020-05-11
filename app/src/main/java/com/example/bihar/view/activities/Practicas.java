@@ -96,6 +96,7 @@ public class Practicas extends AppCompatActivity {
 
         JSONObject parametrosJSON = new JSONObject();
         parametrosJSON.put("accion", "obtenerPracticas");
+        parametrosJSON.put("idioma", idiomaEstablecido);
 
         Data datos = new Data.Builder()
                 .putString("datos", parametrosJSON.toJSONString())
@@ -120,7 +121,11 @@ public class Practicas extends AppCompatActivity {
                                 Map<String, Practica> mapPracticas = GestorPracticas.getGestorPracticas().getPracticas();
                                 for (Map.Entry<String, Practica> datos : mapPracticas.entrySet()) {
                                     IDs.add(datos.getKey());
-                                    lugares.add(datos.getValue().getProvincia() + "\n" + datos.getValue().getLocalidad());
+                                    if (idiomaEstablecido.equals("es")) {
+                                        lugares.add(datos.getValue().getProvincia_es() + "\n" + datos.getValue().getLocalidad_es());
+                                    } else {
+                                        lugares.add(datos.getValue().getProvincia_eu() + "\n" + datos.getValue().getLocalidad_eu());
+                                    }
                                     empresas.add(datos.getValue().getNombreEmpresa());
                                     descripciones.add(datos.getValue().getTitulo());
                                 }
@@ -152,38 +157,58 @@ public class Practicas extends AppCompatActivity {
     private void comenzarCarga() {
         ProgressBar progressBarPracticas = findViewById(R.id.progressBarPracticas);
         progressBarPracticas.setVisibility(View.VISIBLE);
+
+        ChipGroup chipGroup = findViewById(R.id.chipGroup);
+        for (int i = 0; i < chipGroup.getChildCount(); i++) {
+            Chip chip = (Chip) chipGroup.getChildAt(i);
+            chip.setClickable(false);
+        }
     }
 
     private void terminarCarga() {
         ProgressBar progressBarPracticas = findViewById(R.id.progressBarPracticas);
         progressBarPracticas.setVisibility(View.INVISIBLE);
+
+        ChipGroup chipGroup = findViewById(R.id.chipGroup);
+        for (int i = 0; i < chipGroup.getChildCount(); i++) {
+            Chip chip = (Chip) chipGroup.getChildAt(i);
+            chip.setClickable(true);
+        }
     }
 
     // https://stackoverflow.com/questions/58224630/how-to-get-selected-chips-from-chipgroup
     public void filtrarPracticas(View v) {
-        ArrayList<String> provinciasSeleccionadas = new ArrayList<>();
-        ChipGroup chipGroup = findViewById(R.id.chipGroup);
-        for (int i = 0; i < chipGroup.getChildCount(); i++) {
-            Chip chip = (Chip) chipGroup.getChildAt(i);
-            if (chip.isChecked()) {
-                provinciasSeleccionadas.add((String) chip.getText());
+        try {
+            ArrayList<String> provinciasSeleccionadas = new ArrayList<>();
+            ChipGroup chipGroup = findViewById(R.id.chipGroup);
+            for (int i = 0; i < chipGroup.getChildCount(); i++) {
+                Chip chip = (Chip) chipGroup.getChildAt(i);
+                if (chip.isChecked()) {
+                    provinciasSeleccionadas.add((String) chip.getText());
+                }
             }
-        }
 
-        vaciarDatos();
+            vaciarDatos();
 
-        Map<String, Practica> mapPracticas = GestorPracticas.getGestorPracticas().getPracticas();
+            Map<String, Practica> mapPracticas = GestorPracticas.getGestorPracticas().getPracticas();
 
-        for (Map.Entry<String, Practica> datos : mapPracticas.entrySet()) {
-            if(provinciasSeleccionadas.contains(datos.getValue().getProvincia())) {
-                IDs.add(datos.getKey());
-                lugares.add(datos.getValue().getProvincia() + "\n" + datos.getValue().getLocalidad());
-                empresas.add(datos.getValue().getNombreEmpresa());
-                descripciones.add(datos.getValue().getTitulo());
+            for (Map.Entry<String, Practica> datos : mapPracticas.entrySet()) {
+                if (provinciasSeleccionadas.contains(datos.getValue().getProvincia_es()) || provinciasSeleccionadas.contains(datos.getValue().getProvincia_eu())) {
+                    IDs.add(datos.getKey());
+                    if (idiomaEstablecido.equals("es")) {
+                        lugares.add(datos.getValue().getProvincia_es() + "\n" + datos.getValue().getLocalidad_es());
+                    } else {
+                        lugares.add(datos.getValue().getProvincia_eu() + "\n" + datos.getValue().getLocalidad_eu());
+                    }
+                    empresas.add(datos.getValue().getNombreEmpresa());
+                    descripciones.add(datos.getValue().getTitulo());
+                }
             }
-        }
 
-        adapterPracticas.notifyDataSetChanged();
+            adapterPracticas.notifyDataSetChanged();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void vaciarDatos() {
