@@ -47,7 +47,6 @@ public class ServicioFirebase extends FirebaseMessagingService {
                 }else{
                     builder = new NotificationCompat.Builder(getApplicationContext());
                     builder.setPriority(NotificationCompat.PRIORITY_HIGH);
-
                 }
 
                 builder.setContentTitle(notification.getTitle());
