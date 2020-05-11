@@ -23,9 +23,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
 import androidx.lifecycle.LifecycleOwner;
-import androidx.preference.EditTextPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
@@ -35,7 +33,6 @@ import androidx.work.Constraints;
 import androidx.work.Data;
 import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
-import androidx.work.Operation;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
@@ -51,7 +48,6 @@ import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccoun
 import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
-import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.DateTime;
 import com.google.api.client.util.ExponentialBackOff;
@@ -79,7 +75,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.TimeZone;
 
 public class AjustesPreferencias extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -314,37 +309,6 @@ public class AjustesPreferencias extends PreferenceFragmentCompat implements Sha
      * no existe la carpeta se crea. Después se manda una intención para que se haga una foto y se espera a que
      * se finalice la intención.
      */
-   /* public void capturarFoto() {
-        boolean permisos = validaPermisos();
-
-        // SI LOS PERMISOS ESTAN ACTIVADOS SE SACA LA FOTO
-        if(permisos) {
-            File fileImagen = new File(Environment.getExternalStorageDirectory(), RUTA_IMAGEN);
-            if (!fileImagen.exists()) {
-                boolean a = fileImagen.mkdirs();
-            }
-            String nombreImg = "";
-            if (fileImagen.exists()) {
-                nombreImg = (System.currentTimeMillis() / 100) + ".png";
-
-                path = Environment.getExternalStorageDirectory() + File.separator + RUTA_IMAGEN + File.separator + nombreImg;
-                File imagen = new File(path);
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    String authorities = getActivity().getApplicationContext().getPackageName() + ".provider";
-                    Uri imageUri = FileProvider.getUriForFile(getActivity(), authorities, imagen);
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-                } else {
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(imagen));
-                }
-                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.putString("path",path);
-                editor.apply();
-                getActivity().startActivityForResult(intent, 81);
-            }
-        }
-    }*/
 
     public void abrirCamara(){
         if(ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED) {
@@ -363,33 +327,7 @@ public class AjustesPreferencias extends PreferenceFragmentCompat implements Sha
     public void cancelar() {
         dialog.dismiss();
     }
-
-    /**
-     * Se comprueban los permisos. Si no se ha aceptado el permiso entonces se manda la petición de
-     * que se acepten.
-     * @return Si se acepta el permiso entonces devolverá true, sino false.
-     */
-    /*private boolean validaPermisos(){
-
-        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
-
-            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.CAMERA) ||
-                    ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE ) ||
-                    ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE )){
-                Toast.makeText(getActivity().getApplicationContext(),
-                        getContext().getResources().getString(R.string.libroInformacion_explPermiso),Toast.LENGTH_LONG).show();
-            }
-            ActivityCompat.requestPermissions(getActivity(), new String[]
-                    {Manifest.permission.CAMERA,
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                            Manifest.permission.READ_EXTERNAL_STORAGE}, 15);
-        }else{
-            return true;
-        }
-        return false;
-    }*/
+    
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
