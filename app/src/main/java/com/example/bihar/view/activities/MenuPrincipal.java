@@ -329,7 +329,7 @@ class ProgressBarAnimation extends Animation {
         super.applyTransformation(interpolatedTime, t);
         float value = from + (to - from) * interpolatedTime;
         progressBar.setProgress((int) value);
-        String strProgreso = progressBar.getProgress() + "/" + 240;
+        String strProgreso = progressBar.getProgress() + "/" + progressBar.getMax();
         textView.setText(strProgreso);
 
     }

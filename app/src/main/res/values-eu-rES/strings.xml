@@ -95,4 +95,9 @@
     <string name="foro_escribir">Mezu bat idatzi</string>
     <string name="foro_pregunta_acceso">Zein forotara jo nahi duzu?</string>
     <string name="foro_vacio">Foro honetan ez dago mezurik</string>
+    <string name="creditos_tfg">Gradu-amaierako lana:</string>
+    <string name="creditos_optativos">Hautazkoak</string>
+    <string name="creditos_basicos">Adarreko oinarrizkoak:</string>
+    <string name="creditos_obligatorios">Nahitaezkoak:</string>
+    <string name="creditos">Kredituak</string>
 </resources>
