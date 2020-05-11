@@ -15,8 +15,8 @@
         <TextView
             android:id="@+id/nombreAsignatura"
             android:layout_width="match_parent"
-            android:layout_height="30dp"
-            tools:text="Análisis y Diseño de Sistemas de Información"
+            android:layout_height="38dp"
+            tools:text="Sistemas de Gestión de Seguridad y de Sistemas de Información"
             android:gravity="center_vertical"
             android:textColor="@color/negro"
             android:textStyle="bold"
