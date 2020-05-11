@@ -67,6 +67,8 @@
     <string name="foro_escribir">Escribe un mensaje</string>
     <string name="foro_pregunta_acceso">¿A qué foro deseas acceder?</string>
     <string name="foro_vacio">No hay mensajes en este foro</string>
+    <string name="foro_titulo">FORO</string>
+    <string name="foro_mensaje_enviado">%s ha enviado un mensaje.</string>
 
     <!-- CREDITOS -->
     <string name="creditos">Créditos</string>

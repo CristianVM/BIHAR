@@ -1,8 +1,11 @@
 package com.example.bihar.view.activities;
 
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +30,7 @@ import androidx.work.WorkManager;
 
 import com.example.bihar.R;
 import com.example.bihar.controller.WorkerBihar;
+import com.example.bihar.view.fragments.ToolBar;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -36,6 +40,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class ForoAsignatura extends AppCompatActivity {
 
@@ -47,10 +52,23 @@ public class ForoAsignatura extends AppCompatActivity {
     private ArrayList<String> fechasMensajes = new ArrayList<>();
 
     private String idAsignatura = "";
+    private String idiomaEstablecido;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        idiomaEstablecido = prefs.getString("idioma", "es");
+        if (idiomaEstablecido.equals("es")) {
+            Locale locale = new Locale("es");
+            cambiarIdiomaOnCreate(locale);
+        } else if (idiomaEstablecido.equals("eu")) {
+            Locale locale = new Locale("eu");
+            cambiarIdiomaOnCreate(locale);
+        }
+
         super.setContentView(R.layout.lista_mensajes_foro);
 
         RecyclerView listaMensajesForo = findViewById(R.id.listaMensajesForo);
@@ -63,7 +81,6 @@ public class ForoAsignatura extends AppCompatActivity {
 
         listaMensajesForo.addItemDecoration(new GridSpacingItemDecoration(1, 20, true));
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         if (prefs.getBoolean("esAlumno", true)) {
             LinearLayout linearLayoutMandarMensaje = findViewById(R.id.linearLayoutMandarMensaje);
             linearLayoutMandarMensaje.setVisibility(View.GONE);
@@ -73,6 +90,28 @@ public class ForoAsignatura extends AppCompatActivity {
         if (extras != null) {
             idAsignatura = extras.getString("idAsignatura");
             obtenerMensajesForoAsignatura();
+        }
+
+        ToolBar toolbarForoAsignatura = (ToolBar) getSupportFragmentManager().findFragmentById(R.id.toolbarForoAsignatura);
+        toolbarForoAsignatura.cambiarTituloToolbar(getResources().getString(R.string.foro_titulo));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String idiomaNuevo = sharedPreferences.getString("idioma","es");
+
+        if(!idiomaNuevo.equals(idiomaEstablecido)){
+            idiomaEstablecido = idiomaNuevo;
+            if(idiomaEstablecido.equals("es")) {
+                Locale locale = new Locale("es");
+                cambiarIdiomaOnResume(locale);
+            } else if(idiomaEstablecido.equals("eu")) {
+                Locale locale = new Locale("eu");
+                cambiarIdiomaOnResume(locale);
+            }
         }
     }
 
@@ -188,6 +227,12 @@ public class ForoAsignatura extends AppCompatActivity {
 
                                     TextView avisoForoVacio = findViewById(R.id.avisoForoVacio);
                                     avisoForoVacio.setVisibility(View.INVISIBLE);
+
+                                    String nombreProfesor = prefs.getString("nombreUsuario", "").split(" ")[0];
+                                    String apellidoProfesor = prefs.getString("nombreUsuario", "").split(" ")[1];
+
+                                    String mensajeNotificacion = getString(R.string.foro_mensaje_enviado, nombreProfesor + " " + apellidoProfesor);
+                                    mandarNotificacion(idAsignatura, mensajeNotificacion, getString(R.string.foro_titulo));
                                 } else {
                                     Toast.makeText(getApplicationContext(), R.string.error_general, Toast.LENGTH_LONG).show();
                                 }
@@ -206,6 +251,29 @@ public class ForoAsignatura extends AppCompatActivity {
         WorkManager.getInstance(this).enqueue(otwr);
     }
 
+    private void mandarNotificacion(String idAsignatura, String mensajeNotificacion, String tituloNotificacion) {
+        JSONObject parametrosJSON = new JSONObject();
+        parametrosJSON.put("accion", "notificarForo");
+        parametrosJSON.put("idAsignatura", idAsignatura);
+        parametrosJSON.put("msg", mensajeNotificacion);
+        parametrosJSON.put("titulo", tituloNotificacion);
+
+        Data datos = new Data.Builder()
+                .putString("datos", parametrosJSON.toJSONString())
+                .build();
+
+        Constraints restricciones = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
+
+        OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(WorkerBihar.class)
+                .setConstraints(restricciones)
+                .setInputData(datos)
+                .build();
+
+        WorkManager.getInstance(this).enqueue(otwr);
+    }
+
     private void comenzarCarga() {
         ProgressBar progressBarForoAsignatura = findViewById(R.id.progressBarForoAsignatura);
         progressBarForoAsignatura.setVisibility(View.VISIBLE);
@@ -220,6 +288,32 @@ public class ForoAsignatura extends AppCompatActivity {
 
         ImageButton botonMandarMensajeForo = findViewById(R.id.botonMandarMensajeForo);
         botonMandarMensajeForo.setClickable(true);
+    }
+
+    /** Cambia el idioma de la aplicación al reanudarse la actividad. Se destruye la actividad y se
+     *  vuelve a iniciar
+     *  @param locale: el idioma almacenado en SharedPreferences
+     */
+    public void cambiarIdiomaOnResume(Locale locale) {
+        Locale.setDefault(locale);
+        Resources res = getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration conf = res.getConfiguration();
+        conf.locale = locale;
+        res.updateConfiguration(conf, dm);
+        recreate();
+    }
+
+    /** Cambia el idioma de la aplicación al crearse la actividad
+     *  @param locale: el idioma almacenado en SharedPreferences
+     */
+    public void cambiarIdiomaOnCreate(Locale locale){
+        Locale.setDefault(locale);
+        Resources res = getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration conf = res.getConfiguration();
+        conf.locale = locale;
+        res.updateConfiguration(conf, dm);
     }
 }
 

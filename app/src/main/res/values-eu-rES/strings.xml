@@ -107,4 +107,6 @@
     <string name="imparte_nombreAlumno">Ikaslearen izena</string>
     <string name="dialog_notaprofesor_alumno">Ikaslea:</string>
     <string name="dialog_notaprofesor_nota">Nota:</string>
+    <string name="foro_titulo">FORO</string>
+    <string name="foro_mensaje_enviado">%s -(e)k mezu bat bidali du.</string>
 </resources>

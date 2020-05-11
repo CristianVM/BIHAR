@@ -1,14 +1,12 @@
 package com.example.bihar.view.activities;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
+import android.util.DisplayMetrics;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.Transformation;
-import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -29,18 +27,50 @@ import com.example.bihar.controller.WorkerBihar;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import java.io.File;
+import java.util.Locale;
 
 public class Creditos extends AppCompatActivity {
 
     private static final int TIEMPO_ANIMACION_MS = 1250;
+    private String idiomaEstablecido;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        idiomaEstablecido = prefs.getString("idioma", "es");
+        if (idiomaEstablecido.equals("es")) {
+            Locale locale = new Locale("es");
+            cambiarIdiomaOnCreate(locale);
+        } else if (idiomaEstablecido.equals("eu")) {
+            Locale locale = new Locale("eu");
+            cambiarIdiomaOnCreate(locale);
+        }
+
         super.setContentView(R.layout.activity_creditos);
 
         obtenerDesgloseCreditosSuperados();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String idiomaNuevo = sharedPreferences.getString("idioma","es");
+
+        if(!idiomaNuevo.equals(idiomaEstablecido)){
+            idiomaEstablecido = idiomaNuevo;
+            if(idiomaEstablecido.equals("es")) {
+                Locale locale = new Locale("es");
+                cambiarIdiomaOnResume(locale);
+            } else if(idiomaEstablecido.equals("eu")) {
+                Locale locale = new Locale("eu");
+                cambiarIdiomaOnResume(locale);
+            }
+        }
     }
 
     private void obtenerDesgloseCreditosSuperados() {
@@ -83,7 +113,7 @@ public class Creditos extends AppCompatActivity {
 
                                 mostrarDesglose(creditosObligatorios, creditosBasicos, creditosOptativos, creditosTFG);
 
-                            // Si salta algun error
+                                // Si salta algun error
                             } catch (Exception e) {
                                 Toast.makeText(getApplicationContext(), R.string.error_general, Toast.LENGTH_LONG).show();
                                 e.printStackTrace();
@@ -138,5 +168,31 @@ public class Creditos extends AppCompatActivity {
     private void terminarCarga() {
         ProgressBar progressBarCreditos = findViewById(R.id.progressBarCreditos);
         progressBarCreditos.setVisibility(View.INVISIBLE);
+    }
+
+    /** Cambia el idioma de la aplicación al reanudarse la actividad. Se destruye la actividad y se
+     *  vuelve a iniciar
+     *  @param locale: el idioma almacenado en SharedPreferences
+     */
+    public void cambiarIdiomaOnResume(Locale locale) {
+        Locale.setDefault(locale);
+        Resources res = getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration conf = res.getConfiguration();
+        conf.locale = locale;
+        res.updateConfiguration(conf, dm);
+        recreate();
+    }
+
+    /** Cambia el idioma de la aplicación al crearse la actividad
+     *  @param locale: el idioma almacenado en SharedPreferences
+     */
+    public void cambiarIdiomaOnCreate(Locale locale){
+        Locale.setDefault(locale);
+        Resources res = getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration conf = res.getConfiguration();
+        conf.locale = locale;
+        res.updateConfiguration(conf, dm);
     }
 }

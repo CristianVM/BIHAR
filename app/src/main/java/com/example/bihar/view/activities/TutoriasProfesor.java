@@ -50,8 +50,6 @@ public class TutoriasProfesor extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        GestorUsuario.getGestorUsuario().setUsuario(new Usuario("bblanco","u@u.com"));
-
         setContentView(R.layout.activity_tutorias_profesor);
 
         solicitadas = findViewById(R.id.tutoriasProfesorListView);

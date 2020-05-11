@@ -3,9 +3,12 @@ package com.example.bihar.view.activities;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -33,20 +36,54 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import java.io.File;
+import java.util.Locale;
 
 public class PracticaInformacion extends AppCompatActivity {
 
     private String IDPractica;
 
+    private String idiomaEstablecido;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        idiomaEstablecido = prefs.getString("idioma", "es");
+        if (idiomaEstablecido.equals("es")) {
+            Locale locale = new Locale("es");
+            cambiarIdiomaOnCreate(locale);
+        } else if (idiomaEstablecido.equals("eu")) {
+            Locale locale = new Locale("eu");
+            cambiarIdiomaOnCreate(locale);
+        }
+
         super.setContentView(R.layout.practica_informacion);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             IDPractica = extras.getString("IDPractica");
             obtenerImagenEmpresa();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String idiomaNuevo = sharedPreferences.getString("idioma","es");
+
+        if(!idiomaNuevo.equals(idiomaEstablecido)){
+            idiomaEstablecido = idiomaNuevo;
+            if(idiomaEstablecido.equals("es")) {
+                Locale locale = new Locale("es");
+                cambiarIdiomaOnResume(locale);
+            } else if(idiomaEstablecido.equals("eu")) {
+                Locale locale = new Locale("eu");
+                cambiarIdiomaOnResume(locale);
+            }
         }
     }
 
@@ -201,6 +238,32 @@ public class PracticaInformacion extends AppCompatActivity {
                 });
 
         WorkManager.getInstance(this).enqueue(otwr);
+    }
+
+    /** Cambia el idioma de la aplicación al reanudarse la actividad. Se destruye la actividad y se
+     *  vuelve a iniciar
+     *  @param locale: el idioma almacenado en SharedPreferences
+     */
+    public void cambiarIdiomaOnResume(Locale locale) {
+        Locale.setDefault(locale);
+        Resources res = getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration conf = res.getConfiguration();
+        conf.locale = locale;
+        res.updateConfiguration(conf, dm);
+        recreate();
+    }
+
+    /** Cambia el idioma de la aplicación al crearse la actividad
+     *  @param locale: el idioma almacenado en SharedPreferences
+     */
+    public void cambiarIdiomaOnCreate(Locale locale){
+        Locale.setDefault(locale);
+        Resources res = getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration conf = res.getConfiguration();
+        conf.locale = locale;
+        res.updateConfiguration(conf, dm);
     }
 
     @Override
