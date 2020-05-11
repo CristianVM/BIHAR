@@ -88,7 +88,7 @@ public class Practicas extends AppCompatActivity {
 
                                 RecyclerView listaPracticas = findViewById(R.id.listaPracticas);
 
-                                adapterPracticas = new AdapterPracticas(IDs, lugares, empresas, descripciones, getApplicationContext());
+                                adapterPracticas = new AdapterPracticas(IDs, lugares, empresas, descripciones, Practicas.this);
                                 listaPracticas.setAdapter(adapterPracticas);
 
                                 GridLayoutManager elLayoutRejillaIgual = new GridLayoutManager(getApplicationContext(), 1, GridLayoutManager.VERTICAL, false);
@@ -204,7 +204,6 @@ class AdapterPracticas extends RecyclerView.Adapter<ViewHolderPracticas> {
         holder.cardViewPractica.setOnClickListener(v -> {
             Intent intent = new Intent(elContexto, PracticaInformacion.class);
             intent.putExtra("IDPractica", holder.IDPractica.getText());
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             elContexto.startActivity(intent);
         });
     }

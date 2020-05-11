@@ -107,7 +107,7 @@ public class ForoVirtual  extends AppCompatActivity {
                                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                         Intent i = new Intent(getApplicationContext(), ForoAsignatura.class);
                                         i.putExtra("idAsignatura", identificadoresAsignaturas.get(position));
-                                        getApplicationContext().startActivity(i);
+                                        startActivity(i);
                                     }
                                 });
                             // Si salta algun error
