@@ -72,7 +72,7 @@ public class DatosTutoria extends AppCompatActivity {
 
         progressBar = findViewById(R.id.tutoriasProgressBar);
         imgProfesor = findViewById(R.id.imgProfesor);
-        nombreProfesor = findViewById(R.id.nombreProfesorForo);
+        nombreProfesor = findViewById(R.id.nombreProfesor);
         departamentoProfesor = findViewById(R.id.departamentoProfesor);
         despachoProfesor = findViewById(R.id.despachoProfesor);
         nombreCentroProfesor = findViewById(R.id.nombreCentroProfesor);
