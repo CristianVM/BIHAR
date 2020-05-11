@@ -119,6 +119,11 @@
     <string name="dialog_foto_cancelar">Cancelar</string>
     <string name="dialog_foto_seleccionar">Seleccione un método</string>
     <string name="avisoImagen">Imagen cambiada</string>
+    <string name="desvincularCuenta">¿Deseas desvincular tu cuenta Google de la aplicación?</string>
+    <string name="examen">Examen:</string>
+    <string name="tutoria">Tutoría:</string>
+    <string name="aula">Aula:</string>
+    <string name="datosGuardados">Datos guardados correctamente.</string>
 
     <!-- ASIGNATURAS-->
     <string name="asignaturas_curso">Curso: %s</string>

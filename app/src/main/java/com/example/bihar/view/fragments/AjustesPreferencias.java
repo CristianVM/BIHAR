@@ -8,9 +8,8 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.Toast;
@@ -19,7 +18,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
 import androidx.preference.EditTextPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
@@ -30,30 +28,51 @@ import androidx.work.Constraints;
 import androidx.work.Data;
 import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
+import androidx.work.Operation;
+import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
 import com.example.bihar.R;
 import com.example.bihar.controller.GestorUsuario;
 import com.example.bihar.controller.WorkerBihar;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.Task;
+import com.google.android.gms.common.api.Scope;
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.gson.GsonFactory;
+import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.client.util.DateTime;
+import com.google.api.client.util.ExponentialBackOff;
+import com.google.api.services.calendar.Calendar;
+import com.google.api.services.calendar.CalendarScopes;
+import com.google.api.services.calendar.model.Event;
+import com.google.api.services.calendar.model.EventDateTime;
+import com.google.api.services.calendar.model.Events;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.format.DateTimeFormatter;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.Objects;
+import java.util.TimeZone;
 
 public class AjustesPreferencias extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -62,6 +81,10 @@ public class AjustesPreferencias extends PreferenceFragmentCompat implements Sha
 
     private String path;
     private AlertDialog dialog;
+
+    GoogleAccountCredential credential;
+    private ArrayList<Evento> eventos;
+
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -81,15 +104,7 @@ public class AjustesPreferencias extends PreferenceFragmentCompat implements Sha
         switchNotificacion.setChecked(notificacion);
 
         if(iniciado) {
-            Preference editTextPreference = findPreference("gmail");
-            String gmail = GestorUsuario.getGestorUsuario().getUsuario().getGmail();
-            if (gmail != null && !gmail.isEmpty()) {
-                editTextPreference.setSummary(gmail);
-            }
-            editTextPreference.setOnPreferenceClickListener(preference -> {
-                inicioSesionGoogle();
-                return true;
-            });
+            actualizarCampoEmail();
         }
 
     }
@@ -141,7 +156,6 @@ public class AjustesPreferencias extends PreferenceFragmentCompat implements Sha
         }else if (key.equals("fotoPerfil")){
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setTitle(getResources().getText(R.string.dialog_foto_eleccion));
-
             final CharSequence[] opciones =
                     {getResources().getText(R.string.dialog_foto_capturar), getResources().getText(R.string.dialog_foto_galeria), getResources().getText(R.string.dialog_foto_cancelar)};
 
@@ -175,6 +189,28 @@ public class AjustesPreferencias extends PreferenceFragmentCompat implements Sha
         getActivity().finish();
         Intent intent = getActivity().getIntent();
         startActivity(intent);
+    }
+
+    private void actualizarCampoEmail(){
+        Preference editTextPreference = findPreference("gmail");
+        String gmail = GestorUsuario.getGestorUsuario().getUsuario().getGmail();
+        if (gmail != null && !gmail.isEmpty()) {
+            editTextPreference.setSummary(gmail);
+            editTextPreference.setOnPreferenceClickListener(preference -> {
+                new AlertDialog.Builder(getContext()).setMessage(getString(R.string.desvincularCuenta))
+                        .setPositiveButton(R.string.Si, (dialog, which) -> {
+                            guardarEmail(null);
+                            desvincularCuentaGoogle();
+                        }).setNegativeButton(R.string.No,null).show();
+                return true;
+            });
+        }else{
+            editTextPreference.setSummary(getString(R.string.ajustes_gmail_descripcion));
+            editTextPreference.setOnPreferenceClickListener(preference -> {
+                inicioSesionGoogle();
+                return true;
+            });
+        }
     }
 
     private void workerAjustes(Data.Builder data){
@@ -288,43 +324,23 @@ public class AjustesPreferencias extends PreferenceFragmentCompat implements Sha
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Log.i("REQUESTCODE","=" + requestCode);
         if(requestCode == 100 && resultCode == Activity.RESULT_OK){
 
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            try {
-                GoogleSignInAccount account = task.getResult(ApiException.class);
+            GoogleSignIn.getSignedInAccountFromIntent(data).addOnSuccessListener(googleSignInAccount -> {
+                guardarEmail(googleSignInAccount.getEmail());
 
-                SharedPreferences prefs = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getActivity());
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.putString("gmail",account.getEmail());
-                editor.apply();
 
-                //No dejamos guardado la cuenta de Google en la aplicación, para que el usuario pueda cambiarlo cuando quiera.
-                GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                        .requestEmail()
-                        .build();
+                credential = GoogleAccountCredential.usingOAuth2(
+                        getContext(), Collections.singletonList(CalendarScopes.CALENDAR))
+                        .setBackOff(new ExponentialBackOff())
+                        .setSelectedAccountName(googleSignInAccount.getAccount().name);
 
-                GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(getActivity(), gso);
-                mGoogleSignInClient.revokeAccess();
 
-                Preference editTextPreference = findPreference("gmail");
-                editTextPreference.setSummary(prefs.getString("gmail",getString(R.string.ajustes_gmail_descripcion)));
+                recogerEventos();
 
-                Map<String,String> map = new HashMap<>();
-                map.put("accion","modificarGmail");
-                map.put("gmail",prefs.getString("gmail",""));
-                map.put("idPersona",prefs.getString("idUsuario",""));
+            }).addOnFailureListener(e -> Toast.makeText(getActivity(), getString(R.string.error_general), Toast.LENGTH_LONG).show());
 
-                JSONObject jsonWorker = new JSONObject(map);
-                Data.Builder dataBuilder = new Data.Builder();
-                dataBuilder.putString("datos",jsonWorker.toString());
-                workerAjustes(dataBuilder);
-
-            } catch (ApiException e) {
-                Log.w("Error", "signInResult:failed code=" + e.getStatusCode());
-
-                Toast.makeText(getActivity(), getString(R.string.error_general), Toast.LENGTH_LONG).show();
-            }
         }else if(resultCode == Activity.RESULT_OK && requestCode==80){
             //RESULTADO DE LA GALERÍA
             try{
@@ -351,18 +367,53 @@ public class AjustesPreferencias extends PreferenceFragmentCompat implements Sha
                 e.printStackTrace();
             }
 
+        }else if(resultCode == Activity.RESULT_OK && requestCode == 101){
+            new MiAsyncTask(this).execute(eventos.toArray(new Evento[0]));
         }
     }
 
     private void inicioSesionGoogle(){
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
+                .requestScopes(new Scope("https://www.googleapis.com/auth/calendar.events"))
                 .build();
 
         GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(getActivity(), gso);
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, 100);
     }
+
+
+    private void guardarEmail(String pEmail){
+
+        SharedPreferences prefs = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getActivity());
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString("gmail",pEmail);
+        editor.apply();
+
+        GestorUsuario.getGestorUsuario().getUsuario().setGmail(pEmail);
+        actualizarCampoEmail();
+
+        Map<String,String> map = new HashMap<>();
+        map.put("accion","modificarGmail");
+        map.put("gmail",prefs.getString("gmail",null));
+        map.put("idPersona",prefs.getString("idUsuario",""));
+
+        JSONObject jsonWorker = new JSONObject(map);
+        Data.Builder dataBuilder = new Data.Builder();
+        dataBuilder.putString("datos",jsonWorker.toString());
+        workerAjustes(dataBuilder);
+    }
+
+    public void desvincularCuentaGoogle(){
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+        GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(getActivity(), gso);
+        mGoogleSignInClient.revokeAccess();
+    }
+
 
 
     /**
@@ -416,7 +467,7 @@ public class AjustesPreferencias extends PreferenceFragmentCompat implements Sha
 
         JSONObject parametrosJSON = new JSONObject();
         parametrosJSON.put("accion", "obtenerImagen");
-        parametrosJSON.put("idUsuario", idUsuario);
+        parametrosJSON.put("idPersona", idUsuario);
 
         Data datos = new Data.Builder()
                 .putString("datos", parametrosJSON.toJSONString())
@@ -459,4 +510,243 @@ public class AjustesPreferencias extends PreferenceFragmentCompat implements Sha
 
         WorkManager.getInstance(getActivity()).enqueue(otwr);
     }
+
+    public void recogerEventos(){
+        SharedPreferences prefs = android.preference.PreferenceManager.getDefaultSharedPreferences(getActivity());
+
+        JSONObject parametrosJSON = new JSONObject();
+        parametrosJSON.put("accion", "obtenerEventosUsuario");
+        parametrosJSON.put("idPersona", GestorUsuario.getGestorUsuario().getUsuario().getIdUsuario());
+        parametrosJSON.put("idioma",prefs.getString("idioma","es"));
+
+        Data datos = new Data.Builder()
+                .putString("datos", parametrosJSON.toJSONString())
+                .build();
+
+        Constraints restricciones = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
+
+        OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(WorkerBihar.class)
+                .setConstraints(restricciones)
+                .setInputData(datos)
+                .build();
+
+        WorkManager.getInstance(getActivity())
+                .getWorkInfoByIdLiveData(otwr.getId())
+                .observe(this, workInfo -> {
+                    if (workInfo != null && workInfo.getState().isFinished()) {
+                        if(workInfo.getState() == WorkInfo.State.FAILED){
+                            Toast.makeText(getContext(), R.string.error_general, Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        String resultado = workInfo.getOutputData().getString("result");
+
+                        eventos = new ArrayList<>();
+
+                        try {
+                            JSONArray array = (JSONArray) new JSONParser().parse(resultado);
+                            for(int i = 0; i<array.size();i++){
+                                JSONObject obj = (JSONObject) array.get(i);
+                                boolean esTutoria = (boolean) obj.get("esTutoria");
+                                String nombreEvento = (String) obj.get("nombreEvento");
+
+                                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+                                LocalDateTime fechaExamenInicio = LocalDateTime.parse((String) Objects.requireNonNull(obj.get("fechaExamenInicio")),formatter);
+                                String strFechaFinal = (String) obj.get("fechaExamenFinal");
+                                LocalDateTime fechaExamenFinal;
+                                if(strFechaFinal == null){
+                                    fechaExamenFinal = null;
+                                }else{
+                                    fechaExamenFinal = LocalDateTime.parse(strFechaFinal, formatter);
+                                }
+                                String aulaExamen = (String) obj.get("aulaExamen");
+                                String nombreCentro = (String) obj.get("nombreCentro");
+
+                                eventos.add(new Evento(esTutoria, fechaExamenInicio, fechaExamenFinal,nombreEvento, nombreCentro, aulaExamen));
+                            }
+
+                            new MiAsyncTask(this).execute(eventos.toArray(new Evento[0]));
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                });
+
+        WorkManager.getInstance(getActivity()).enqueue(otwr);
+
+
+    }
+
+    public void notificarCambio(){
+        Toast.makeText(getContext(), getString(R.string.datosGuardados), Toast.LENGTH_SHORT).show();
+    }
+
+
 }
+
+class MiAsyncTask extends AsyncTask<Evento, Void, Integer>{
+
+    private AjustesPreferencias fragment;
+
+    MiAsyncTask(AjustesPreferencias pFragment){
+        fragment = pFragment;
+    }
+
+
+    @Override
+    protected Integer doInBackground(Evento... params) {
+
+        HttpTransport transport = AndroidHttp.newCompatibleTransport();
+        JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
+        com.google.api.services.calendar.Calendar service = new Calendar.Builder(
+                transport, jsonFactory, fragment.credential)
+                .setApplicationName("BIHAR")
+                .build();
+
+        try{
+            for(Evento e: params){
+                crearEvento(e, service);
+            }
+
+            return 1;
+        }catch (UserRecoverableAuthIOException e) {
+            fragment.startActivityForResult(e.getIntent(),101);
+            return 0;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    @Override
+    protected void onPostExecute(Integer integer) {
+        super.onPostExecute(integer);
+        if(integer == 1){
+            fragment.notificarCambio();
+        }
+    }
+
+    private void crearEvento(Evento evento, Calendar service) throws IOException {
+
+
+        if(existeEvento(service, evento)){
+            return;
+        }
+
+        String summary = (evento.esTutoria()?fragment.getString(R.string.tutoria):fragment.getString(R.string.examen)) +
+                " " + evento.getNombreEvento();
+
+        Log.i("Evento",summary);
+        Event event = new Event()
+                .setSummary(summary)
+                .setLocation(evento.getCentro())
+                .setDescription(fragment.getString(R.string.aula) + " " + evento.getClase());
+
+        DateTime startDateTime = new DateTime(evento.getFechaExamenInicio());
+        EventDateTime start = new EventDateTime()
+                .setTimeZone("Europe/Madrid")
+                .setDateTime(startDateTime);
+        event.setStart(start);
+
+        DateTime endDateTime = new DateTime(evento.getFechaExamenFinal());
+        EventDateTime end = new EventDateTime()
+                .setTimeZone("Europe/Madrid")
+                .setDateTime(endDateTime);
+        event.setEnd(end);
+
+
+
+        String calendarId = "primary";
+
+        event = service.events().insert(calendarId, event).execute();
+        System.out.printf("Event created: %s\n", event.getHtmlLink());
+
+
+    }
+
+    //Evitamos que se creen eventos duplicados
+    private boolean existeEvento(Calendar service, Evento evento) throws IOException {
+        Events events = service.events().list("primary")
+                .setMaxResults(1)
+                .setTimeZone("Europe/Madrid")
+                .setTimeMin(DateTime.parseRfc3339(evento.getFechaExamenInicio()))
+                .setTimeMax(DateTime.parseRfc3339(evento.getFechaExamenFinal()))
+                .setSingleEvents(true)
+                .setOrderBy("startTime")
+                .execute();
+
+
+
+        List<Event> items = events.getItems();
+
+
+
+
+        return items.size() > 0;
+    }
+}
+
+
+class Evento{
+    private boolean esTutoria;
+    private LocalDateTime fechaExamenInicio;
+    private LocalDateTime fechaExamenFinal;
+    private String nombreEvento;
+    private String centro;
+    private String clase;
+
+    private DateTimeFormatter formatter;
+
+    public Evento(boolean esTutoria, LocalDateTime fechaExamenInicio, LocalDateTime fechaExamenFinal, String nombreEvento, String centro, String clase){
+        this.esTutoria = esTutoria;
+
+        formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+
+        this.fechaExamenInicio = fechaExamenInicio.minusHours(2);
+        this.fechaExamenFinal = fechaExamenFinal;
+        if(this.fechaExamenFinal != null){
+            this.fechaExamenFinal = this.fechaExamenFinal.minusHours(2);
+        }
+        this.nombreEvento = nombreEvento;
+        this.centro = centro;
+        this.clase = clase;
+    }
+
+    public Evento(boolean esTutoria, LocalDateTime fechaExamenInicio, String nombreEvento, String centro, String clase){
+        this(esTutoria, fechaExamenInicio, null, nombreEvento, centro, clase);
+    }
+
+    boolean esTutoria() {
+        return esTutoria;
+    }
+
+    String getFechaExamenInicio() {
+        return fechaExamenInicio.format(formatter);
+    }
+
+    String getFechaExamenFinal() {
+        if(fechaExamenFinal == null)
+            fechaExamenFinal = fechaExamenInicio.plusHours(2);
+        return fechaExamenFinal.format(formatter);
+    }
+
+    String getNombreEvento() {
+        return nombreEvento;
+    }
+
+    String getCentro() {
+        return centro;
+    }
+
+    String getClase() {
+        if(clase == null)
+            clase = "";
+        return clase;
+    }
+}
+
+

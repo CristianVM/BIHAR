@@ -92,4 +92,7 @@
     <string name="dialog_foto_galeria">Galeria</string>
     <string name="dialog_foto_cancelar">Utzi</string>
     <string name="dialog_foto_seleccionar">Aukeratu metodo bat</string>
+    <string name="examen">Azterketa:</string>
+    <string name="tutoria">Tutoritza:</string>
+    <string name="aula">Gela:</string>
 </resources>

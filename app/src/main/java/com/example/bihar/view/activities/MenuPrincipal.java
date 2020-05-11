@@ -71,7 +71,7 @@ public class MenuPrincipal extends AppCompatActivity {
                 boolean expediente = bundle.getBoolean("expediente");
                 if(expediente) {
                     TextView notaMedia = findViewById(R.id.txtNotaMedia);
-                    notaMedia.setText(String.valueOf(GestorUsuario.getGestorUsuario().getUsuario().getNotaMedia()));
+                    notaMedia.setText(String.valueOf(String.format("%.2f",GestorUsuario.getGestorUsuario().getUsuario().getNotaMedia())));
                     opciones = ListaOpcionesMenu.getListaOpcionesExpediente();
                     animacionCreditos(GestorUsuario.getGestorUsuario().getUsuario().getNumCreditos());
                 }
