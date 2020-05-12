@@ -148,11 +148,13 @@ public class AjustesPreferencias extends PreferenceFragmentCompat implements Sha
         super.onPreferenceTreeClick(preference);
         String key = preference.getKey();
         if(key.equals("portalWeb")){
-            // AL HACERLE CLICK AL PORTAL WEB TE DIRIGE AL WEB
+            // AL HACERLE CLICK AL PORTAL WEB TE DIRIGE A LA WEB DE LA UPV-EHU
             SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getContext());
             Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.ehu.eus/"+pref.getString("idioma","")+"/"));
             startActivity(i);
         }else if(key.equals("notificacion")) {
+            //AL HACERLE CLICK A LA SWITCH DE LAS NOTIFICACIONES, SE MODIFICA EN LAS SHARED PREFERENCES
+            // EL ESTADO DE LA NOTIFICACION Y TAMBIEN SE ACTUALIZA EN LA BASE DE DATOS REMOTA
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
 
             SharedPreferences.Editor editor = prefs.edit();
@@ -171,6 +173,7 @@ public class AjustesPreferencias extends PreferenceFragmentCompat implements Sha
             }
             editor.apply();
 
+            // SE PREPARA PARA MODIFICAR EN LA BASE DE DATOS
             Data.Builder data = new Data.Builder();
             data.putString("datos",new JSONObject(map).toString());
 
@@ -202,6 +205,9 @@ public class AjustesPreferencias extends PreferenceFragmentCompat implements Sha
             dialog = builder.create();
             dialog.show();
         }else if(key.equals("contrasena")){
+            // SI SE HACE CLICK EN LA PREFERENCIA DE CAMBIAR LA CONTRASEÑA
+
+            // SE ABRE UN DIALOGO DONDE TIENES QUE ESCRIBIR LA CONTRASEÑA ACTUAL Y LA NUEVA
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             LayoutInflater inflater = getActivity().getLayoutInflater();
             View vista = inflater.inflate(R.layout.dialog_cambiocontrasenia,null);
@@ -211,15 +217,18 @@ public class AjustesPreferencias extends PreferenceFragmentCompat implements Sha
             TextView txtPersona = (TextView) vista.findViewById(R.id.dialog_cambioContrasena_persona);
             txtPersona.setText(GestorUsuario.getGestorUsuario().getUsuario().getIdUsuario());
             Button btn = (Button) vista.findViewById(R.id.dialog_cambioContrasena_boton);
-
             AlertDialog dialog = builder.create();
 
             btn.setOnClickListener(view -> {
+
+                //AL DARLE CLICK AL BOTON DE CAMBIAR LA CONTRASEÑA
                 EditText antigua = (EditText) vista.findViewById(R.id.dialog_cambioContrasena_contrasenaAnterior);
                 EditText nueva = (EditText) vista.findViewById(R.id.dialog_cambioContrasena_contrasenaNueva);
                 String txtAntigua = antigua.getText().toString();
                 String txtNueva = nueva.getText().toString();
+
                 if(!txtAntigua.equals("") && !txtNueva.equals("")){
+                    //SE COMPRUEBA QUE NO ESTÁN VACÍOS Y SE MANDA LA NUEVA CONTRASEÑA A LA BASE DE DATOS
                         Map<String,String> map = new HashMap<>();
                         map.put("idPersona",GestorUsuario.getGestorUsuario().getUsuario().getIdUsuario());
                         map.put("antigua",txtAntigua);
@@ -227,7 +236,6 @@ public class AjustesPreferencias extends PreferenceFragmentCompat implements Sha
                         map.put("accion","cambioContrasena");
 
                         JSONObject json = new JSONObject(map);
-
                         Data.Builder data = new Data.Builder();
                         data.putString("datos",json.toString());
 
@@ -245,12 +253,14 @@ public class AjustesPreferencias extends PreferenceFragmentCompat implements Sha
                                 if (status != null && status.getState().isFinished()) {
                                     String resultado = status.getOutputData().getString("result");
                                     if(resultado.equals("Ok")){
+                                        // SI SE HA MODIFICADO LA CONTRASEÑA CORRECTAMENTE
                                         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
                                         SharedPreferences.Editor editor = prefs.edit();
                                         editor.putString("password",txtNueva);
                                         editor.apply();
                                         Toast.makeText(getContext(),getActivity().getResources().getString(R.string.ajustes_contrasenaCambiada),Toast.LENGTH_SHORT).show();
                                     }else{
+                                        //NO SE HA MODIFICADO LA CONTRASEÑA
                                         Toast.makeText(getContext(),getActivity().getResources().getString(R.string.ajustes_contrasenaNoCambiada),Toast.LENGTH_SHORT).show();
                                     }
                                 }
@@ -258,6 +268,7 @@ public class AjustesPreferencias extends PreferenceFragmentCompat implements Sha
                     dialog.dismiss();
 
                 }else{
+                    // ALGÚN CAMPO ESTÁ VACÍO
                     Toast.makeText(getActivity(),getActivity().getResources().getString(R.string.dialog_notaprofesor_vacio),Toast.LENGTH_SHORT).show();
                 }
             });
@@ -548,6 +559,10 @@ public class AjustesPreferencias extends PreferenceFragmentCompat implements Sha
         WorkManager.getInstance(getActivity()).enqueue(otwr);
     }
 
+    /**
+     * Recoge el Lifecycle de la actividad Ajustes
+     * @param lifecycleOwner: lifecycleOwner ajustes
+     */
     public void setLifecycleOwner(LifecycleOwner lifecycleOwner){
         this.lifecycleOwner = lifecycleOwner;
     }

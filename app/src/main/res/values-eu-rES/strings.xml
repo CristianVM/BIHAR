@@ -127,7 +127,6 @@
     <string name="lista_autor">"Egilea: "</string>
     <string name="lista_cuando">"Argitalpena: "</string>
     <string name="libroInformacion_universidades">Unibertsitateak</string>
-    <string name="notificacion_descripcion">Noten argitalpenaren jakinarazpena erakusten du</string>
     <string name="foro_titulo">FORO</string>
     <string name="foro_mensaje_enviado">%s -(e)k mezu bat bidali du.</string>
     <string name="tutorias">TUTORETZAK</string>
