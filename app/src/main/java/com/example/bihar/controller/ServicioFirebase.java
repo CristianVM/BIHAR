@@ -41,7 +41,7 @@ public class ServicioFirebase extends FirebaseMessagingService {
                 NotificationCompat.Builder builder;
                 if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
                     builder = new NotificationCompat.Builder(getApplicationContext(),"BIHAR");
-                    builder.setLargeIcon(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.ic_notificacion_icono));
+                    builder.setLargeIcon(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.ic_stat_call_white));
                 }else{
                     builder = new NotificationCompat.Builder(getApplicationContext());
                     builder.setPriority(NotificationCompat.PRIORITY_HIGH);
@@ -50,7 +50,7 @@ public class ServicioFirebase extends FirebaseMessagingService {
                 //ESPECIFICACIONES DE LA NOTIFICACION
                 builder.setContentTitle(notification.getTitle());
                 builder.setContentText(notification.getBody());
-                builder.setSmallIcon(R.drawable.ic_notificacion_icono);
+                builder.setSmallIcon(R.drawable.ic_stat_call_white);
                 builder.setAutoCancel(true);
                 builder.setStyle(new NotificationCompat.BigTextStyle().bigText(notification.getBody()));
                 builder.setColor(getResources().getColor(R.color.verde));
