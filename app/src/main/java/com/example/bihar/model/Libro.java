@@ -8,14 +8,17 @@ public class Libro {
     private String editorial;
     private String fecha;
     private String tema;
+    private String temaEuskera;
 
-    public Libro(String titulo, String autor, String descripcion, String editorial, String fecha, String tema) {
+    public Libro(String titulo, String autor, String descripcion, String editorial, String fecha, String tema,
+                 String temaEuskera) {
         this.titulo = titulo;
         this.autor = autor;
         this.descripcion = descripcion;
         this.editorial = editorial;
         this.fecha = fecha;
         this.tema = tema;
+        this.temaEuskera = temaEuskera;
     }
 
     public String getTitulo() {
@@ -40,5 +43,9 @@ public class Libro {
 
     public String getTema() {
         return tema;
+    }
+
+    public String getTemaEuskera() {
+        return temaEuskera;
     }
 }

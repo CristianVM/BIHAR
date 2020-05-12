@@ -81,7 +81,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
+            android:layout_marginStart="15dp"
             android:textColor="@color/negro"
             android:background="@drawable/boton_redondo_addnota"
             android:text="@string/imparte_anadirNota"

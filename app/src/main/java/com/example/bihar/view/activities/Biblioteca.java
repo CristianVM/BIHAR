@@ -160,7 +160,7 @@ public class Biblioteca extends AppCompatActivity implements DialogFiltradoLibro
         JSONObject jsonFiltrado = new JSONObject(map);
 
         limpiarArrayLists();
-        List<String> listaLibrosFiltrado = GestorLibros.getGestorLibros().filtrarLibro(jsonFiltrado.toString());
+        List<String> listaLibrosFiltrado = GestorLibros.getGestorLibros().filtrarLibro(jsonFiltrado.toString(),idiomaEstablecido);
         temaInformatica="";
         temaEconomia="";
         temaMedicina="";
