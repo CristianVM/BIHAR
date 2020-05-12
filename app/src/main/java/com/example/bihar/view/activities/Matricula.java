@@ -69,7 +69,6 @@ public class Matricula extends AppCompatActivity{
         ToolBar toolBar = (ToolBar) getSupportFragmentManager().findFragmentById(R.id.frgmt_toolbarMatricula);
         toolBar.cambiarTituloToolbar(getResources().getString(R.string.matricula));
 
-
         // SE VAN METIENDO LOS DATOS PARA MANDARLE LA PETICION A LA BASE DE DATOS
         Map<String,String> map = new HashMap<>();
         map.put("idPersona",idPersona);

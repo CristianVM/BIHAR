@@ -160,4 +160,5 @@
     <string name="desvincularCuenta">Lotura hautsi nahi duzu zure Google kontu eta aplikazioaren artean?</string>
     <string name="datosGuardados">Datuak gordeta</string>
     <string name="permiso_denegado">Baimena ukatuta</string>
+    <string name="notificacionCancelar">%s tutoretza eskaera deuseztatu du</string>
 </resources>

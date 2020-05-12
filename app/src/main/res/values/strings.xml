@@ -67,6 +67,7 @@
     <string name="preguntaCancelar">¿Realmente deseas cancelar la reserva de la tutoría?</string>
     <string name="notificacionEstado">%s ha %s tu petición de tutoría.</string>
     <string name="notificacionSolicitud">%s ha solicitado reunirse contigo en una tutoría.</string>
+    <string name="notificacionCancelar">%s ha cancelado la solitud de tutoría</string>
     <string name="aceptado">aceptado</string>
     <string name="rechazado">rechazado</string>
 

@@ -466,6 +466,11 @@ class MyExpandableListAdapter extends BaseExpandableListAdapter{
         map.put("accion","borrarReservaTutoria");
         map.put("idPersona", idPersona);
         map.put("idTutoria",String.valueOf(idTutoria));
+
+        SharedPreferences preferences = androidx.preference.PreferenceManager.getDefaultSharedPreferences(activity);
+
+        map.put("msg",activity.getString(R.string.notificacionCancelar,preferences.getString("nombreUsuario","")));
+        map.put("titulo",activity.getString(R.string.tutorias));
         JSONObject json = new JSONObject(map);
 
         Data.Builder data = new Data.Builder();
