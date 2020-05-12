@@ -515,7 +515,7 @@ public class AjustesPreferencias extends PreferenceFragmentCompat implements Sha
 
         JSONObject parametrosJSON = new JSONObject();
         parametrosJSON.put("accion", "obtenerImagen");
-        parametrosJSON.put("idPersona", idUsuario);
+        parametrosJSON.put("idUsuario", idUsuario);
 
         Data datos = new Data.Builder()
                 .putString("datos", parametrosJSON.toJSONString())
