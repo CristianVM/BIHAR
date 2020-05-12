@@ -56,7 +56,7 @@
                 <TextView
                     android:id="@+id/nombreProfesor"
                     android:layout_width="wrap_content"
-                    android:layout_height="27dp"
+                    android:layout_height="wrap_content"
                     android:textColor="@color/negro"
                     android:textSize="20sp"
                     android:textStyle="bold"
@@ -65,7 +65,7 @@
                 <TextView
                     android:id="@+id/departamentoProfesor"
                     android:layout_width="wrap_content"
-                    android:layout_height="20dp"
+                    android:layout_height="wrap_content"
                     android:textSize="15sp"
                     android:textStyle="bold|italic"
                     tools:text="Lenguajes y Sistemas Informáticos" />
@@ -73,14 +73,14 @@
                 <TextView
                     android:id="@+id/despachoProfesor"
                     android:layout_width="wrap_content"
-                    android:layout_height="19dp"
+                    android:layout_height="wrap_content"
                     android:textColor="#AA0000"
                     tools:text="PI18A" />
 
                 <TextView
                     android:id="@+id/nombreCentroProfesor"
                     android:layout_width="wrap_content"
-                    android:layout_height="19dp"
+                    android:layout_height="wrap_content"
                     android:textColor="#3333FF"
                     tools:text="Facultad de Informática de San Sebastián" />
 
