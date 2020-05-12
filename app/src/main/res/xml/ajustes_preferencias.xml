@@ -3,57 +3,57 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory
-        android:title="@string/ajustes_usuario"
+        android:icon="@drawable/ic_ajustes_categoria_usuario"
         android:key="keyUsuario"
         android:selectable="false"
-        android:icon="@drawable/ic_ajustes_categoria_usuario">
+        android:title="@string/ajustes_usuario">
 
         <Preference
-            android:title="@string/ajustes_gmail"
-            android:summary="@string/ajustes_gmail_descripcion"
+            android:dialogTitle="@string/ajustes_gmail_dialog"
             android:icon="@drawable/ic_ajustes_email"
             android:key="gmail"
-            android:dialogTitle="@string/ajustes_gmail_dialog"/>
+            android:summary="@string/ajustes_gmail_descripcion"
+            android:title="@string/ajustes_gmail" />
 
         <PreferenceScreen
-            android:title="@string/ajustes_contrasena"
-            android:summary="@string/ajustes_contrasena_descripcion"
+            android:dialogTitle="@string/ajustes_contrasena_dialog"
             android:icon="@drawable/ic_ajustes_contrasena"
             android:key="contrasena"
-            android:dialogTitle="@string/ajustes_contrasena_dialog"/>
+            android:summary="@string/ajustes_contrasena_descripcion"
+            android:title="@string/ajustes_contrasena" />
 
         <PreferenceScreen
-            android:title="@string/ajustes_fotoPerfil"
-            android:summary="@string/ajustes_fotoPerfil_descripcion"
+            android:icon="@drawable/ic_ajustes_camara"
             android:key="fotoPerfil"
-            android:icon="@drawable/ic_ajustes_camara"/>
+            android:summary="@string/ajustes_fotoPerfil_descripcion"
+            android:title="@string/ajustes_fotoPerfil" />
 
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="@string/ajustes_aplicacion"
+        android:icon="@drawable/ic_ajustes_categoria_bihar"
         android:selectable="false"
-        android:icon="@drawable/ic_ajustes_categoria_bihar">
+        android:title="@string/ajustes_aplicacion">
         <ListPreference
-            android:title="@string/ajustes_idioma"
-            android:key="idioma"
-            android:summary="@string/ajustes_idioma_descripcion"
-            android:icon="@drawable/ic_ajustes_idioma"
+            android:dialogTitle="@string/ajustes_idioma_descripcion"
             android:entries="@array/idioma"
             android:entryValues="@array/idiomaValores"
-            android:dialogTitle="@string/ajustes_idioma_descripcion"/>
+            android:icon="@drawable/ic_ajustes_idioma"
+            android:key="idioma"
+            android:summary="@string/ajustes_idioma_descripcion"
+            android:title="@string/ajustes_idioma" />
 
         <PreferenceScreen
-            android:title="@string/ajustes_web"
+            android:icon="@drawable/ic_ajustes_web"
             android:key="portalWeb"
             android:summary="@string/ajustes_web_descripcion"
-            android:icon="@drawable/ic_ajustes_web"/>
+            android:title="@string/ajustes_web" />
 
         <SwitchPreference
-            android:title="@string/ajustes_notificacion"
-            android:summary="@string/ajustes_notificacion_descripcion"
+            android:icon="@drawable/ic_ajustes_notificacion"
             android:key="notificacion"
-            android:icon="@drawable/ic_ajustes_notificacion"/>
+            android:summary="@string/ajustes_notificacion_descripcion"
+            android:title="@string/ajustes_notificacion" />
     </PreferenceCategory>
 
 

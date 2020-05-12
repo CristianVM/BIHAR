@@ -11,8 +11,11 @@ import androidx.work.WorkManager;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -38,6 +41,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -61,11 +65,26 @@ public class Biblioteca extends AppCompatActivity implements DialogFiltradoLibro
     private String temaInformatica;
     private String temaMedicina;
 
+    private String idiomaEstablecido;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        idiomaEstablecido = prefs.getString("idioma", "es");
+        if (idiomaEstablecido.equals("es")) {
+            Locale locale = new Locale("es");
+            cambiarIdiomaOnCreate(locale);
+        } else if (idiomaEstablecido.equals("eu")) {
+            Locale locale = new Locale("eu");
+            cambiarIdiomaOnCreate(locale);
+        }
+
         setContentView(R.layout.activity_biblioteca);
 
+        // SE INICIALIZAN LAS LISTAS
         listView = (ListView) findViewById(R.id.biblioteca_lista);
         tituloToolbar = (TextView) findViewById(R.id.biblioteca_tituloToolbar);
         imagenBusqueda = (CircleImageView) findViewById(R.id.biblioteca_imgBusqueda);
@@ -82,6 +101,7 @@ public class Biblioteca extends AppCompatActivity implements DialogFiltradoLibro
         temaInformatica = "";
 
 
+        //AL HACERLE CLICK A "ATRAS" SE CIERRA LA ACTIVIDAD
         imagenAtras.setOnClickListener( view -> {
             finish();
         });
@@ -99,6 +119,7 @@ public class Biblioteca extends AppCompatActivity implements DialogFiltradoLibro
             return false;
         });
 
+        // LISTENERS AL BUSCAR UN LIBRO
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -107,6 +128,7 @@ public class Biblioteca extends AppCompatActivity implements DialogFiltradoLibro
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                //AL CAMBIAR LA BUSQUEDA, SE COGEN LOS LIBROS QUE CONTENGAN ESAS LETRAS
                 limpiarArrayLists();
                 List<String> filtradoLibros = GestorLibros.getGestorLibros().buscarLibro(newText);
                 listView.setAdapter(actualizarListadoLibros(filtradoLibros));
@@ -124,8 +146,12 @@ public class Biblioteca extends AppCompatActivity implements DialogFiltradoLibro
         cargarLibros(data);
     }
 
+    /**
+     * Se filtran los libros por temas
+     */
     private void filtrarLibros() {
 
+        // SE FILTRA LOS LIBRO POR TEMAS
         Map<String, String> map = new HashMap<>();
         map.put("accion", "consultarLibros");
         map.put("filtroInformatica", temaInformatica);
@@ -142,11 +168,19 @@ public class Biblioteca extends AppCompatActivity implements DialogFiltradoLibro
         adapterListaLibros.notifyDataSetChanged();
     }
 
+    /**
+     * Se abre el dialogo para filtrar los libros
+     * @param view
+     */
     public void dialogFiltrado(View view){
         DialogFiltradoLibros dialogFiltradoLibros = new DialogFiltradoLibros();
         dialogFiltradoLibros.show(getSupportFragmentManager(),"dialogFiltradoLibros");
     }
 
+    /**
+     * Carga los libros del GestorLibros y los almacena en la lista
+     * @param data: el contenido para realizar la petición a la BD Remota
+     */
     private void cargarLibros(Data.Builder data) {
 
         Constraints restricciones = new Constraints.Builder()
@@ -161,8 +195,8 @@ public class Biblioteca extends AppCompatActivity implements DialogFiltradoLibro
         WorkManager.getInstance(this).getWorkInfoByIdLiveData(trabajo.getId()).observe(
                 this, status -> {
                     if (status != null && status.getState().isFinished()) {
-                        //String resultado = status.getOutputData().getString("result");
 
+                        // RECORRE EL MAP Y VA AÑADIENDO LOS LIBROS A LAS LISTAS
                         Map<String,Libro> librosMap = GestorLibros.getGestorLibros().getLibros();
                         for(Map.Entry<String,Libro> datos: librosMap.entrySet()){
                             autores.add(datos.getValue().getAutor());
@@ -172,6 +206,7 @@ public class Biblioteca extends AppCompatActivity implements DialogFiltradoLibro
                             imagenes.add(R.drawable.ic_laptop_black_24dp);
                         }
 
+                        // SE ESTABLECE EL ADAPTER AL LISTVIEW
                         adapterListaLibros = new AdapterListaLibros(
                                 this, imagenes, autores, titulares, fechas);
                         listView.setAdapter(adapterListaLibros);
@@ -179,6 +214,8 @@ public class Biblioteca extends AppCompatActivity implements DialogFiltradoLibro
                         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                // AL HACER CLICK EN UN LIBRO SE MANDA A LA ACTIVIDAD DE LA INFORMACIÓN DEL
+                                //LIBRO
                                 Intent intent = new Intent(Biblioteca.this, LibroInformacion.class);
                                 Libro libro = GestorLibros.getGestorLibros().getInfoLibro(idLibros.get(i));
                                 intent.putExtra("editorial", libro.getEditorial());
@@ -231,7 +268,6 @@ public class Biblioteca extends AppCompatActivity implements DialogFiltradoLibro
     private AdapterListaLibros actualizarListadoLibros(List<String> listaFiltrada){
         for(String id: listaFiltrada){
             Libro libro = GestorLibros.getGestorLibros().getInfoLibro(id);
-            Log.i("BIBLIO",libro.getTitulo());
             autores.add(libro.getAutor());
             titulares.add(libro.getTitulo());
             fechas.add(libro.getFecha());
@@ -241,6 +277,9 @@ public class Biblioteca extends AppCompatActivity implements DialogFiltradoLibro
         return new AdapterListaLibros(this, imagenes, autores, titulares, fechas);
     }
 
+    /**
+     * Al darle al botón de atrás vuelve aparecer el titulo del toolbar más la imagen de la lupa
+     */
     @Override
     public void onBackPressed() {
         if (!searchView.isIconified()) {
@@ -252,17 +291,84 @@ public class Biblioteca extends AppCompatActivity implements DialogFiltradoLibro
         }
     }
 
+    /**
+     * Se comprueba si al cerrar la aplicación en segundo plano si se estaba buscando un libro
+     * @param outState
+     */
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt("visible", tituloToolbar.getVisibility());
     }
 
+    /**
+     * Se recoge si se estaba buscando un libro o no
+     * @param savedInstanceState
+     */
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         int visible = savedInstanceState.getInt("visible");
         tituloToolbar.setVisibility(visible);
         imagenAtras.setVisibility(visible);
+    }
+
+    /**
+     * Se comprueba el idioma que tenía la actividad con el de SharedPreferences: si es distinto se
+     * cambia el idioma cerrando y volviendo a iniciar la actividad.
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String idiomaNuevo = sharedPreferences.getString("idioma", "es");
+
+        if (!idiomaNuevo.equals(idiomaEstablecido)) {
+            idiomaEstablecido = idiomaNuevo;
+            if (idiomaEstablecido.equals("es")) {
+                Locale locale = new Locale("es");
+                cambiarIdiomaOnResume(locale);
+            } else if (idiomaEstablecido.equals("eu")) {
+                Locale locale = new Locale("eu");
+                cambiarIdiomaOnResume(locale);
+            }
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        GestorLibros.getGestorLibros().limpiarLibros();
+    }
+
+    /**
+     * Cambia el idioma de la aplicación al reanudarse la actividad. Se destruye la actividad y se
+     * vuelve a iniciar
+     *
+     * @param locale: el idioma almacenado en SharedPreferences
+     */
+    public void cambiarIdiomaOnResume(Locale locale) {
+        Locale.setDefault(locale);
+        Resources res = getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration conf = res.getConfiguration();
+        conf.locale = locale;
+        res.updateConfiguration(conf, dm);
+        recreate();
+    }
+
+    /**
+     * Cambia el idioma de la aplicación al crearse la actividad
+     *
+     * @param locale: el idioma almacenado en SharedPreferences
+     */
+    public void cambiarIdiomaOnCreate(Locale locale) {
+        Locale.setDefault(locale);
+        Resources res = getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration conf = res.getConfiguration();
+        conf.locale = locale;
+        res.updateConfiguration(conf, dm);
     }
 }

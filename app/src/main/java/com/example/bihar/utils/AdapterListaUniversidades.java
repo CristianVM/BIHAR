@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LifecycleOwner;
+import androidx.preference.PreferenceManager;
 import androidx.work.Constraints;
 import androidx.work.Data;
 import androidx.work.NetworkType;
@@ -25,6 +27,7 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
 import com.example.bihar.R;
+import com.example.bihar.controller.GestorNotificaciones;
 import com.example.bihar.controller.WorkerBihar;
 import com.example.bihar.view.activities.MapsUniversidad;
 
@@ -46,6 +49,7 @@ public class AdapterListaUniversidades extends BaseAdapter {
     private String[] latitudes;
     private String[] longitudes;
     private Activity activity;
+    private String tituloLibro;
 
     /**
      * Constructor del adapter que muestra las universidades donde está el libro
@@ -63,7 +67,7 @@ public class AdapterListaUniversidades extends BaseAdapter {
     public AdapterListaUniversidades(Context context, String[] universidades, String[] disponibilidades,
                                      boolean[] estanDisponibles, String[] idLibros, String idPersona,
                                      LifecycleOwner lifecycleOwner, String[] latitudes, String[] longitudes,
-                                     Activity activity) {
+                                     Activity activity,String tituloLibro) {
         this.context = context;
         this.layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.universidades = universidades;
@@ -75,6 +79,7 @@ public class AdapterListaUniversidades extends BaseAdapter {
         this.latitudes = latitudes;
         this.longitudes = longitudes;
         this.activity = activity;
+        this.tituloLibro = tituloLibro;
     }
 
     /**
@@ -195,11 +200,17 @@ public class AdapterListaUniversidades extends BaseAdapter {
                             imageView.setImageResource(R.drawable.ic_libro_nodisponible);
                             txtDisponible.setTextColor(Color.RED);
                             btnReserva.setEnabled(false);
-                            disponibilidades[i] = context.getResources().getText(R.string.libroInformacion_libroNoDisponible).toString() +" " + resultado;
+                            disponibilidades[i] = context.getResources().getText(R.string.libroInformacion_libroNoDisponible).toString() + "   " + resultado;
                             txtDisponible.setText(disponibilidades[i]);
 
                             Toast.makeText(context.getApplicationContext(),
                                     context.getResources().getString(R.string.libroInformacion_reservaRealizada), Toast.LENGTH_SHORT).show();
+
+                            // SE ENVÍA UNA NOTIFICACIÓN AL ALUMNO
+                            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+                            if(prefs.getBoolean("notificacion",true)){
+                                GestorNotificaciones.getGestorNotificaciones(context).notificacionReservaLibro(tituloLibro,resultado);
+                            }
                         } else {
                             //HA HABIDO ALGUN ERROR
                             Toast.makeText(context.getApplicationContext(),

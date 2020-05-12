@@ -119,6 +119,14 @@
     <string name="ajustes_contrasenaNoCambiada">Errorea, pasahitza ez da aldatu</string>
     <string name="dialog_notaprofesor_ordinaria">Nota arrunta?</string>
     <string name="notificacion_nota">Notak</string>
+    <string name="notificacion_descripcion">BIHARen jakinarazpenak erakusten ditu, notak argitaratzean, liburuak erreserbatzean, foroak eta abar.</string>
+    <string name="ajustes">DOIKUNTZAK</string>
+    <string name="imparte_anadirNota">Nota gehitu</string>
+    <string name="libroReservado">Liburua erreserbatuta</string>
+    <string name="libroReservadoQueda">arte errersebatuta egongo da</string>
+    <string name="lista_autor">"Egilea: "</string>
+    <string name="lista_cuando">"Argitalpena: "</string>
+    <string name="libroInformacion_universidades">Unibertsitateak</string>
     <string name="notificacion_descripcion">Noten argitalpenaren jakinarazpena erakusten du</string>
     <string name="foro_titulo">FORO</string>
     <string name="foro_mensaje_enviado">%s -(e)k mezu bat bidali du.</string>

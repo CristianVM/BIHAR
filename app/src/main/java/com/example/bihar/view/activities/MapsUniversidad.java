@@ -55,9 +55,9 @@ public class MapsUniversidad extends FragmentActivity implements OnMapReadyCallb
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
         //LOCALIZACION DE LA UNIVERSIDAD
-        LatLng coordenadasRestaurante = new LatLng(latitud, longitud);
+        LatLng coordenadas = new LatLng(latitud, longitud);
         mMap.addMarker(new MarkerOptions()
-                        .position(coordenadasRestaurante)
+                        .position(coordenadas)
                         .title(universidad));
 
         // Controles UI
@@ -67,6 +67,6 @@ public class MapsUniversidad extends FragmentActivity implements OnMapReadyCallb
 
         mMap.setMyLocationEnabled(true);
         mMap.getUiSettings().setMyLocationButtonEnabled(true);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(coordenadasRestaurante,15));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(coordenadas,15));
     }
 }

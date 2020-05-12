@@ -51,6 +51,11 @@ public class InicioSesion extends AppCompatActivity {
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
+        /**
+         * Extraído de Stack Overflow. Añadido en varias actividades.
+         * Pregunta: https://stackoverflow.com/questions/31183732/changing-language-in-run-time-with-preferences-android
+         * Autor: https://stackoverflow.com/users/5027640/zolt%c3%a1n-umlauf
+         */
         idiomaEstablecido = prefs.getString("idioma","es");
         if(idiomaEstablecido.equals("es")){
             Locale locale = new Locale("es");

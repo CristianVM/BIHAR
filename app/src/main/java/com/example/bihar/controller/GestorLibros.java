@@ -121,4 +121,11 @@ public class GestorLibros {
         }
         return filtro;
     }
+
+    /**
+     * Vacía los libros
+     */
+    public void limpiarLibros(){
+        libros.clear();
+    }
 }

@@ -51,6 +51,9 @@
     <string name="title_activity_maps_universidad">Map</string>
     <string name="libroInformacion_explPermiso">Necesario el permiso para ver la localización</string>
     <string name="biblioteca">BIBLIOTECA</string>
+    <string name="libroInformacion_universidades">Universidades</string>
+    <string name="lista_autor">"Escrito por "</string>
+    <string name="lista_cuando">"Publicado en "</string>
 
     <!--TUTORIAS -->
     <string name="tutorias">TUTORÍAS</string>
@@ -140,6 +143,8 @@
     <string name="tutoria">Tutoría:</string>
     <string name="aula">Aula:</string>
     <string name="datosGuardados">Datos guardados correctamente.</string>
+    <string name="ajustes">AJUSTES</string>
+
 
     <!-- ASIGNATURAS-->
     <string name="asignaturas_curso">Curso: %s</string>
@@ -158,7 +163,6 @@
     <string name="rechazada">Rechazada</string>
     <string name="creditos_superados">CRÉDITOS SUPERADOS:</string>
     <string name="nota_media">NOTA MEDIA:</string>
-    <string name="ajustes">AJUSTES</string>
 
     <!-- AÑADIR NOTAS PROFESOR  -->
     <string name="imparte_anadirNota">Añadir nota</string>
@@ -177,8 +181,13 @@
     <string name="ajustes_contrasenaCambiada">Contraseña cambiada</string>
     <string name="ajustes_contrasenaNoCambiada">Error, contraseña no modificada</string>
     <string name="dialog_notaprofesor_ordinaria">C. Ordinaria?</string>
-    <string name="notificacion_nota">Notas</string>
-    <string name="notificacion_descripcion">Muestra la notificación de la publicación de las notas</string>
+
+
+    <!-- NOTIFICACIONES -->
+    <string name="notificacion_nota">BIHAR</string>
+    <string name="notificacion_descripcion">Muestra las notificaciones de BIHAR, ya sean la publicación de las notas, realización de las reservas, foros etc.</string>
+    <string name="libroReservado">Libro reservado</string>
+    <string name="libroReservadoQueda">queda reservado hasta</string>
 
 
 </resources>
