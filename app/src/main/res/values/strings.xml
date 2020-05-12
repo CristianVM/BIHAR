@@ -182,7 +182,6 @@
     <string name="ajustes_contrasenaNoCambiada">Error, contraseña no modificada</string>
     <string name="dialog_notaprofesor_ordinaria">C. Ordinaria?</string>
 
-
     <!-- NOTIFICACIONES -->
     <string name="notificacion_nota">BIHAR</string>
     <string name="notificacion_descripcion">Muestra las notificaciones de BIHAR, ya sean la publicación de las notas, realización de las reservas, foros etc.</string>
