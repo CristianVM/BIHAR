@@ -100,6 +100,7 @@ public class ForoVirtual  extends AppCompatActivity {
         parametrosJSON.put("accion", "obtenerAsignaturasForo");
         parametrosJSON.put("idUsuario", idUsuario);
         parametrosJSON.put("esAlumno", esAlumno);
+        parametrosJSON.put("idioma", idiomaEstablecido);
 
         Data datos = new Data.Builder()
                 .putString("datos", parametrosJSON.toJSONString())
