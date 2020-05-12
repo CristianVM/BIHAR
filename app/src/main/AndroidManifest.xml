@@ -38,14 +38,15 @@
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/ic_launcher" />
+            android:resource="@drawable/ic_notificacion_icono" />
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
-            android:resource="@color/colorAccent" />
+            android:resource="@color/verde" />
+
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
-            android:value="Notas" />
+            android:value="BIHAR" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
