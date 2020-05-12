@@ -35,20 +35,19 @@ public class ServicioFirebase extends FirebaseMessagingService {
         super.onMessageReceived(remoteMessage);
 
         if(remoteMessage.getNotification() !=null){
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-            boolean notificacion = prefs.getBoolean("notificacion",true);
-            if(notificacion){
                 RemoteMessage.Notification notification = remoteMessage.getNotification();
 
+                //SE CREA LA NOTIFICACION DEPENDIENDO DE LA VERSION DEL MOVIL
                 NotificationCompat.Builder builder;
                 if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-                    builder = new NotificationCompat.Builder(getApplicationContext(),"Notas");
+                    builder = new NotificationCompat.Builder(getApplicationContext(),"BIHAR");
                     builder.setLargeIcon(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.ic_launcher));
                 }else{
                     builder = new NotificationCompat.Builder(getApplicationContext());
                     builder.setPriority(NotificationCompat.PRIORITY_HIGH);
                 }
 
+                //ESPECIFICACIONES DE LA NOTIFICACION
                 builder.setContentTitle(notification.getTitle());
                 builder.setContentText(notification.getBody());
                 builder.setSmallIcon(R.drawable.ic_launcher);
@@ -57,8 +56,9 @@ public class ServicioFirebase extends FirebaseMessagingService {
 
                 NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
+                //SE LANZA LA NOTIFICACION
                 notificationManager.notify(6859, builder.build());
-            }
+
 
         }
     }

@@ -26,6 +26,10 @@ public class HorarioAsignatura {
     private List<String> nombresAsignaturas;
     private Context context;
 
+    /**
+     * Constructor de los horarios de las asignaturas
+     * @param context: el contexto
+     */
     public HorarioAsignatura(Context context) {
         diaSemanas = new ArrayList<>();
         semanas = new ArrayList<>();
@@ -35,6 +39,14 @@ public class HorarioAsignatura {
         this.context = context;
     }
 
+    /**
+     * Añade un horario de la asignatura
+     * @param diaSemana: día de la semana
+     * @param semana: semana de la hora
+     * @param hInicio: hora inicio de la clase
+     * @param hFinal: hora final de la clase
+     * @param asg: id asignatura
+     */
     public void addHorarioAsignatura(String diaSemana, String semana, String hInicio, String hFinal, String asg) {
         procesarDiaSemana(diaSemana);
         procesarDiaClase(diaSemana, semana);
@@ -43,6 +55,11 @@ public class HorarioAsignatura {
         nombresAsignaturas.add(asg);
     }
 
+    /**
+     * Se obtiene el horario de una posición concreta de la lista
+     * @param pos: posición
+     * @return: Un JSON con el horario
+     */
     public JSONObject getHorario(int pos) {
         Map<String, String> map = new HashMap<>();
         map.put("diaSemanas", diaSemanas.get(pos));
@@ -53,6 +70,10 @@ public class HorarioAsignatura {
         return new JSONObject(map);
     }
 
+    /**
+     * Procesa el día de la semana dependiendo del número
+     * @param diaSemana: día de la semana
+     */
     private void procesarDiaSemana(String diaSemana) {
         if (diaSemana.equals("0")) {
             diaSemanas.add(context.getResources().getString(R.string.horario_diaLunes));
@@ -70,7 +91,7 @@ public class HorarioAsignatura {
     /**
      * **Extraído de Stack Overflow
      * Pregunta: https://stackoverflow.com/questions/5301226/convert-string-to-calendar-object-in-java
-     * Autor: http://stackoverflow.com/users/2306915/azuneca
+     * Autor: https://stackoverflow.com/users/260990/jigar-joshi
      *
      * @param diaSemana: dia de la semana. 0 es Lunes, 1 Martes...
      * @param semana: la fecha de la semana
@@ -93,6 +114,12 @@ public class HorarioAsignatura {
         }
     }
 
+    /**
+     * Devuelve el JSON con con el horario de la asignatura a tal fecha
+     * @param fecha: fecha elegida
+     * @param format: formato de la fecha
+     * @return: JSON con el horario
+     */
     public JSONObject horarioAsignatura(Calendar fecha,SimpleDateFormat format) {
         for (int i = 0; i < semanas.size(); i++) {
             String semana = semanas.get(i);

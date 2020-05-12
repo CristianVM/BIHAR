@@ -3,8 +3,13 @@ package com.example.bihar.controller;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Build;
+
+import androidx.core.app.NotificationCompat;
+import androidx.preference.PreferenceManager;
 
 import com.example.bihar.R;
 
@@ -42,7 +47,7 @@ public class GestorNotificaciones {
             CharSequence name = context.getResources().getString(R.string.notificacion_nota);
             String descripcion = context.getResources().getString(R.string.notificacion_descripcion);
             int importancia = NotificationManager.IMPORTANCE_HIGH;
-            NotificationChannel channel = new NotificationChannel("Notas",name,importancia);
+            NotificationChannel channel = new NotificationChannel("BIHAR",name,importancia);
             channel.enableLights(true);
             channel.setLightColor(Color.GREEN);
             channel.setVibrationPattern(new long[]{0, 1000});
@@ -50,5 +55,44 @@ public class GestorNotificaciones {
             channel.setDescription(descripcion);
             notificationManager.createNotificationChannel(channel);
         }
+    }
+
+    /**
+     * Se enviía una notificación al reservar un libro. Indica que libro ha sido reservado y hasta que
+     * fecha
+     * @param tituloLibro: titulo del libro
+     * @param fecha: fecha hasta que dura la reserva
+     */
+    public void notificacionReservaLibro(String tituloLibro, String fecha){
+        NotificationCompat.Builder builder;
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            builder = new NotificationCompat.Builder(context,"BIHAR");
+            builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher));
+        }else{
+            builder = new NotificationCompat.Builder(context);
+            builder.setPriority(NotificationCompat.PRIORITY_HIGH);
+        }
+
+        //ESPECIFICACIONES DE LA NOTIFICACION
+        builder.setContentTitle(context.getResources().getText(R.string.libroReservado));
+
+        String descripcion;
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        if(prefs.getString("idioma","es").equals("es")){
+            descripcion = tituloLibro + " "+ context.getResources().getText(R.string.libroReservadoQueda) +" " + fecha;
+        }else{
+            descripcion = tituloLibro + " " + fecha + " " + context.getResources().getText(R.string.libroReservadoQueda);
+        }
+
+        builder.setContentText(descripcion);
+        builder.setSmallIcon(R.drawable.ic_launcher);
+        builder.setAutoCancel(true);
+        builder.setStyle(new NotificationCompat.BigTextStyle().bigText(descripcion));
+
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        //SE LANZA LA NOTIFICACION
+        notificationManager.notify(8888, builder.build());
     }
 }

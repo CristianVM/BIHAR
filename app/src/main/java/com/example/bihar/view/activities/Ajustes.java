@@ -62,10 +62,12 @@ public class Ajustes extends AppCompatActivity {
         }
         setContentView(R.layout.activity_ajustes);
 
+        // SE CAMBIA EL TITULO DEL TOOLBAR
         ToolBar toolBar = (ToolBar) getSupportFragmentManager().findFragmentById(R.id.frgmt_toolbarAjustes);
         toolBar.cambiarTituloToolbar(getResources().getString(R.string.ajustes));
         toolBar.ocultarAjustes();
-        
+
+        // SE PASA EL LIFECYCLE AL FRAGMENTO
         AjustesPreferencias ajustesPreferencias = (AjustesPreferencias) getSupportFragmentManager().findFragmentById(R.id.activity_ajustes);
         ajustesPreferencias.setLifecycleOwner(this);
 

@@ -78,10 +78,6 @@ import java.util.Objects;
 
 public class AjustesPreferencias extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
 
-    private final String CARPETA="misImagenes/";
-    private final String RUTA_IMAGEN=CARPETA+"misFotos";
-
-    private String path;
     private AlertDialog dialog;
     private LifecycleOwner lifecycleOwner;
 
@@ -102,6 +98,7 @@ public class AjustesPreferencias extends PreferenceFragmentCompat implements Sha
             verPreferencias(true);
         }
 
+        // SE COMPRUEBA SI ESTÁ ACTIVADO O NO LA NOTIFICACIÓN
         boolean notificacion = prefs.getBoolean("notificacion",true);
         SwitchPreference switchNotificacion = findPreference("notificacion");
         switchNotificacion.setChecked(notificacion);
@@ -115,47 +112,76 @@ public class AjustesPreferencias extends PreferenceFragmentCompat implements Sha
     @Override
     public void onPause() {
         super.onPause();
+        //NO RECOGE LS CAMBIOS REALIZADOS
         getPreferenceManager().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        // RECOGE LOS CAMBIOS REALIZADOS
         getPreferenceManager().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
     }
 
-
+    /**
+     * Al cambiar alguna de las preferencias, se ejecuta una función
+     * @param sharedPreferences: shared preferences
+     * @param s: la key de la preferencias
+     */
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
+        // SI SE MODIFICA LA PREFERENCIA DE LA KEY IDIOMA SE CAMBIA EN LAS PREFERENCIAS
         if(s.equals("idioma")){
             // si detecta cambios en la key idioma cambia el idioma.
             String idioma = sharedPreferences.getString("idioma", Locale.getDefault().getLanguage());
             cambiarIdioma(idioma);
         }
-
     }
 
+    /**
+     * Al hacerle click en una preferencia, se activa su función.
+     * @param preference: la preferencia clickada
+     * @return
+     */
     @Override
     public boolean onPreferenceTreeClick(Preference preference) {
         super.onPreferenceTreeClick(preference);
         String key = preference.getKey();
         if(key.equals("portalWeb")){
+            // AL HACERLE CLICK AL PORTAL WEB TE DIRIGE AL WEB
             SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getContext());
             Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.ehu.eus/"+pref.getString("idioma","")+"/"));
             startActivity(i);
         }else if(key.equals("notificacion")) {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
-            boolean notificacion = prefs.getBoolean("notificacion", true);
 
             SharedPreferences.Editor editor = prefs.edit();
             SwitchPreference switchNotificacion = findPreference("notificacion");
 
+            Map<String,String> map = new HashMap<>();
+            map.put("accion","updateNotificacion");
+            map.put("idPersona",GestorUsuario.getGestorUsuario().getUsuario().getIdUsuario());
+
             if (switchNotificacion.isChecked()) {
                 editor.putBoolean("notificacion", true);
+                map.put("notificacion","true");
             } else {
                 editor.putBoolean("notificacion", false);
+                map.put("notificacion","false");
             }
             editor.apply();
+
+            Data.Builder data = new Data.Builder();
+            data.putString("datos",new JSONObject(map).toString());
+
+            Constraints restricciones = new Constraints.Builder()
+                    .setRequiredNetworkType(NetworkType.CONNECTED)
+                    .build();
+            OneTimeWorkRequest trabajo = new OneTimeWorkRequest.Builder(WorkerBihar.class)
+                    .setConstraints(restricciones)
+                    .setInputData(data.build())
+                    .build();
+            WorkManager.getInstance(getActivity()).enqueue(trabajo);
 
         } else if (key.equals("fotoPerfil")){
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -292,6 +318,9 @@ public class AjustesPreferencias extends PreferenceFragmentCompat implements Sha
     private void verPreferencias(boolean ver){
         PreferenceCategory user = findPreference("keyUsuario");
         user.setVisible(ver);
+
+        SwitchPreference sw = findPreference("notificacion");
+        sw.setVisible(ver);
     }
 
     /**

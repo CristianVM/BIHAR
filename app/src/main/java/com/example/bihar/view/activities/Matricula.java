@@ -7,25 +7,25 @@ import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.bihar.R;
 import com.example.bihar.controller.GestorMatriculas;
+import com.example.bihar.controller.GestorUsuario;
 import com.example.bihar.controller.WorkerBihar;
 import com.example.bihar.model.AlmacenajeMatricula;
 import com.example.bihar.model.MatriculaAnios;
 import com.example.bihar.utils.AdapterListaAsignaturasMatricula;
-import com.example.bihar.view.dialog.DialogSelectAnioMatricula;
 import com.example.bihar.view.fragments.ToolBar;
 
 import org.json.simple.JSONObject;
@@ -34,7 +34,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-public class Matricula extends AppCompatActivity implements DialogSelectAnioMatricula.ListenerSelectAnioMatricula {
+public class Matricula extends AppCompatActivity{
 
     private TextView txtAnioSeleccionado;
     private ListView asignaturas;
@@ -63,12 +63,14 @@ public class Matricula extends AppCompatActivity implements DialogSelectAnioMatr
         setContentView(R.layout.activity_matricula);
 
         txtAnioSeleccionado = findViewById(R.id.matricula_seleccionAnio);
-        idPersona = prefs.getString("idUsuario","");
+        idPersona = GestorUsuario.getGestorUsuario().getUsuario().getIdUsuario();
 
+        // SE CAMBIA EL NOMBRE DE LA TOOLBAR
         ToolBar toolBar = (ToolBar) getSupportFragmentManager().findFragmentById(R.id.frgmt_toolbarMatricula);
         toolBar.cambiarTituloToolbar(getResources().getString(R.string.matricula));
 
 
+        // SE VAN METIENDO LOS DATOS PARA MANDARLE LA PETICION A LA BASE DE DATOS
         Map<String,String> map = new HashMap<>();
         map.put("idPersona",idPersona);
         map.put("accion","verMatricula");
@@ -101,8 +103,21 @@ public class Matricula extends AppCompatActivity implements DialogSelectAnioMatr
     private void asignarListeners(){
         LinearLayout linearLayoutAnio = (LinearLayout) findViewById(R.id.matricula_linearLayoutSeleccionAnio);
         linearLayoutAnio.setOnClickListener(view -> {
-            DialogSelectAnioMatricula dialog = new DialogSelectAnioMatricula(GestorMatriculas.gestorMatriculas().getMatriculas(idPersona).getAnios());
-            dialog.show(getSupportFragmentManager(),"etiquetaMatricula");
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(getResources().getText(R.string.dialog_matricaTxtSelectAnio));
+            String[] anios = new String[GestorMatriculas.gestorMatriculas().getMatriculas(idPersona).getAnios().size()];
+            anios = GestorMatriculas.gestorMatriculas().getMatriculas(idPersona).getAnios().toArray(anios);
+
+            builder.setItems(anios, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    seleccionAnio(i);
+                }
+            });
+
+            AlertDialog dialog = builder.create();
+
+            dialog.show();
         });
     }
 
@@ -111,7 +126,6 @@ public class Matricula extends AppCompatActivity implements DialogSelectAnioMatr
      * cambia el año escogido en el TextView
      * @param i: la posición de la matrícula elegida en el dialog
      */
-    @Override
     public void seleccionAnio(int i) {
         String anioSeleccionado = GestorMatriculas.gestorMatriculas().getMatriculas(idPersona).getAnios().get(i);
         AlmacenajeMatricula datos = GestorMatriculas.gestorMatriculas().getMatriculas(idPersona).getMatriculas().get(anioSeleccionado);
@@ -143,6 +157,8 @@ public class Matricula extends AppCompatActivity implements DialogSelectAnioMatr
                 cambiarIdiomaOnResume(locale);
             }
         }
+
+        // SI YA SE HABÍA CARGADO LA LISTA ANTERIORMENTE Y LA ACTIVIDAD VUELVE A REANUDARSE
         if(listaAñadida){
             rellenarListView();
         }
@@ -177,6 +193,10 @@ public class Matricula extends AppCompatActivity implements DialogSelectAnioMatr
         res.updateConfiguration(conf, dm);
     }
 
+    /**
+     * Se rellenan la ListVIew con los datos que se han recogido de la base de datos que están en el
+     * GestorMatriculas
+     */
     private void rellenarListView(){
         MatriculaAnios matriculaAnios = GestorMatriculas.gestorMatriculas().getMatriculas(idPersona);
         Map<String, AlmacenajeMatricula> matriculaMap = matriculaAnios.getMatriculas();
@@ -196,6 +216,11 @@ public class Matricula extends AppCompatActivity implements DialogSelectAnioMatr
         }
     }
 
+    /**
+     * Dependiendo del idioma, crea un adapter u otro
+     * @param almacenajeMatricula: datos de la matrícula
+     * @return: el adapter
+     */
     private AdapterListaAsignaturasMatricula crearAdapter(AlmacenajeMatricula almacenajeMatricula){
         AdapterListaAsignaturasMatricula adapter = null;
         if (idiomaEstablecido.equals("es")) {

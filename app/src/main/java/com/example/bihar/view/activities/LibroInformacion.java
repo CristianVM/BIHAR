@@ -26,6 +26,7 @@ import android.widget.TextView;
 
 import com.example.bihar.R;
 import com.example.bihar.controller.GestorLibros;
+import com.example.bihar.controller.GestorUsuario;
 import com.example.bihar.controller.WorkerBihar;
 import com.example.bihar.utils.AdapterListaAsignaturasMatricula;
 import com.example.bihar.utils.AdapterListaLibros;
@@ -76,12 +77,12 @@ public class LibroInformacion extends AppCompatActivity {
 
         setContentView(R.layout.activity_libro_informacion);
 
-        usuario = prefs.getString("idUsuario", "");
+        usuario = GestorUsuario.getGestorUsuario().getUsuario().getIdUsuario();
         listaCargada = false;
         listView = (ListView) findViewById(R.id.libroInformacion_listaUniversidades);
         Bundle bundle = getIntent().getExtras();
-
         Map<String, String> map = new HashMap<>();
+
         if (bundle != null) {
             map.put("accion", "consultarReservaLibro");
             map.put("titulo", bundle.getString("titulo"));
@@ -94,6 +95,7 @@ public class LibroInformacion extends AppCompatActivity {
             Date date = calendar.getTime();
             map.put("fecha",dateFormat.format(date));
 
+            //SE RELLENAN LOS DATOS DEL LIBRO
             rellenarDatosLibro(
                     bundle.getString("editorial"),
                     bundle.getString("autor"),
@@ -143,6 +145,7 @@ public class LibroInformacion extends AppCompatActivity {
                                 JSONObject universidad = (JSONObject) jsonArrayUniversidades.get(i);
 
                                 universidades[i] = (String) universidad.get("nombreCentro");
+                                universidadesEuskera[i] = (String) universidad.get("nombreCentroEuskera");
                                 String idLibro = (String) universidad.get("idLibro");
                                 idLibros[i] = idLibro;
                                 latitudes[i] = (String) universidad.get("latitud");
@@ -325,16 +328,22 @@ public class LibroInformacion extends AppCompatActivity {
         res.updateConfiguration(conf, dm);
     }
 
+    /**
+     * Dependiendo del idioma, se cre un adapter u otro
+     * @return: el adapter dependiendo del idioma
+     */
     private AdapterListaUniversidades crearAdapter(){
+        TextView txtTitulo = (TextView) findViewById(R.id.libroInformacion_titulo);
+
         AdapterListaUniversidades adapter = null;
         if (idiomaEstablecido.equals("es")) {
             adapter = new AdapterListaUniversidades(this, universidades,
                     disponibles, estaDisponible, idLibros, usuario, this, latitudes,
-                    longitudes, this);
+                    longitudes, this,txtTitulo.getText().toString());
         } else {
             adapter = new AdapterListaUniversidades(this, universidadesEuskera,
                     disponibles, estaDisponible, idLibros, usuario, this, latitudes,
-                    longitudes, this);
+                    longitudes, this,txtTitulo.getText().toString());
         }
         return adapter;
     }

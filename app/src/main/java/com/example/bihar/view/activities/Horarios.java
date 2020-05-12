@@ -15,13 +15,13 @@ import android.os.Bundle;
 
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.bihar.R;
 import com.example.bihar.controller.GestorHorarios;
+import com.example.bihar.controller.GestorUsuario;
 import com.example.bihar.controller.WorkerBihar;
 import com.example.bihar.utils.AdapterListaHorarios;
 import com.example.bihar.view.fragments.ToolBar;
@@ -71,6 +71,7 @@ public class Horarios extends AppCompatActivity {
 
         setContentView(R.layout.activity_horarios);
 
+        // SE INICIALIZAN LOS DATOS
         nombreAsignaturas = new ArrayList<>();
         horaFinales = new ArrayList<>();
         horaIniciales = new ArrayList<>();
@@ -79,23 +80,26 @@ public class Horarios extends AppCompatActivity {
 
         listView = (ListView) findViewById(R.id.horario_lista);
         diaFecha = (TextView) findViewById(R.id.horario_diaSemana);
-        usuario = prefs.getString("idUsuario","");
+        usuario = GestorUsuario.getGestorUsuario().getUsuario().getIdUsuario();
 
-
+        // DIA DE HOY
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         fechaEscogida = Calendar.getInstance();
 
+        // SI HOY ES SABADO O DOMINGO ENTONCES SE PASA AL LUNES
         if(fechaEscogida.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY){
             rellenarListas(2);
         }else if(fechaEscogida.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY){
             rellenarListas(1);
         }
+        // SE PONE LA FECHA DE HOY EN EL TEXTVIEW
         Date date = fechaEscogida.getTime();
         diaFecha.setText(dateFormat.format(date));
 
         ToolBar toolBar = (ToolBar) getSupportFragmentManager().findFragmentById(R.id.frgmt_toolbarhorario);
         toolBar.cambiarTituloToolbar(getResources().getString(R.string.horario));
 
+        // PETICION A LA BD REMOTA PARA OBTENER LOS HORARIOS
         Map<String, String> map = new HashMap<>();
         map.put("accion", "consultarHorario");
         map.put("idPersona",usuario);
@@ -126,6 +130,11 @@ public class Horarios extends AppCompatActivity {
                 });
     }
 
+    /**
+     * Se obtiene el año de la matricula actual. Si el mes de hoy es menor igual que 7 entonces se coge el año
+     * anterior
+     * @return: el año de la matricula
+     */
     private String anioActualMatricula(){
         int anio = fechaEscogida.get(Calendar.YEAR);
         int mes = fechaEscogida.get(Calendar.MONTH);
@@ -136,12 +145,16 @@ public class Horarios extends AppCompatActivity {
         return String.valueOf(anio);
     }
 
+    /**
+     * Se crean los listeners al pulsar las flechas. Dos flechas 7 días, una flecha 1  día
+     */
     private void pasarDias(){
         ImageView uniIzq = (ImageView) findViewById(R.id.horarios_uniflechaIzq);
         ImageView biIzq = (ImageView) findViewById(R.id.horarios_biflechaIzq);
         ImageView uniDer = (ImageView) findViewById(R.id.horarios_uniflechaDer);
         ImageView biDer = (ImageView) findViewById(R.id.horarios_biflechaDer);
 
+        // UNA FLECHA IZQUIERDA
         uniIzq.setOnClickListener( view -> {
             limpiarListas();
             if(fechaEscogida.get(Calendar.DAY_OF_WEEK)!=Calendar.MONDAY){
@@ -152,12 +165,14 @@ public class Horarios extends AppCompatActivity {
             adapterListaHorarios.notifyDataSetChanged();
         });
 
+        // DOS FLECHAS IZQUIERDA
         biIzq.setOnClickListener( view -> {
             limpiarListas();
             rellenarListas(-7);
             adapterListaHorarios.notifyDataSetChanged();
         });
 
+        // UNA FLECHAS DERECHA
         uniDer.setOnClickListener(view -> {
             limpiarListas();
             if(fechaEscogida.get(Calendar.DAY_OF_WEEK)!=Calendar.FRIDAY){
@@ -168,6 +183,7 @@ public class Horarios extends AppCompatActivity {
             adapterListaHorarios.notifyDataSetChanged();
         });
 
+        // DOS FLECHAS DERECHA
         biDer.setOnClickListener( view -> {
             limpiarListas();
             rellenarListas(7);
@@ -176,12 +192,18 @@ public class Horarios extends AppCompatActivity {
 
     }
 
+    /**
+     * Al cerrar la actividad se borra los horarios
+     */
     @Override
     protected void onDestroy() {
         super.onDestroy();
         GestorHorarios.gestorHorarios().limpiarHorarios();
     }
 
+    /**
+     * Limpia las listas
+     */
     private void limpiarListas(){
         nombreAsignaturas.clear();
         horaFinales.clear();
@@ -190,6 +212,10 @@ public class Horarios extends AppCompatActivity {
         semanas.clear();
     }
 
+    /**
+     * Rellena las listas con el horario
+     * @param diasNuevos
+     */
     private void rellenarListas(int diasNuevos){
         fechaEscogida.add(Calendar.DATE,diasNuevos);
         anadirDiaSemanaTextView();
@@ -206,6 +232,9 @@ public class Horarios extends AppCompatActivity {
         }
     }
 
+    /**
+     * Añade el día de la semana y su fecha en la parte superior
+     */
     private void anadirDiaSemanaTextView(){
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date hoy = fechaEscogida.getTime();
@@ -277,6 +306,10 @@ public class Horarios extends AppCompatActivity {
         res.updateConfiguration(conf, dm);
     }
 
+    /**
+     * Al cambiar la orientación del móvil se guarda la fecha actual puesta
+     * @param outState
+     */
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -285,6 +318,10 @@ public class Horarios extends AppCompatActivity {
         outState.putString("fecha",dateFormat.format(date));
     }
 
+    /**
+     * Se recupera la fecha puesta anterior
+     * @param savedInstanceState
+     */
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
