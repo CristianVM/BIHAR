@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
@@ -352,13 +353,34 @@ public class AjustesPreferencias extends PreferenceFragmentCompat implements Sha
      */
 
     public void abrirCamara(){
-        if(ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA},1);
+        if(ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.CAMERA},82);
+        } else {
+            ejecutarCamara();
+        }
+    }
 
-            if(ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED){
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case 82: {
+                // Si la petición se cancela, granResults estará vacío
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permiso concedido, abrir camara
+                    ejecutarCamara();
+                } else {
+                    // Permiso denegado, mostrar aviso
+                    // En caso de seleccionar no volver a preguntar de nuevo el usuario tendra
+                    // que acceder manualmente a los ajustes de la aplicacion
+                    Toast.makeText(getActivity(), getString(R.string.permiso_denegado), Toast.LENGTH_SHORT).show();
+                }
                 return;
             }
         }
+    }
+
+    public void ejecutarCamara() {
         Intent elIntent= new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (elIntent.resolveActivity(getContext().getPackageManager()) != null) {
             startActivityForResult(elIntent, 82);

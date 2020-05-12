@@ -188,5 +188,6 @@
     <string name="libroReservado">Libro reservado</string>
     <string name="libroReservadoQueda">queda reservado hasta</string>
 
+    <string name="permiso_denegado">Permiso denegado</string>
 
 </resources>
