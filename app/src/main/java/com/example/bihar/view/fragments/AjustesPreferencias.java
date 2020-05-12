@@ -2,6 +2,7 @@ package com.example.bihar.view.fragments;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -393,15 +394,24 @@ public class AjustesPreferencias extends PreferenceFragmentCompat implements Sha
             //RESULTADO DE LA GALERÍA
             try{
                 Uri miPath  = data.getData();
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), miPath);
+
+                SharedPreferences prefs = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getActivity());
+                String nombrefichero = prefs.getString("idUsuario","");
+                File imagenFich = new File(getActivity().getApplicationContext().getFilesDir(), nombrefichero + ".png");
+                OutputStream os = new FileOutputStream(imagenFich);
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
+                os.flush();
+                os.close();
+
                 insertImageBD(true,miPath.toString());
             }catch(Exception e){
                 Toast.makeText(getActivity(),"ERROR",Toast.LENGTH_LONG).show();
             }
         }else if(resultCode == Activity.RESULT_OK && requestCode==82){
             SharedPreferences prefs = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getActivity());
-
             String nombrefichero = prefs.getString("idUsuario","");
-            File imagenFich= new File(getActivity().getApplicationContext().getFilesDir(), nombrefichero+ ".jpg");
+            File imagenFich= new File(getActivity().getApplicationContext().getFilesDir(), nombrefichero + ".png");
 
             try {
                 Bitmap bitmap = (Bitmap)data.getExtras().get("data");
@@ -500,16 +510,20 @@ public class AjustesPreferencias extends PreferenceFragmentCompat implements Sha
                     if (workInfo != null && workInfo.getState().isFinished()) {
                         String resultado = workInfo.getOutputData().getString("result");
 
-                        if(resultado.equals("Ok")){
-                            obtenerImagenUsuario();
-                        }else{
-                            Toast.makeText(getActivity(),"ERROR",Toast.LENGTH_SHORT).show();
+                        if(resultado.equals("Ok")) {
+                            SharedPreferences prefs = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getActivity());
+                            SharedPreferences.Editor editor = prefs.edit();
+                            editor.putBoolean("imagenCambiada",true);
+                            editor.apply();
+                            Toast.makeText(getActivity(),getString(R.string.avisoImagen),Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getActivity(),getString(R.string.error_general),Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
     }
 
-    private void obtenerImagenUsuario() {
+    /*private void obtenerImagenUsuario() {
         SharedPreferences prefs = android.preference.PreferenceManager.getDefaultSharedPreferences(getActivity());
         String idUsuario = prefs.getString("idUsuario", "");
 
@@ -557,7 +571,7 @@ public class AjustesPreferencias extends PreferenceFragmentCompat implements Sha
                 });
 
         WorkManager.getInstance(getActivity()).enqueue(otwr);
-    }
+    }*/
 
     /**
      * Recoge el Lifecycle de la actividad Ajustes
