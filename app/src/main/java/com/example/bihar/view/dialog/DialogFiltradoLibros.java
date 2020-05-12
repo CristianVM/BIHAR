@@ -23,6 +23,11 @@ public class DialogFiltradoLibros extends DialogFragment {
         void temasSeleccionados(ArrayList<String> lista);
     }
 
+    /**
+     * Dialog que se encarga de seleccionar si quieres filtrar
+     * @param savedInstanceState
+     * @return
+     */
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {

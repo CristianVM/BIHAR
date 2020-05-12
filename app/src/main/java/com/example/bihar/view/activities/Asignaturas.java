@@ -1,6 +1,7 @@
 package com.example.bihar.view.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
 import androidx.work.Constraints;
 import androidx.work.Data;
 import androidx.work.NetworkType;
@@ -9,7 +10,11 @@ import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class Asignaturas extends AppCompatActivity {
@@ -40,6 +46,7 @@ public class Asignaturas extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_asignaturas);
 
@@ -68,6 +75,10 @@ public class Asignaturas extends AppCompatActivity {
         Map<String, String> map = new HashMap<>();
         map.put("accion","obtenerAsignaturasPorAnyo");
         map.put("idPersona", GestorUsuario.getGestorUsuario().getUsuario().getIdUsuario());
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        map.put("idioma",preferences.getString("idioma","es"));
+
         JSONObject json = new JSONObject(map);
 
         Data.Builder data = new Data.Builder();

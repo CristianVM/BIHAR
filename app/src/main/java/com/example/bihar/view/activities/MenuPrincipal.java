@@ -61,24 +61,24 @@ public class MenuPrincipal extends AppCompatActivity {
         editor.apply();
 
         setContentView(R.layout.activity_menuprincipal);
-
+        String idioma = prefs.getString("idioma","es");
         boolean esAlumno = prefs.getBoolean("esAlumno",false);
         CardOpcion[] opciones = null;
         if(esAlumno) {
-            opciones = ListaOpcionesMenu.getListaOpcionesUsuario();
+            opciones = ListaOpcionesMenu.getListaOpcionesUsuario(idioma);
             Bundle bundle = getIntent().getExtras();
             if(bundle != null){
                 boolean expediente = bundle.getBoolean("expediente");
                 if(expediente) {
                     TextView notaMedia = findViewById(R.id.txtNotaMedia);
-                    notaMedia.setText(String.valueOf(String.format("%.2f",GestorUsuario.getGestorUsuario().getUsuario().getNotaMedia())));
-                    opciones = ListaOpcionesMenu.getListaOpcionesExpediente();
+                    notaMedia.setText(String.format("%.2f",GestorUsuario.getGestorUsuario().getUsuario().getNotaMedia()));
+                    opciones = ListaOpcionesMenu.getListaOpcionesExpediente(idioma);
                     animacionCreditos(GestorUsuario.getGestorUsuario().getUsuario().getNumCreditos());
                 }
             }
         }
         else
-            opciones = ListaOpcionesMenu.getListaOpcionesProfesor();
+            opciones = ListaOpcionesMenu.getListaOpcionesProfesor(idioma);
 
         recyclerView = findViewById(R.id.menuRecyclerView);
 

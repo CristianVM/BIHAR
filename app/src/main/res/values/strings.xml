@@ -153,6 +153,10 @@
     <string name="tercero">Tercero</string>
     <string name="cuarto">Cuarto</string>
     <string name="quinto">Quinto</string>
+    <string name="asignaturas_anio">Año</string>
+    <string name="asignaturas_tipo">Tipo</string>
+    <string name="asignaturas_conv">Conv.</string>
+    <string name="asignaturas_nota">Nota</string>
 
     <!-- RESERVAS-->
     <string name="aceptada">Aceptada</string>
@@ -178,11 +182,11 @@
     <string name="ajustes_contrasenaNoCambiada">Error, contraseña no modificada</string>
     <string name="dialog_notaprofesor_ordinaria">C. Ordinaria?</string>
 
-
     <!-- NOTIFICACIONES -->
     <string name="notificacion_nota">BIHAR</string>
     <string name="notificacion_descripcion">Muestra las notificaciones de BIHAR, ya sean la publicación de las notas, realización de las reservas, foros etc.</string>
     <string name="libroReservado">Libro reservado</string>
     <string name="libroReservadoQueda">queda reservado hasta</string>
+
 
 </resources>
