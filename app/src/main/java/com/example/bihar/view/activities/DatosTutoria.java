@@ -83,10 +83,20 @@ public class DatosTutoria extends AppCompatActivity {
         cargarDatosProfesor();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        File file = new File(getApplicationContext().getFilesDir(), idPersona + ".png");
+        if(file.exists())
+            file.delete();
+    }
+
     private void cargarDatosProfesor(){
         Map<String, String> map = new HashMap<>();
         map.put("accion","obtenerDatosProfesor");
         map.put("idPersona", idPersona);
+        SharedPreferences preferences = androidx.preference.PreferenceManager.getDefaultSharedPreferences(this);
+        map.put("idioma",preferences.getString("idioma","es"));
         JSONObject json = new JSONObject(map);
 
         Data.Builder data = new Data.Builder();
@@ -207,12 +217,14 @@ public class DatosTutoria extends AppCompatActivity {
                 this, status -> {
                     if (status != null && status.getState().isFinished()) {
                         String resultado = status.getOutputData().getString("result");
-                        if (resultado == null || resultado.isEmpty()) {
-                            return;
+                        if (status.getState() == WorkInfo.State.FAILED || resultado == null || resultado.isEmpty()) {
+                            imgProfesor.setImageResource(R.drawable.defecto);
+                            mostrarDatos();
                         }
                         File file = new File(getApplicationContext().getFilesDir(), idPersona + ".png");
                         GestorProfesores.getGestorProfesores().getProfesor(idPersona).setFoto(Uri.fromFile(file));
                         progressBar.setVisibility(View.INVISIBLE);
+                        imgProfesor.setImageURI( GestorProfesores.getGestorProfesores().getProfesor(idPersona).getFoto());
                         mostrarDatos();
                     }
                 }
@@ -228,7 +240,7 @@ public class DatosTutoria extends AppCompatActivity {
         departamentoProfesor.setText(p.getDepartamento());
         despachoProfesor.setText(p.getDespacho());
         nombreCentroProfesor.setText(p.getNombreCentro());
-        imgProfesor.setImageURI(p.getFoto());
+
 
         adapter = new MyExpandableListAdapter(this, idPersona);
         expandableListView.setAdapter(adapter);

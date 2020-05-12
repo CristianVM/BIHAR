@@ -159,6 +159,8 @@ public class Tutorias extends AppCompatActivity {
             Log.i("idPersona", idPersona);
             map.put("idPersona", idPersona);
         }
+        SharedPreferences preferences = androidx.preference.PreferenceManager.getDefaultSharedPreferences(this);
+        map.put("idioma",preferences.getString("idioma","es"));
 
         JSONObject json = new JSONObject(map);
 

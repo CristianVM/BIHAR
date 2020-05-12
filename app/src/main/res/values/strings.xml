@@ -148,6 +148,10 @@
     <string name="tercero">Tercero</string>
     <string name="cuarto">Cuarto</string>
     <string name="quinto">Quinto</string>
+    <string name="asignaturas_anio">Año</string>
+    <string name="asignaturas_tipo">Tipo</string>
+    <string name="asignaturas_conv">Conv.</string>
+    <string name="asignaturas_nota">Nota</string>
 
     <!-- RESERVAS-->
     <string name="aceptada">Aceptada</string>
@@ -175,5 +179,6 @@
     <string name="dialog_notaprofesor_ordinaria">C. Ordinaria?</string>
     <string name="notificacion_nota">Notas</string>
     <string name="notificacion_descripcion">Muestra la notificación de la publicación de las notas</string>
+
 
 </resources>
