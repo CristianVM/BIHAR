@@ -171,6 +171,7 @@ public class NotasProfesor extends AppCompatActivity {
         Map<String, String> map = new HashMap<>();
         map.put("accion", "obtenerNotasProfesor");
         map.put("idPersona", GestorUsuario.getGestorUsuario().getUsuario().getIdUsuario());
+        map.put("anio","2019");
         JSONObject json = new JSONObject(map);
 
         Data.Builder data = new Data.Builder();
