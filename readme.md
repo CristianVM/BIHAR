@@ -8,7 +8,7 @@ Proyecto Android hecho en la asignatura de 4º curso, Desarrollo Avanzado de Sof
 * **Iker Nafarrate Bilbao** - [IkNafa](https://github.com/IkNafa)
 * **Cristian Villamor Martínez** - [CristianVM](https://github.com/CristianVM)
 
-## Herramientas utilizadas
+## Herramientas utilizadas 🛠️
 * **Android Studio** - [Android Studio](https://developer.android.com/studio)
 * **MySQL** - [MySQL](https://www.mysql.com/)
 
