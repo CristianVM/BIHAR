@@ -5,5 +5,5 @@ Proyecto Android hecha en la asignatura de 4º curso, Desarrollo Avanzado de Sof
 ## Integrantes del grupo
 
 * **Unai Luque Iglesias**
-* **Iker Nafarrate Bilbao** [IkNafa](https://github.com/IkNafa)
-* **Cristian Villamor Martinez** [CristianVM](https://github.com/CristianVM)
+* **Iker Nafarrate Bilbao** - [IkNafa](https://github.com/IkNafa)
+* **Cristian Villamor Martinez** - [CristianVM](https://github.com/CristianVM)
