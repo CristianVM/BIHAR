@@ -4,7 +4,7 @@ Proyecto Android realizado en la asignatura de 4º curso, Desarrollo Avanzado de
 
 ### Release
 
-[BIHAR]()
+[BIHAR V1.0](https://github.com/CristianVM/BIHAR/releases/tag/BIHAR_V1.0)
 
 ## Integrantes del grupo 👨‍💻
 
