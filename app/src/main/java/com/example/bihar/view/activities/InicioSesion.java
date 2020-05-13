@@ -342,7 +342,7 @@ public class InicioSesion extends AppCompatActivity {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         JSONObject parametrosJSON = new JSONObject();
-        parametrosJSON.put("accion", "iniciarSesionFingerprint");
+        parametrosJSON.put("accion", "iniciarSesion");
         parametrosJSON.put("idUsuario", prefs.getString("idUsuario", ""));
         parametrosJSON.put("token", prefs.getString("token", ""));
         parametrosJSON.put("finger", true);
