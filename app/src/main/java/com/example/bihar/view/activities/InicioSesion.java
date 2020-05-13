@@ -1,24 +1,37 @@
 package com.example.bihar.view.activities;
 
+import android.Manifest;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.hardware.biometrics.BiometricPrompt;
+import android.hardware.fingerprint.FingerprintManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.CancellationSignal;
 import android.preference.PreferenceManager;
+import android.telephony.SmsManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.hardware.fingerprint.FingerprintManagerCompat;
 import androidx.lifecycle.Observer;
 import androidx.work.Constraints;
 import androidx.work.Data;
@@ -27,6 +40,7 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
+import com.example.bihar.MainActivity;
 import com.example.bihar.R;
 import com.example.bihar.controller.GestorNotificaciones;
 import com.example.bihar.controller.GestorUsuario;
@@ -40,6 +54,8 @@ import org.json.simple.parser.JSONParser;
 
 import java.io.File;
 import java.util.Locale;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class InicioSesion extends AppCompatActivity {
 
@@ -56,18 +72,19 @@ public class InicioSesion extends AppCompatActivity {
          * Pregunta: https://stackoverflow.com/questions/31183732/changing-language-in-run-time-with-preferences-android
          * Autor: https://stackoverflow.com/users/5027640/zolt%c3%a1n-umlauf
          */
-        idiomaEstablecido = prefs.getString("idioma","es");
-        if(idiomaEstablecido.equals("es")){
+        idiomaEstablecido = prefs.getString("idioma", "es");
+        if (idiomaEstablecido.equals("es")) {
             Locale locale = new Locale("es");
             cambiarIdiomaOnCreate(locale);
-        }else if(idiomaEstablecido.equals("eu")){
+        } else if (idiomaEstablecido.equals("eu")) {
             Locale locale = new Locale("eu");
             cambiarIdiomaOnCreate(locale);
         }
-        prefs.getBoolean("notificacion",true);
+        prefs.getBoolean("notificacion", true);
 
-        if(prefs.contains("nombreUsuario")) {
+        if (prefs.contains("nombreUsuario")) {
             setContentView(R.layout.inicio_sesion_usuario);
+
             ImageView login2ImageUsuario = findViewById(R.id.login2ImageUsuario);
 
             try {
@@ -95,16 +112,30 @@ public class InicioSesion extends AppCompatActivity {
                 TextInputLayout loginInputPassword = findViewById(R.id.loginInputPassword);
                 loginInputPassword.setEndIconMode(TextInputLayout.END_ICON_NONE);
             }
+
+            try {
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P || !FingerprintManagerCompat.from(this).isHardwareDetected()) {
+                    TextView login2AccesoHuella = findViewById(R.id.login2AccesoHuella);
+                    login2AccesoHuella.setVisibility(View.GONE);
+                    ImageButton botonHuella = findViewById(R.id.botonHuella);
+                    botonHuella.setVisibility(View.GONE);
+                }
+            } catch(Exception e) {
+                e.printStackTrace();
+                Toast.makeText(this, getString(R.string.error_general), Toast.LENGTH_SHORT).show();
+            }
         } else {
             setContentView(R.layout.inicio_sesion_general);
         }
+
+        ToolBar toolbarLogin = (ToolBar) getSupportFragmentManager().findFragmentById(R.id.toolbarLogin);
+        toolbarLogin.ocultarAtras();
 
         ProgressBar loginProgressBar = findViewById(R.id.loginProgressBar);
         loginProgressBar.setVisibility(View.INVISIBLE);
 
         GestorNotificaciones.getGestorNotificaciones(this).createCanalNotificacion();
     }
-
 
 
     public void iniciarSesion(View v) {
@@ -190,7 +221,6 @@ public class InicioSesion extends AppCompatActivity {
                                             Switch login1SwitchRecordar = findViewById(R.id.loginSwitchRecordar);
                                             if (login1SwitchRecordar.isChecked()) {
                                                 editor.putString("password", password);
-                                                editor.putString("fingerprintPassword", password);
                                             }
 
                                             editor.apply();
@@ -236,7 +266,7 @@ public class InicioSesion extends AppCompatActivity {
 
         String token = prefs.getString("token", "");
         String idioma = prefs.getString("idioma", "");
-        boolean iniciado = prefs.getBoolean("iniciado",false);
+        boolean iniciado = prefs.getBoolean("iniciado", false);
         boolean notificacion = prefs.getBoolean("notificacion", true);
         editor.clear();
         editor.putString("token", token);
@@ -259,12 +289,51 @@ public class InicioSesion extends AppCompatActivity {
         }
     }
 
-    public void passwordOlvidada(View v) {
-
+    // PONE LINK DEL VIDEO DE YOUTUBE
+    @RequiresApi(api = Build.VERSION_CODES.P)
+    public void accederHuella(View v) {
+        try {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.USE_BIOMETRIC) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.USE_BIOMETRIC},333);
+            } else if (!FingerprintManagerCompat.from(this).hasEnrolledFingerprints()) {
+                Toast.makeText(this, getString(R.string.sin_huella), Toast.LENGTH_SHORT).show();
+            } else {
+                mostrarDialogoHuella();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(this, getString(R.string.error_general), Toast.LENGTH_SHORT).show();
+        }
     }
 
-    public void accederHuella(View v) {
+    @RequiresApi(api = Build.VERSION_CODES.P)
+    private void mostrarDialogoHuella() {
+        try {
+            BiometricPrompt biometricPrompt = new BiometricPrompt.Builder(this)
+                    .setTitle(getString(R.string.app_name))
+                    .setSubtitle(getString(R.string.acceso_huella))
+                    .setDescription(getString(R.string.pantalla_huella_descripcion))
+                    .setNegativeButton(getString(R.string.dialog_foto_cancelar).toUpperCase(), this.getMainExecutor(), (dialog, which) -> {
+                        Log.i("MY-APP", "Ingreso por huella cancelado");
+                    }).build();
 
+            biometricPrompt.authenticate(new CancellationSignal(), this.getMainExecutor(), new BiometricPrompt.AuthenticationCallback() {
+                @Override
+                public void onAuthenticationSucceeded(BiometricPrompt.AuthenticationResult result) {
+                    super.onAuthenticationSucceeded(result);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent i = new Intent(getApplicationContext(), MenuPrincipal.class);
+                            startActivity(i);
+                        }
+                    });
+                }
+            });
+        } catch(Exception e) {
+            e.printStackTrace();
+            Toast.makeText(this, getString(R.string.error_general), Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void obtenerImagenUsuario() {
@@ -346,45 +415,55 @@ public class InicioSesion extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+        EditText loginEditPassword = findViewById(R.id.loginEditPassword);
+        TextInputLayout loginInputPassword = findViewById(R.id.loginInputPassword);
+
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String idiomaNuevo = sharedPreferences.getString("idioma","es");
-        if(!idiomaNuevo.equals(idiomaEstablecido)){
+        if (sharedPreferences.contains("password")) {
+            String password = sharedPreferences.getString("password", null);
+            loginEditPassword.setText(password);
+            Switch loginSwitchRecordar = findViewById(R.id.loginSwitchRecordar);
+            loginSwitchRecordar.setChecked(true);
+
+            loginInputPassword.setEndIconMode(TextInputLayout.END_ICON_NONE);
+        } else {
+            loginEditPassword.setText("");
+            loginInputPassword.setEndIconMode(TextInputLayout.END_ICON_PASSWORD_TOGGLE);
+        }
+
+        String idiomaNuevo = sharedPreferences.getString("idioma", "es");
+        if (!idiomaNuevo.equals(idiomaEstablecido)) {
             idiomaEstablecido = idiomaNuevo;
-            if(idiomaEstablecido.equals("es")){
+            if (idiomaEstablecido.equals("es")) {
                 Locale locale = new Locale("es");
                 cambiarIdiomaOnResume(locale);
-            }else if(idiomaEstablecido.equals("eu")){
+            } else if (idiomaEstablecido.equals("eu")) {
                 Locale locale = new Locale("eu");
                 cambiarIdiomaOnResume(locale);
             }
         }
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean("iniciado",false);
+        editor.putBoolean("iniciado", false);
 
-        String contrasena = sharedPreferences.getString("password","");
-        if(!contrasena.equals("")){
-            EditText loginEditPassword = findViewById(R.id.loginEditPassword);
-            loginEditPassword.setText(contrasena);
-        }
-
-        if(sharedPreferences.getBoolean("imagenCambiada",false)){
-            editor.putBoolean("imagenCambiada",false);
+        if (sharedPreferences.getBoolean("imagenCambiada", false)) {
+            editor.putBoolean("imagenCambiada", false);
+            editor.apply();
             finish();
             startActivity(getIntent());
         }
 
         editor.apply();
 
-
     }
 
     /**
      * Cambia el idioma de la aplicación al reanudarse la actividad. Se destruye la actividad y se
      * vuelve a iniciar
+     *
      * @param locale: el idioma almacenado en SharedPreferences
      */
-    public void cambiarIdiomaOnResume(Locale locale){
+    public void cambiarIdiomaOnResume(Locale locale) {
         Locale.setDefault(locale);
         Resources res = getResources();
         DisplayMetrics dm = res.getDisplayMetrics();
@@ -396,9 +475,10 @@ public class InicioSesion extends AppCompatActivity {
 
     /**
      * Cambia el idioma de la aplicación al crearse la actividad
+     *
      * @param locale: el idioma almacenado en SharedPreferences
      */
-    public void cambiarIdiomaOnCreate(Locale locale){
+    public void cambiarIdiomaOnCreate(Locale locale) {
         Locale.setDefault(locale);
         Resources res = getResources();
         DisplayMetrics dm = res.getDisplayMetrics();

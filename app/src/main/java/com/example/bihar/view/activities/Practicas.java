@@ -32,6 +32,7 @@ import com.example.bihar.R;
 import com.example.bihar.controller.GestorPracticas;
 import com.example.bihar.controller.WorkerBihar;
 import com.example.bihar.model.Practica;
+import com.example.bihar.view.fragments.ToolBar;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
@@ -67,6 +68,9 @@ public class Practicas extends AppCompatActivity {
         }
 
         super.setContentView(R.layout.lista_practicas);
+
+        ToolBar toolbarPracticas = (ToolBar) getSupportFragmentManager().findFragmentById(R.id.toolbarPracticas);
+        toolbarPracticas.cambiarTituloToolbar(getResources().getString(R.string.practicas));
 
         cargarPracticas();
     }

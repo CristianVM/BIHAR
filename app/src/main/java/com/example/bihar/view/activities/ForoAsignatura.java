@@ -71,6 +71,9 @@ public class ForoAsignatura extends AppCompatActivity {
 
         super.setContentView(R.layout.lista_mensajes_foro);
 
+        ToolBar toolbarForoAsignatura = (ToolBar) getSupportFragmentManager().findFragmentById(R.id.toolbarForoAsignatura);
+        toolbarForoAsignatura.cambiarTituloToolbar(getResources().getString(R.string.foro_titulo));
+
         RecyclerView listaMensajesForo = findViewById(R.id.listaMensajesForo);
 
         adapterForo = new AdapterForo(nombresProfesores, mensajesProfesores, fechasMensajes);
@@ -91,9 +94,6 @@ public class ForoAsignatura extends AppCompatActivity {
             idAsignatura = extras.getString("idAsignatura");
             obtenerMensajesForoAsignatura();
         }
-
-        ToolBar toolbarForoAsignatura = (ToolBar) getSupportFragmentManager().findFragmentById(R.id.toolbarForoAsignatura);
-        toolbarForoAsignatura.cambiarTituloToolbar(getResources().getString(R.string.foro_titulo));
     }
 
     @Override
@@ -173,82 +173,87 @@ public class ForoAsignatura extends AppCompatActivity {
     }
 
     public void mandarMensaje(View v) {
-        ImageButton botonMandarMensajeForo = findViewById(R.id.botonMandarMensajeForo);
-        botonMandarMensajeForo.setClickable(false);
-
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-
         EditText mensajeAMandar = findViewById(R.id.mensajeAMandar);
         String mensaje = mensajeAMandar.getText().toString();
-        mensajeAMandar.setText("");
 
-        Date fecha = Calendar.getInstance().getTime();
-        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String fechaFormateada = formato.format(fecha);
+        if(mensaje.trim().length() > 0) {
+            ImageButton botonMandarMensajeForo = findViewById(R.id.botonMandarMensajeForo);
+            botonMandarMensajeForo.setClickable(false);
 
-        JSONObject parametrosJSON = new JSONObject();
-        parametrosJSON.put("accion", "mandarMensajeForo");
-        parametrosJSON.put("idAsignatura", idAsignatura);
-        parametrosJSON.put("idPersona", prefs.getString("idUsuario", ""));
-        parametrosJSON.put("mensaje", mensaje);
-        parametrosJSON.put("fecha", fechaFormateada);
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-        Data datos = new Data.Builder()
-                .putString("datos", parametrosJSON.toJSONString())
-                .build();
+            Date fecha = Calendar.getInstance().getTime();
+            SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String fechaFormateada = formato.format(fecha);
 
-        Constraints restricciones = new Constraints.Builder()
-                .setRequiredNetworkType(NetworkType.CONNECTED)
-                .build();
+            JSONObject parametrosJSON = new JSONObject();
+            parametrosJSON.put("accion", "mandarMensajeForo");
+            parametrosJSON.put("idAsignatura", idAsignatura);
+            parametrosJSON.put("idPersona", prefs.getString("idUsuario", ""));
+            parametrosJSON.put("mensaje", mensaje);
+            parametrosJSON.put("fecha", fechaFormateada);
 
-        OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(WorkerBihar.class)
-                .setConstraints(restricciones)
-                .setInputData(datos)
-                .build();
+            Data datos = new Data.Builder()
+                    .putString("datos", parametrosJSON.toJSONString())
+                    .build();
 
-        WorkManager.getInstance(this)
-                .getWorkInfoByIdLiveData(otwr.getId())
-                .observe(this, new Observer<WorkInfo>() {
-                    @Override
-                    public void onChanged(WorkInfo workInfo) {
-                        if (workInfo != null && workInfo.getState().isFinished()) {
-                            try {
-                                String rdo = workInfo.getOutputData().getString("result");
-                                JSONParser parser = new JSONParser();
-                                JSONObject json = (JSONObject) parser.parse(rdo);
-                                boolean exito = (boolean) json.get("exito");
-                                // Si no ha habido errores
-                                if (exito) {
-                                    nombresProfesores.add(0, prefs.getString("nombreUsuario", ""));
-                                    mensajesProfesores.add(0, mensaje);
-                                    fechasMensajes.add(0, fechaFormateada);
+            Constraints restricciones = new Constraints.Builder()
+                    .setRequiredNetworkType(NetworkType.CONNECTED)
+                    .build();
 
-                                    adapterForo.notifyDataSetChanged();
+            OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(WorkerBihar.class)
+                    .setConstraints(restricciones)
+                    .setInputData(datos)
+                    .build();
 
-                                    TextView avisoForoVacio = findViewById(R.id.avisoForoVacio);
-                                    avisoForoVacio.setVisibility(View.INVISIBLE);
+            WorkManager.getInstance(this)
+                    .getWorkInfoByIdLiveData(otwr.getId())
+                    .observe(this, new Observer<WorkInfo>() {
+                        @Override
+                        public void onChanged(WorkInfo workInfo) {
+                            if (workInfo != null && workInfo.getState().isFinished()) {
+                                try {
+                                    String rdo = workInfo.getOutputData().getString("result");
+                                    JSONParser parser = new JSONParser();
+                                    JSONObject json = (JSONObject) parser.parse(rdo);
+                                    boolean exito = (boolean) json.get("exito");
+                                    // Si no ha habido errores
+                                    if (exito) {
+                                        nombresProfesores.add(0, prefs.getString("nombreUsuario", ""));
+                                        mensajesProfesores.add(0, mensaje);
+                                        fechasMensajes.add(0, fechaFormateada);
 
-                                    String nombreProfesor = prefs.getString("nombreUsuario", "").split(" ")[0];
-                                    String apellidoProfesor = prefs.getString("nombreUsuario", "").split(" ")[1];
+                                        adapterForo.notifyDataSetChanged();
 
-                                    String mensajeNotificacion = getString(R.string.foro_mensaje_enviado, nombreProfesor + " " + apellidoProfesor);
-                                    mandarNotificacion(idAsignatura, mensajeNotificacion, getString(R.string.foro_titulo));
-                                } else {
-                                    Toast.makeText(getApplicationContext(), R.string.error_general, Toast.LENGTH_LONG).show();
+                                        TextView avisoForoVacio = findViewById(R.id.avisoForoVacio);
+                                        avisoForoVacio.setVisibility(View.INVISIBLE);
+
+                                        String nombreProfesor = prefs.getString("nombreUsuario", "").split(" ")[0];
+                                        String apellidoProfesor = prefs.getString("nombreUsuario", "").split(" ")[1];
+
+                                        String mensajeNotificacion = getString(R.string.foro_mensaje_enviado, nombreProfesor + " " + apellidoProfesor);
+                                        mandarNotificacion(idAsignatura, mensajeNotificacion, getString(R.string.foro_titulo));
+
+                                        mensajeAMandar.setText("");
+                                    } else {
+                                        Toast.makeText(getApplicationContext(), R.string.error_general, Toast.LENGTH_SHORT).show();
+                                    }
+                                    // Si salta algun error
+                                } catch (Exception e) {
+                                    Toast.makeText(getApplicationContext(), R.string.error_general, Toast.LENGTH_SHORT).show();
+                                    e.printStackTrace();
+                                } finally {
+                                    ImageButton botonMandarMensajeForo = findViewById(R.id.botonMandarMensajeForo);
+                                    botonMandarMensajeForo.setClickable(true);
                                 }
-                                // Si salta algun error
-                            } catch (Exception e) {
-                                Toast.makeText(getApplicationContext(), R.string.error_general, Toast.LENGTH_LONG).show();
-                                e.printStackTrace();
-                            } finally {
-                                ImageButton botonMandarMensajeForo = findViewById(R.id.botonMandarMensajeForo);
-                                botonMandarMensajeForo.setClickable(true);
                             }
                         }
-                    }
-                });
+                    });
 
-        WorkManager.getInstance(this).enqueue(otwr);
+            WorkManager.getInstance(this).enqueue(otwr);
+        } else {
+            Toast.makeText(this, R.string.mensaje_foro_vacio, Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void mandarNotificacion(String idAsignatura, String mensajeNotificacion, String tituloNotificacion) {

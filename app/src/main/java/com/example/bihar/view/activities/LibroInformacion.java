@@ -31,6 +31,7 @@ import com.example.bihar.controller.WorkerBihar;
 import com.example.bihar.utils.AdapterListaAsignaturasMatricula;
 import com.example.bihar.utils.AdapterListaLibros;
 import com.example.bihar.utils.AdapterListaUniversidades;
+import com.example.bihar.view.fragments.ToolBar;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -76,6 +77,9 @@ public class LibroInformacion extends AppCompatActivity {
         }
 
         setContentView(R.layout.activity_libro_informacion);
+
+        ToolBar toolbarLibroInformacion = (ToolBar) getSupportFragmentManager().findFragmentById(R.id.toolbarLibroInformacion);
+        toolbarLibroInformacion.cambiarTituloToolbar(getResources().getString(R.string.biblioteca));
 
         usuario = GestorUsuario.getGestorUsuario().getUsuario().getIdUsuario();
         listaCargada = false;

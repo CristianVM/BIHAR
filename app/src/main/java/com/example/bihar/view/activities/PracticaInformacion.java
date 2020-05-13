@@ -31,6 +31,7 @@ import com.example.bihar.R;
 import com.example.bihar.controller.GestorPracticas;
 import com.example.bihar.controller.WorkerBihar;
 import com.example.bihar.model.Practica;
+import com.example.bihar.view.fragments.ToolBar;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -60,6 +61,9 @@ public class PracticaInformacion extends AppCompatActivity {
         }
 
         super.setContentView(R.layout.practica_informacion);
+
+        ToolBar toolbarPracticaInformacion = (ToolBar) getSupportFragmentManager().findFragmentById(R.id.toolbarPracticaInformacion);
+        toolbarPracticaInformacion.cambiarTituloToolbar(getResources().getString(R.string.practicas));
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {

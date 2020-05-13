@@ -23,7 +23,7 @@
         android:orientation="vertical">
 
         <fragment
-            android:id="@+id/frgmt_toolbar"
+            android:id="@+id/toolbarCreditos"
             android:name="com.example.bihar.view.fragments.ToolBar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
@@ -38,7 +38,7 @@
             android:layout_marginTop="25dp"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="25dp"
-            android:text="@string/creditos"
+            android:text="@string/creditos_desglose"
             android:textAlignment="center"
             android:textAllCaps="true"
             android:textColor="@color/verde"

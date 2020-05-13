@@ -3,11 +3,11 @@
     package="com.example.bihar">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
 
     <application
         android:allowBackup="true"
@@ -71,7 +71,7 @@
         <activity android:name=".view.activities.ForoAsignatura" />
         <activity android:name=".view.activities.Creditos" />
         <activity android:name=".MainActivity" />
-        <activity android:name=".view.activities.InicioSesion">
+        <activity android:name=".view.activities.InicioSesion" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

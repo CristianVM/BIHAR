@@ -18,13 +18,14 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link ToolBar#newInstance} factory method to
+ * Use the {@link ToolBar# newInstance} factory method to
  * create an instance of this fragment.
  */
 public class ToolBar extends Fragment {
 
     private TextView txtTitulo;
     private CircleImageView ajustes;
+    private CircleImageView toolbarOpcionAtras;
     public ToolBar() {
         // Required empty public constructor
     }
@@ -43,10 +44,15 @@ public class ToolBar extends Fragment {
 
         ajustes = view.findViewById(R.id.imgAjustesToolbar);
         txtTitulo = view.findViewById(R.id.textView);
+        toolbarOpcionAtras = view.findViewById(R.id.toolbarOpcionAtras);
 
         ajustes.setOnClickListener( vista -> {
             Intent i = new Intent(getActivity(), Ajustes.class);
             startActivity(i);
+        });
+
+        toolbarOpcionAtras.setOnClickListener( vista -> {
+            getActivity().finish();
         });
 
         return view;
@@ -59,4 +65,14 @@ public class ToolBar extends Fragment {
     public void ocultarAjustes(){
         ajustes.setVisibility(View.INVISIBLE);
     }
+
+    public void ocultarAtras(){
+        toolbarOpcionAtras.setVisibility(View.INVISIBLE);
+    }
+
+    public void mostrarAtras(){
+        toolbarOpcionAtras.setVisibility(View.VISIBLE);
+    }
+
+
 }

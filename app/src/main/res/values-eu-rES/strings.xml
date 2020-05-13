@@ -40,7 +40,7 @@
     <string name="lista_libroInformacion_localizacion">Kokapena</string>
     <string name="lista_libroInformacion_reservar">Erreserbatu</string>
     <string name="libroInformacion_libroDisponible">Eskuragarri</string>
-    <string name="libroInformacion_libroNoDisponible">Ez dago ezkuragarri</string>
+    <string name="libroInformacion_libroNoDisponible">"Ez dago eskuragarri "</string>
     <string name="libroInformacion_reservaRealizada">Erreserba eginda</string>
     <string name="libroInformacion_reservaFallo">Errorea liburua erreserbatzean</string>
     <string name="title_activity_maps_universidad">Map</string>
@@ -82,7 +82,7 @@
     <string name="practica_inscripcion_mensaje">Praktikan izena eman nahi duzu? Aurreko inskripzio guztiak baliorik gabe geldituko dira.</string>
     <string name="practica_inscripcion_cancelada">Inskripzioa deuseztatuta</string>
     <string name="practica_inscripcion_realizada">Inskripzioa eginda</string>
-    <string name="formatoFechaDia">EEEE, YYYY\'ko\' MMMM\'ren\' dd</string>
+    <string name="formatoFechaDia">EEEE, YYYY\'ko\' MMMM\'ren\' dd\'a\'</string>
     <string name="matricula">MATRIKULA</string>
     <string name="horario">ORDUTEGIA</string>
     <string name="ajustes_notificacion">Jakinarazpenak</string>
@@ -102,7 +102,7 @@
     <string name="creditos_optativos">Hautazkoak</string>
     <string name="creditos_basicos">Adarreko oinarrizkoak:</string>
     <string name="creditos_obligatorios">Nahitaezkoak:</string>
-    <string name="creditos">Kredituak</string>
+    <string name="creditos">KREDITUAK</string>
     <string name="imparte_idPersona">Ikaslearen ID:</string>
     <string name="imparte_nombreAlumno">Ikaslearen izena</string>
     <string name="dialog_notaprofesor_alumno">Ikaslea:</string>
@@ -161,4 +161,12 @@
     <string name="datosGuardados">Datuak gordeta</string>
     <string name="permiso_denegado">Baimena ukatuta</string>
     <string name="notificacionCancelar">%s tutoretza eskaera deuseztatu du</string>
+    <string name="egela">EGELA</string>
+    <string name="creditos_desglose">Kredituen banakapena</string>
+    <string name="asignaturas">IKASGAIAK</string>
+    <string name="expendiente">ESPEDIENTEA</string>
+    <string name="gaur">GAUR</string>
+    <string name="mensaje_foro_vacio">Mezua ezin da hutsik egon</string>
+    <string name="pantalla_huella_descripcion">Mesedez, erabili hatz-marka aplikaziora sartzeko.</string>
+    <string name="sin_huella">Lehenbizi, hatz-marka bat erregistratu behar duzu gailuan</string>
 </resources>

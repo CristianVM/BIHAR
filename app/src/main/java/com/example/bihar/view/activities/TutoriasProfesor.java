@@ -30,6 +30,7 @@ import com.example.bihar.controller.GestorReservas;
 import com.example.bihar.controller.GestorUsuario;
 import com.example.bihar.controller.WorkerBihar;
 import com.example.bihar.model.Usuario;
+import com.example.bihar.view.fragments.ToolBar;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -53,6 +54,9 @@ public class TutoriasProfesor extends AppCompatActivity {
         setContentView(R.layout.activity_tutorias_profesor);
 
         solicitadas = findViewById(R.id.tutoriasProfesorListView);
+
+        ToolBar toolbarTutoriasProfesor = (ToolBar) getSupportFragmentManager().findFragmentById(R.id.toolbarTutoriasProfesor);
+        toolbarTutoriasProfesor.cambiarTituloToolbar(getResources().getString(R.string.tutorias));
 
         cargarDatos();
     }

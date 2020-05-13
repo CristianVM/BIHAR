@@ -30,6 +30,7 @@ import com.example.bihar.R;
 import com.example.bihar.controller.GestorUsuario;
 import com.example.bihar.model.CardOpcion;
 import com.example.bihar.model.ListaOpcionesMenu;
+import com.example.bihar.view.fragments.ToolBar;
 
 import java.util.Locale;
 
@@ -61,6 +62,11 @@ public class MenuPrincipal extends AppCompatActivity {
         editor.apply();
 
         setContentView(R.layout.activity_menuprincipal);
+
+        ToolBar toolbarMenuPrincipal = (ToolBar) getSupportFragmentManager().findFragmentById(R.id.toolbarMenuPrincipal);
+        toolbarMenuPrincipal.cambiarTituloToolbar(getResources().getString(R.string.gaur));
+        toolbarMenuPrincipal.ocultarAtras();
+
         String idioma = prefs.getString("idioma","es");
         boolean esAlumno = prefs.getBoolean("esAlumno",false);
         CardOpcion[] opciones = null;
@@ -70,6 +76,8 @@ public class MenuPrincipal extends AppCompatActivity {
             if(bundle != null){
                 boolean expediente = bundle.getBoolean("expediente");
                 if(expediente) {
+                    toolbarMenuPrincipal.cambiarTituloToolbar(getResources().getString(R.string.expendiente));
+                    toolbarMenuPrincipal.mostrarAtras();
                     TextView notaMedia = findViewById(R.id.txtNotaMedia);
                     notaMedia.setText(String.format("%.2f",GestorUsuario.getGestorUsuario().getUsuario().getNotaMedia()));
                     opciones = ListaOpcionesMenu.getListaOpcionesExpediente(idioma);

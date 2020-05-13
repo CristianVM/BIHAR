@@ -23,6 +23,7 @@ import androidx.work.WorkManager;
 
 import com.example.bihar.R;
 import com.example.bihar.controller.WorkerBihar;
+import com.example.bihar.view.fragments.ToolBar;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -50,6 +51,9 @@ public class Creditos extends AppCompatActivity {
         }
 
         super.setContentView(R.layout.activity_creditos);
+
+        ToolBar toolbarCreditos = (ToolBar) getSupportFragmentManager().findFragmentById(R.id.toolbarCreditos);
+        toolbarCreditos.cambiarTituloToolbar(getResources().getString(R.string.creditos));
 
         obtenerDesgloseCreditosSuperados();
     }

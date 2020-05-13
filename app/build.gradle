@@ -66,4 +66,5 @@ dependencies {
         exclude group: 'org.apache.httpcomponents'}
     implementation 'com.google.http-client:google-http-client-gson:1.26.0'
     implementation 'com.jakewharton.threetenabp:threetenabp:1.2.1'
+    implementation 'androidx.biometric:biometric:1.0.1'
 }

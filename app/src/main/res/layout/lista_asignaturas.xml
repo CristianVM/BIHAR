@@ -23,7 +23,7 @@
         android:orientation="vertical">
 
         <fragment
-            android:id="@+id/frgmt_toolbar"
+            android:id="@+id/toolbarForoVirtual"
             android:name="com.example.bihar.view.fragments.ToolBar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"

@@ -257,7 +257,7 @@ public class AjustesPreferencias extends PreferenceFragmentCompat implements Sha
                                     if(resultado.equals("Ok")){
                                         // SI SE HA MODIFICADO LA CONTRASEÑA CORRECTAMENTE
                                         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
-                                        if(!prefs.getString("password","").equals("")){
+                                        if(prefs.contains("password")){
                                             SharedPreferences.Editor editor = prefs.edit();
                                             editor.putString("password",txtNueva);
                                             editor.apply();

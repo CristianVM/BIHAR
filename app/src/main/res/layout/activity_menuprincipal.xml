@@ -8,11 +8,11 @@
     tools:context=".view.activities.MenuPrincipal">
 
     <fragment
-        android:id="@+id/frgmt_toolbar"
+        android:id="@+id/toolbarMenuPrincipal"
+        android:name="com.example.bihar.view.fragments.ToolBar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:name="com.example.bihar.view.fragments.ToolBar"
-        tools:layout="@layout/fragment_toolbar"/>
+        tools:layout="@layout/fragment_toolbar" />
 
     <LinearLayout
         android:id="@+id/menuPrincipal_extraLayout"

@@ -21,4 +21,5 @@
         <item name="android:textSize">15sp</item>
         <item name="android:paddingTop">10dp</item>
     </style>
+
 </resources>

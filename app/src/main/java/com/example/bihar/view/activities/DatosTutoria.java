@@ -36,6 +36,7 @@ import com.example.bihar.controller.WorkerBihar;
 import com.example.bihar.model.Profesor;
 import com.example.bihar.model.FechaTutoria;
 import com.example.bihar.model.Tutoria;
+import com.example.bihar.view.fragments.ToolBar;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -79,6 +80,8 @@ public class DatosTutoria extends AppCompatActivity {
         nombreCentroProfesor = findViewById(R.id.nombreCentroProfesor);
         expandableListView = findViewById(R.id.tutoriasExpandableListView);
 
+        ToolBar toolbarDatosTutoria = (ToolBar) getSupportFragmentManager().findFragmentById(R.id.toolbarDatosTutoria);
+        toolbarDatosTutoria.cambiarTituloToolbar(getResources().getString(R.string.tutorias));
 
         cargarDatosProfesor();
     }

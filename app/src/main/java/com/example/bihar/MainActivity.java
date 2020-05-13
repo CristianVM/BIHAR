@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Base64;
 
 import com.example.bihar.controller.GeneradorConexionesSeguras;
@@ -35,48 +36,5 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-/*
-        JSONObject parametrosJSON = new JSONObject();
-        parametrosJSON.put("accion", "actualizarImagen");
-        parametrosJSON.put("idUsuario", "ulopez");
-
-        Bitmap src = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.bruss);
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        src.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        byte[] imagen = stream.toByteArray();
-
-        // Obtenemos la imagen en Bitmap
-        ByteArrayInputStream imageStream = new ByteArrayInputStream(imagen);
-        Bitmap bitmap = BitmapFactory.decodeStream(imageStream);
-        stream = new ByteArrayOutputStream();
-
-        // Hay que convertir el bitmap en un string en Base64
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        byte[] fotoTransformada = stream.toByteArray();
-        String foto64 = Base64.encodeToString(fotoTransformada, Base64.DEFAULT);
-        closeOptionsMenu();
-
-
-        // Insertamos el String en base 64 al JSON
-        parametrosJSON.put("foto", foto64);
-
-        HttpsURLConnection urlConnection = GeneradorConexionesSeguras.getInstance()
-                .crearConexionSegura(getApplicationContext(), "https://134.209.235.115/uluque001/WEB/BIHAR/Principal.php");
-
-        try {
-            urlConnection.setRequestMethod("POST");
-            urlConnection.setDoOutput(true);
-            urlConnection.setRequestProperty("Content-Type", "application/json");
-            PrintWriter out = new PrintWriter(urlConnection.getOutputStream());
-            out.print(parametrosJSON.toJSONString());
-            out.close();
-
-            int statusCode = urlConnection.getResponseCode();
-            if (statusCode == 200) {
-
-            }
-        } catch (Exception e) {
-
-        }*/
     }
 }

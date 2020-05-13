@@ -7,6 +7,7 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -25,6 +26,7 @@ import androidx.work.WorkManager;
 
 import com.example.bihar.R;
 import com.example.bihar.controller.WorkerBihar;
+import com.example.bihar.view.fragments.ToolBar;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -33,7 +35,7 @@ import org.json.simple.parser.JSONParser;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class ForoVirtual  extends AppCompatActivity {
+public class ForoVirtual extends AppCompatActivity {
 
     private ArrayList<String> identificadoresAsignaturas = new ArrayList<>();
     private ArrayList<String> nombresAsignaturas = new ArrayList<>();
@@ -57,6 +59,9 @@ public class ForoVirtual  extends AppCompatActivity {
 
         super.setContentView(R.layout.lista_asignaturas);
 
+        ToolBar toolbarForoVirtual = (ToolBar) getSupportFragmentManager().findFragmentById(R.id.toolbarForoVirtual);
+        toolbarForoVirtual.cambiarTituloToolbar(getResources().getString(R.string.foro_titulo));
+
         obtenerAsignaturas();
     }
 
@@ -65,14 +70,14 @@ public class ForoVirtual  extends AppCompatActivity {
         super.onResume();
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String idiomaNuevo = sharedPreferences.getString("idioma","es");
+        String idiomaNuevo = sharedPreferences.getString("idioma", "es");
 
-        if(!idiomaNuevo.equals(idiomaEstablecido)){
+        if (!idiomaNuevo.equals(idiomaEstablecido)) {
             idiomaEstablecido = idiomaNuevo;
-            if(idiomaEstablecido.equals("es")) {
+            if (idiomaEstablecido.equals("es")) {
                 Locale locale = new Locale("es");
                 cambiarIdiomaOnResume(locale);
-            } else if(idiomaEstablecido.equals("eu")) {
+            } else if (idiomaEstablecido.equals("eu")) {
                 Locale locale = new Locale("eu");
                 cambiarIdiomaOnResume(locale);
             }
@@ -135,7 +140,7 @@ public class ForoVirtual  extends AppCompatActivity {
                                 ListView lalista = findViewById(R.id.listaAsignaturasForo);
                                 lalista.setAdapter(elAdaptador);
 
-                                lalista.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+                                lalista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                     @Override
                                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                         Intent i = new Intent(getApplicationContext(), ForoAsignatura.class);
@@ -143,7 +148,7 @@ public class ForoVirtual  extends AppCompatActivity {
                                         startActivity(i);
                                     }
                                 });
-                            // Si salta algun error
+                                // Si salta algun error
                             } catch (Exception e) {
                                 Toast.makeText(getApplicationContext(), R.string.error_general, Toast.LENGTH_LONG).show();
                                 e.printStackTrace();
@@ -157,9 +162,11 @@ public class ForoVirtual  extends AppCompatActivity {
         WorkManager.getInstance(this).enqueue(otwr);
     }
 
-    /** Cambia el idioma de la aplicación al reanudarse la actividad. Se destruye la actividad y se
-     *  vuelve a iniciar
-     *  @param locale: el idioma almacenado en SharedPreferences
+    /**
+     * Cambia el idioma de la aplicación al reanudarse la actividad. Se destruye la actividad y se
+     * vuelve a iniciar
+     *
+     * @param locale: el idioma almacenado en SharedPreferences
      */
     public void cambiarIdiomaOnResume(Locale locale) {
         Locale.setDefault(locale);
@@ -171,10 +178,12 @@ public class ForoVirtual  extends AppCompatActivity {
         recreate();
     }
 
-    /** Cambia el idioma de la aplicación al crearse la actividad
-     *  @param locale: el idioma almacenado en SharedPreferences
+    /**
+     * Cambia el idioma de la aplicación al crearse la actividad
+     *
+     * @param locale: el idioma almacenado en SharedPreferences
      */
-    public void cambiarIdiomaOnCreate(Locale locale){
+    public void cambiarIdiomaOnCreate(Locale locale) {
         Locale.setDefault(locale);
         Resources res = getResources();
         DisplayMetrics dm = res.getDisplayMetrics();

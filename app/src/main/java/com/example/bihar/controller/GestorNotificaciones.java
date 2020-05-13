@@ -68,7 +68,7 @@ public class GestorNotificaciones {
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             builder = new NotificationCompat.Builder(context,"BIHAR");
-            builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher));
+            builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_stat_call_white));
         }else{
             builder = new NotificationCompat.Builder(context);
             builder.setPriority(NotificationCompat.PRIORITY_HIGH);
@@ -86,9 +86,10 @@ public class GestorNotificaciones {
         }
 
         builder.setContentText(descripcion);
-        builder.setSmallIcon(R.drawable.ic_launcher);
+        builder.setSmallIcon(R.drawable.ic_stat_call_white);
         builder.setAutoCancel(true);
         builder.setStyle(new NotificationCompat.BigTextStyle().bigText(descripcion));
+        builder.setColor(context.getResources().getColor(R.color.verde));
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 

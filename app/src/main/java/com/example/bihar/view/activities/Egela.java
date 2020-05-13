@@ -13,6 +13,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.example.bihar.R;
+import com.example.bihar.view.fragments.ToolBar;
 
 import java.util.Locale;
 
@@ -45,6 +46,9 @@ public class Egela extends AppCompatActivity {
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebViewClient(new WebViewClient());
         webView.loadUrl(URL_EGELA + "?lang=" + idiomaEstablecido);
+
+        ToolBar toolbarEgela = (ToolBar) getSupportFragmentManager().findFragmentById(R.id.toolbarEgela);
+        toolbarEgela.cambiarTituloToolbar(getResources().getString(R.string.egela));
     }
 
     @Override

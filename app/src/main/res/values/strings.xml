@@ -79,7 +79,8 @@
     <string name="foro_mensaje_enviado">%s ha enviado un mensaje.</string>
 
     <!-- CREDITOS -->
-    <string name="creditos">Créditos</string>
+    <string name="creditos">CRÉDITOS</string>
+    <string name="creditos_desglose">Desglose de créditos</string>
     <string name="creditos_obligatorios">Obligatorios:</string>
     <string name="creditos_basicos">Básicos de rama:</string>
     <string name="creditos_optativos">Optativos:</string>
@@ -152,7 +153,6 @@
     <string name="ajustes_contrasenaCambiada">Contraseña cambiada</string>
     <string name="ajustes_contrasenaNoCambiada">Error, contraseña no modificada</string>
 
-
     <!-- ASIGNATURAS-->
     <string name="asignaturas_curso">Curso: %s</string>
     <string name="primero">Primero</string>
@@ -183,11 +183,21 @@
     <string name="dialog_notaprofesor_ordinaria">C. Ordinaria?</string>
 
     <!-- NOTIFICACIONES -->
-    <string name="notificacion_nota">BIHAR</string>
+    <string name="notificacion_nota">Notas</string>
     <string name="notificacion_descripcion">Muestra las notificaciones de BIHAR, ya sean la publicación de las notas, realización de las reservas, foros etc.</string>
     <string name="libroReservado">Libro reservado</string>
     <string name="libroReservadoQueda">queda reservado hasta</string>
 
+    <!-- HUELLA -->
+    <string name="sin_huella">Primero debes registrar una huella en el dispositivo</string>
+    <string name="pantalla_huella_descripcion">Por favor, utiliza tu huella para acceder a la aplicación.</string>
+
+    <!-- MIX -->
     <string name="permiso_denegado">Permiso denegado</string>
+    <string name="egela">EGELA</string>
+    <string name="asignaturas">ASIGNATURAS</string>
+    <string name="gaur">GAUR</string>
+    <string name="expendiente">EXPEDIENTE</string>
+    <string name="mensaje_foro_vacio">El mensaje no puede estar vacío</string>
 
 </resources>

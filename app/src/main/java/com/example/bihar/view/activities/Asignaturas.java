@@ -27,6 +27,7 @@ import com.example.bihar.controller.GestorUsuario;
 import com.example.bihar.controller.WorkerBihar;
 import com.example.bihar.model.Asignatura;
 import com.example.bihar.model.Usuario;
+import com.example.bihar.view.fragments.ToolBar;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -67,6 +68,9 @@ public class Asignaturas extends AppCompatActivity {
                 previousGroup = groupPosition;
             }
         });
+
+        ToolBar toolbarAsignaturas = (ToolBar) getSupportFragmentManager().findFragmentById(R.id.toolbarAsignaturas);
+        toolbarAsignaturas.cambiarTituloToolbar(getResources().getString(R.string.asignaturas));
 
         cargarDatos();
     }

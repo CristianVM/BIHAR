@@ -8,12 +8,12 @@
     android:orientation="vertical">
 
     <fragment
-        android:id="@+id/frgmt_toolbar"
+        android:id="@+id/toolbarLibroInformacion"
+        android:name="com.example.bihar.view.fragments.ToolBar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:name="com.example.bihar.view.fragments.ToolBar"
-        tools:layout="@layout/fragment_toolbar"
-        android:layout_marginBottom="15dp"/>
+        android:layout_marginBottom="15dp"
+        tools:layout="@layout/fragment_toolbar" />
 
     <ScrollView
         android:layout_width="match_parent"
