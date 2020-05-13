@@ -4,7 +4,7 @@ Proyecto Android realizado en la asignatura de 4º curso, Desarrollo Avanzado de
 
 ### Release
 
-[BIHAR Release]()
+[BIHAR]()
 
 ## Integrantes del grupo 👨‍💻
 
