@@ -2,6 +2,10 @@
 
 Proyecto Android realizado en la asignatura de 4º curso, Desarrollo Avanzado de Software, en la titulación de Ingeniería Informática de Gestión y Sistemas de Información (UPV/EHU).
 
+### Release
+
+[BIHAR Release]()
+
 ## Integrantes del grupo 👨‍💻
 
 * **Unai Luque Iglesias** - [Luquetxu](https://github.com/Luquetxu)
@@ -11,4 +15,3 @@ Proyecto Android realizado en la asignatura de 4º curso, Desarrollo Avanzado de
 ## Herramientas utilizadas 🛠️
 * **Android Studio** - [Android Studio](https://developer.android.com/studio)
 * **MySQL** - [MySQL](https://www.mysql.com/)
-
