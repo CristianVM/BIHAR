@@ -13,25 +13,25 @@ public class GestorReservas {
     private static GestorReservas mGestorReservas;
     private ArrayList<Reserva> reservas;
 
-    private GestorReservas(){
+    private GestorReservas() {
         reservas = new ArrayList<>();
     }
 
-    public static GestorReservas getGestorReservas(){
-        if(mGestorReservas==null)
+    public static GestorReservas getGestorReservas() {
+        if (mGestorReservas == null)
             mGestorReservas = new GestorReservas();
         return mGestorReservas;
     }
 
-    public void anadirReserva(int idTutoria, String idPersona, String fecha, int estado, String msg, String nombreCompleto){
+    public void anadirReserva(int idTutoria, String idPersona, String fecha, int estado, String msg, String nombreCompleto) {
         reservas.add(new Reserva(idTutoria, idPersona, fecha, estado, msg, nombreCompleto));
     }
 
-    public List<Integer> getIndices(int estado){
+    public List<Integer> getIndices(int estado) {
         ArrayList<Integer> indices = new ArrayList<>();
-        for(int i = 0; i<reservas.size();i++){
+        for (int i = 0; i < reservas.size(); i++) {
             Reserva r = reservas.get(i);
-            if(r.getEstado() == estado)
+            if (r.getEstado() == estado)
                 indices.add(i);
 
         }
@@ -43,7 +43,7 @@ public class GestorReservas {
         return indices;
     }
 
-    public void setEstado(int index, int estado){
+    public void setEstado(int index, int estado) {
         reservas.get(index).setEstado(estado);
     }
 
@@ -76,7 +76,7 @@ public class GestorReservas {
     }
 }
 
-class Reserva{
+class Reserva {
 
     private int idTutoria;
     private String idPersona;
@@ -94,7 +94,7 @@ class Reserva{
         this.nombreCompleto = nombreCompleto;
     }
 
-    public void setEstado(int estado){
+    public void setEstado(int estado) {
         this.estado = estado;
     }
 

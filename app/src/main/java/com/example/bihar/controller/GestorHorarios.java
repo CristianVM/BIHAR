@@ -25,17 +25,18 @@ public class GestorHorarios {
     /**
      * Constructor
      */
-    private GestorHorarios(){
+    private GestorHorarios() {
         horarioAsignaturaMap = new HashMap<>();
         dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     }
 
     /**
      * Se obtiene el gestor de los horarios
+     *
      * @return: el gestor de horarios
      */
-    public static GestorHorarios gestorHorarios(){
-        if(gestorHorarios ==null){
+    public static GestorHorarios gestorHorarios() {
+        if (gestorHorarios == null) {
             gestorHorarios = new GestorHorarios();
         }
         return gestorHorarios;
@@ -44,24 +45,25 @@ public class GestorHorarios {
     /**
      * Al obtener los datos en JSON de la base de datos, se va almacenando por asignaturas en el
      * hashmap
+     *
      * @param jsonHorario: json con los datos obtenido en String
-     * @param context: el contexto de la aplicación
+     * @param context:     el contexto de la aplicación
      */
-    public void anadirHorarios(String jsonHorario, Context context){
+    public void anadirHorarios(String jsonHorario, Context context) {
         JSONParser parser = new JSONParser();
-        try{
+        try {
             JSONArray jsonArray = (JSONArray) parser.parse(jsonHorario);
 
             // RECORRE TODOS LOS HORARIOS
-            for(int i=0; i< jsonArray.size();i++){
+            for (int i = 0; i < jsonArray.size(); i++) {
                 JSONObject json = (JSONObject) jsonArray.get(i);
                 String idAsignatura = (String) json.get("idAsignatura");
 
                 HorarioAsignatura horario = null;
                 // SE COMPRUEBA SI SE HA AÑADIDO AL HASHMAP
-                if(!horarioAsignaturaMap.containsKey(idAsignatura)){
+                if (!horarioAsignaturaMap.containsKey(idAsignatura)) {
                     horario = new HorarioAsignatura(context);
-                }else{
+                } else {
                     horario = horarioAsignaturaMap.get(idAsignatura);
                 }
                 //SE AÑADE EL HORARIO
@@ -73,9 +75,9 @@ public class GestorHorarios {
                         (String) json.get("nombreAsignatura"),
                         (String) json.get("nombreAsignaturaEuskera"));
 
-                horarioAsignaturaMap.put(idAsignatura,horario);
+                horarioAsignaturaMap.put(idAsignatura, horario);
             }
-        }catch (ParseException e){
+        } catch (ParseException e) {
             e.printStackTrace();
         }
     }
@@ -83,23 +85,24 @@ public class GestorHorarios {
     /**
      * Vacía el hashmap
      */
-    public void limpiarHorarios(){
+    public void limpiarHorarios() {
         horarioAsignaturaMap.clear();
     }
 
     /**
      * Se obtienen los horarios del mismo día que se le pasa por parámetros
+     *
      * @param calendar: el día que se quiera ver el horario
      * @return: la lista de asignaturas con sus horarios
      */
-    public List<JSONObject> obtHorariosDelDia(Calendar calendar){
+    public List<JSONObject> obtHorariosDelDia(Calendar calendar) {
 
         List<JSONObject> resultado = new ArrayList<>();
-        for(Map.Entry<String,HorarioAsignatura> datos: horarioAsignaturaMap.entrySet()){
+        for (Map.Entry<String, HorarioAsignatura> datos : horarioAsignaturaMap.entrySet()) {
             HorarioAsignatura horarioAsignatura = datos.getValue();
 
-            JSONObject json = horarioAsignatura.horarioAsignatura(calendar,dateFormat);
-            if(json.size()>0){
+            JSONObject json = horarioAsignatura.horarioAsignatura(calendar, dateFormat);
+            if (json.size() > 0) {
                 resultado.add(json);
             }
         }

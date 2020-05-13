@@ -1,7 +1,5 @@
 package com.example.bihar.controller;
 
-import android.widget.ProgressBar;
-
 import com.example.bihar.model.Profesor;
 
 import java.util.ArrayList;
@@ -20,30 +18,30 @@ public class GestorProfesores {
 
     private Map<String, Profesor> profesores;
 
-    private GestorProfesores(){
+    private GestorProfesores() {
         profesores = new HashMap<>();
     }
 
-    public static GestorProfesores getGestorProfesores(){
-        if(mGestorProfesores == null)
+    public static GestorProfesores getGestorProfesores() {
+        if (mGestorProfesores == null)
             mGestorProfesores = new GestorProfesores();
         return mGestorProfesores;
     }
 
-    public void anadirProfesor(String idPersona, String nombreCompleto, int idAsignatura, String nombreAsignatura){
-        if(profesores.containsKey(idPersona)){
-            profesores.get(idPersona).anadirAsignatura(idAsignatura,nombreAsignatura);
-        }else{
-            profesores.put(idPersona, new Profesor(nombreCompleto,idAsignatura,nombreAsignatura));
+    public void anadirProfesor(String idPersona, String nombreCompleto, int idAsignatura, String nombreAsignatura) {
+        if (profesores.containsKey(idPersona)) {
+            profesores.get(idPersona).anadirAsignatura(idAsignatura, nombreAsignatura);
+        } else {
+            profesores.put(idPersona, new Profesor(nombreCompleto, idAsignatura, nombreAsignatura));
         }
     }
 
-    public List<String> getIds(String s){
+    public List<String> getIds(String s) {
         Set<String> ids = profesores.keySet();
         List<String> filtrado = new ArrayList<>();
-        for(String id: ids){
+        for (String id : ids) {
             String nombre = profesores.get(id).getNombreCompleto();
-            if(nombre.toLowerCase().contains(s.toLowerCase())){
+            if (nombre.toLowerCase().contains(s.toLowerCase())) {
                 filtrado.add(id);
             }
         }
@@ -51,14 +49,16 @@ public class GestorProfesores {
         return filtrado;
     }
 
-    public Map<String, Profesor> getListaProfesores(){
+    public Map<String, Profesor> getListaProfesores() {
         return profesores;
     }
 
-    public void limpiar(){
+    public void limpiar() {
         profesores.clear();
     }
 
-    public Profesor getProfesor(String id){return profesores.get(id);}
+    public Profesor getProfesor(String id) {
+        return profesores.get(id);
+    }
 
 }

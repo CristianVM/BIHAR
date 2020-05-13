@@ -7,7 +7,6 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -35,6 +34,10 @@ import org.json.simple.parser.JSONParser;
 import java.util.ArrayList;
 import java.util.Locale;
 
+/**
+ * Actividad encargada de mostrar las posibles asignaturas de un alumno o profesor que le dan acceso
+ * al foro de la misma
+ */
 public class ForoVirtual extends AppCompatActivity {
 
     private ArrayList<String> identificadoresAsignaturas = new ArrayList<>();
@@ -148,7 +151,7 @@ public class ForoVirtual extends AppCompatActivity {
                                         startActivity(i);
                                     }
                                 });
-                                // Si salta algun error
+                            // Si salta algun error
                             } catch (Exception e) {
                                 Toast.makeText(getApplicationContext(), getString(R.string.error_general), Toast.LENGTH_SHORT).show();
                                 e.printStackTrace();

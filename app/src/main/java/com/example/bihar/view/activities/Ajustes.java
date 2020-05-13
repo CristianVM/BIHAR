@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.bihar.R;
 import com.example.bihar.view.fragments.AjustesPreferencias;
 import com.example.bihar.view.fragments.ToolBar;
+
 import java.util.Locale;
 
 public class Ajustes extends AppCompatActivity {
@@ -27,11 +28,11 @@ public class Ajustes extends AppCompatActivity {
 
         // SE COMPRUEBA EL IDIOMA ELEGIDO
         sharedPreferences = (SharedPreferences) PreferenceManager.getDefaultSharedPreferences(this);
-        idiomaEstablecido = sharedPreferences.getString("idioma","es");
-        if(idiomaEstablecido.equals("es")){
+        idiomaEstablecido = sharedPreferences.getString("idioma", "es");
+        if (idiomaEstablecido.equals("es")) {
             Locale locale = new Locale("es");
             cambiarIdiomaOnCreate(locale);
-        }else if(idiomaEstablecido.equals("eu")){
+        } else if (idiomaEstablecido.equals("eu")) {
             Locale locale = new Locale("eu");
             cambiarIdiomaOnCreate(locale);
         }
@@ -56,25 +57,27 @@ public class Ajustes extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        String idiomaNuevo = sharedPreferences.getString("idioma","es");
+        String idiomaNuevo = sharedPreferences.getString("idioma", "es");
 
-        if(!idiomaNuevo.equals(idiomaEstablecido)){
+        if (!idiomaNuevo.equals(idiomaEstablecido)) {
             idiomaEstablecido = idiomaNuevo;
-            if(idiomaEstablecido.equals("es")){
+            if (idiomaEstablecido.equals("es")) {
                 Locale locale = new Locale("es");
                 cambiarIdiomaOnResume(locale);
-            }else if(idiomaEstablecido.equals("eu")){
+            } else if (idiomaEstablecido.equals("eu")) {
                 Locale locale = new Locale("eu");
                 cambiarIdiomaOnResume(locale);
             }
         }
     }
+
     /**
      * Cambia el idioma de la aplicación al reanudarse la actividad. Se destruye la actividad y se
      * vuelve a iniciar
+     *
      * @param locale: el idioma almacenado en SharedPreferences
      */
-    public void cambiarIdiomaOnResume(Locale locale){
+    public void cambiarIdiomaOnResume(Locale locale) {
         Locale.setDefault(locale);
         Resources res = getResources();
         DisplayMetrics dm = res.getDisplayMetrics();
@@ -86,9 +89,10 @@ public class Ajustes extends AppCompatActivity {
 
     /**
      * Cambia el idioma de la aplicación al crearse la actividad
+     *
      * @param locale: el idioma almacenado en SharedPreferences
      */
-    public void cambiarIdiomaOnCreate(Locale locale){
+    public void cambiarIdiomaOnCreate(Locale locale) {
         Locale.setDefault(locale);
         Resources res = getResources();
         DisplayMetrics dm = res.getDisplayMetrics();
@@ -102,15 +106,16 @@ public class Ajustes extends AppCompatActivity {
      * se considerará que la foto es sacada de la galería y almacena la uri en sharespreferences,
      * y si es 81 será considerado como captura de foto y se guardará en sharespreferences el path.
      * Los dos añaden la foto en la ImageView.
+     *
      * @param requestCode el código de la intención
-     * @param resultCode el resultado
-     * @param data la intención
+     * @param resultCode  el resultado
+     * @param data        la intención
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode==RESULT_OK){
-            switch (requestCode){
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
                 case 80:
                     // FOTO DE LA GALERIA
 

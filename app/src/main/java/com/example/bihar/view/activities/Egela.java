@@ -35,11 +35,11 @@ public class Egela extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        idiomaEstablecido = prefs.getString("idioma","es");
-        if(idiomaEstablecido.equals("es")){
+        idiomaEstablecido = prefs.getString("idioma", "es");
+        if (idiomaEstablecido.equals("es")) {
             Locale locale = new Locale("es");
             cambiarIdiomaOnCreate(locale);
-        }else if(idiomaEstablecido.equals("eu")){
+        } else if (idiomaEstablecido.equals("eu")) {
             Locale locale = new Locale("eu");
             cambiarIdiomaOnCreate(locale);
         }
@@ -58,9 +58,9 @@ public class Egela extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if(!webView.canGoBack()){
+        if (!webView.canGoBack()) {
             finish();
-        }else{
+        } else {
             webView.goBack();
         }
     }
@@ -75,25 +75,27 @@ public class Egela extends AppCompatActivity {
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-        String idiomaNuevo = sharedPreferences.getString("idioma","es");
+        String idiomaNuevo = sharedPreferences.getString("idioma", "es");
 
-        if(!idiomaNuevo.equals(idiomaEstablecido)){
+        if (!idiomaNuevo.equals(idiomaEstablecido)) {
             idiomaEstablecido = idiomaNuevo;
-            if(idiomaEstablecido.equals("es")){
+            if (idiomaEstablecido.equals("es")) {
                 Locale locale = new Locale("es");
                 cambiarIdiomaOnResume(locale);
-            }else if(idiomaEstablecido.equals("eu")){
+            } else if (idiomaEstablecido.equals("eu")) {
                 Locale locale = new Locale("eu");
                 cambiarIdiomaOnResume(locale);
             }
         }
     }
+
     /**
      * Cambia el idioma de la aplicación al reanudarse la actividad. Se destruye la actividad y se
      * vuelve a iniciar
+     *
      * @param locale: el idioma almacenado en SharedPreferences
      */
-    public void cambiarIdiomaOnResume(Locale locale){
+    public void cambiarIdiomaOnResume(Locale locale) {
         Locale.setDefault(locale);
         Resources res = getResources();
         DisplayMetrics dm = res.getDisplayMetrics();
@@ -105,9 +107,10 @@ public class Egela extends AppCompatActivity {
 
     /**
      * Cambia el idioma de la aplicación al crearse la actividad
+     *
      * @param locale: el idioma almacenado en SharedPreferences
      */
-    public void cambiarIdiomaOnCreate(Locale locale){
+    public void cambiarIdiomaOnCreate(Locale locale) {
         Locale.setDefault(locale);
         Resources res = getResources();
         DisplayMetrics dm = res.getDisplayMetrics();

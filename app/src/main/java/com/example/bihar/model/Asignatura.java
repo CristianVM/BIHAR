@@ -12,7 +12,7 @@ public class Asignatura {
     private int anyo;
     private int curso;
 
-    public Asignatura(String pNombre, double pCalificacionOrd, int pConv, String pTipo, int pAnyo, int pCurso){
+    public Asignatura(String pNombre, double pCalificacionOrd, int pConv, String pTipo, int pAnyo, int pCurso) {
         nombreAsignatura = pNombre;
         calificacionOrd = pCalificacionOrd;
         convocatoria = pConv;

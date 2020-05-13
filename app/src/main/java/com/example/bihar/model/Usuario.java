@@ -20,39 +20,39 @@ public class Usuario {
     private HashMap<Integer, List<Asignatura>> asignaturas_por_curso;
     private HashMap<Integer, List<Asignatura>> asignaturas_por_anyo;
 
-    public Usuario(String pUsuario, String pEmail){
+    public Usuario(String pUsuario, String pEmail) {
         idUsuario = pUsuario;
         email = pEmail;
         asignaturas_por_curso = new HashMap<>();
         asignaturas_por_anyo = new HashMap<>();
     }
 
-    public void setGmail(String pGmail){
+    public void setGmail(String pGmail) {
         gmail = pGmail;
     }
 
-    public void setFoto64(String foto64){
+    public void setFoto64(String foto64) {
         this.foto64 = foto64;
     }
 
-    public void anadirAsignatura(Asignatura asignatura){
+    public void anadirAsignatura(Asignatura asignatura) {
         int curso = asignatura.getCurso();
         int anyo = asignatura.getCurso();
 
-        if(asignaturas_por_curso.containsKey(curso)){
+        if (asignaturas_por_curso.containsKey(curso)) {
             asignaturas_por_curso.get(curso).add(asignatura);
-        }else{
+        } else {
             List<Asignatura> listaAsignaturas = new ArrayList<>();
             listaAsignaturas.add(asignatura);
-            asignaturas_por_curso.put(curso,listaAsignaturas);
+            asignaturas_por_curso.put(curso, listaAsignaturas);
         }
 
-        if(asignaturas_por_anyo.containsKey(anyo)){
+        if (asignaturas_por_anyo.containsKey(anyo)) {
             asignaturas_por_anyo.get(anyo).add(asignatura);
-        }else{
+        } else {
             List<Asignatura> listaAsignaturas = new ArrayList<>();
             listaAsignaturas.add(asignatura);
-            asignaturas_por_anyo.put(anyo,listaAsignaturas);
+            asignaturas_por_anyo.put(anyo, listaAsignaturas);
         }
 
     }
@@ -101,7 +101,7 @@ public class Usuario {
         return numCreditos;
     }
 
-    public void limpiarAsignaturas(){
+    public void limpiarAsignaturas() {
         asignaturas_por_anyo.clear();
         asignaturas_por_curso.clear();
     }

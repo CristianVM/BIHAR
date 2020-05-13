@@ -30,6 +30,9 @@ import org.json.simple.parser.JSONParser;
 
 import java.util.Locale;
 
+/**
+ * Actividad encargada de mostrar los creditos superados de un alumno desglosados por tipo
+ */
 public class Creditos extends AppCompatActivity {
 
     private static final int TIEMPO_ANIMACION_MS = 1250;
@@ -117,7 +120,7 @@ public class Creditos extends AppCompatActivity {
 
                                 mostrarDesglose(creditosObligatorios, creditosBasicos, creditosOptativos, creditosTFG);
 
-                                // Si salta algun error
+                            // Si salta algun error
                             } catch (Exception e) {
                                 Toast.makeText(getApplicationContext(), getString(R.string.error_general), Toast.LENGTH_SHORT).show();
                                 e.printStackTrace();
@@ -131,6 +134,14 @@ public class Creditos extends AppCompatActivity {
         WorkManager.getInstance(this).enqueue(otwr);
     }
 
+    /**
+     * Muestra el desglose individual de creditos con una animacion en la progress bar.
+     *
+     * @param creditosObligatorios: numero de creditos obligatorios superados
+     * @param creditosBasicos: numero de creditos basicos superados
+     * @param creditosOptativos: numero de creditos optativos superados
+     * @param creditosTFG: numero de creditos tfg superados
+     */
     private void mostrarDesglose(float creditosObligatorios, float creditosBasicos, float creditosOptativos, float creditosTFG) {
         ScrollView scrollViewCreditos = findViewById(R.id.scrollViewCreditos);
         scrollViewCreditos.setVisibility(View.VISIBLE);

@@ -53,21 +53,22 @@ public class AdapterListaUniversidades extends BaseAdapter {
 
     /**
      * Constructor del adapter que muestra las universidades donde está el libro
-     * @param context: el contexto
-     * @param universidades: los nombres de las universidades
+     *
+     * @param context:          el contexto
+     * @param universidades:    los nombres de las universidades
      * @param disponibilidades: las fechas si no estan disponible
      * @param estanDisponibles: si están disponible o no los libros
-     * @param idLibros: id de los libros
-     * @param idPersona: id de la persona
-     * @param lifecycleOwner: el lifecycler
-     * @param latitudes: las latitudes de la universidades
-     * @param longitudes: las longitudes de las universidades
-     * @param activity: la actividad
+     * @param idLibros:         id de los libros
+     * @param idPersona:        id de la persona
+     * @param lifecycleOwner:   el lifecycler
+     * @param latitudes:        las latitudes de la universidades
+     * @param longitudes:       las longitudes de las universidades
+     * @param activity:         la actividad
      */
     public AdapterListaUniversidades(Context context, String[] universidades, String[] disponibilidades,
                                      boolean[] estanDisponibles, String[] idLibros, String idPersona,
                                      LifecycleOwner lifecycleOwner, String[] latitudes, String[] longitudes,
-                                     Activity activity,String tituloLibro) {
+                                     Activity activity, String tituloLibro) {
         this.context = context;
         this.layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.universidades = universidades;
@@ -84,6 +85,7 @@ public class AdapterListaUniversidades extends BaseAdapter {
 
     /**
      * Devuelve el número de universidades que hay
+     *
      * @return: número de universidades
      */
     @Override
@@ -93,6 +95,7 @@ public class AdapterListaUniversidades extends BaseAdapter {
 
     /**
      * Devuelve el objeto de la posición i
+     *
      * @param i: la posición de la lista
      * @return: el objeto
      */
@@ -103,6 +106,7 @@ public class AdapterListaUniversidades extends BaseAdapter {
 
     /**
      * Devuelve el identificador
+     *
      * @param i: identificador
      * @return: id
      */
@@ -113,8 +117,9 @@ public class AdapterListaUniversidades extends BaseAdapter {
 
     /**
      * Devuelve el listView personalizado habiendole asignado valores
-     * @param i: posición
-     * @param view: la vista
+     *
+     * @param i:        posición
+     * @param view:     la vista
      * @param viewGroup
      * @return
      */
@@ -164,10 +169,11 @@ public class AdapterListaUniversidades extends BaseAdapter {
     /**
      * Se reserva el libro en cuestión en la universidad indicada. Si se ha podido realizar la reserva
      * entonces ese libro queda reservado y no se puede reservar hasta que se quede libre
-     * @param i: la posicion del libro en el la lista
-     * @param imageView: el imageview
+     *
+     * @param i:             la posicion del libro en el la lista
+     * @param imageView:     el imageview
      * @param txtDisponible: el textview de disponible
-     * @param btnReserva: el boton de reservar
+     * @param btnReserva:    el boton de reservar
      */
     private void realizarReserva(int i, ImageView imageView, TextView txtDisponible, Button btnReserva) {
 
@@ -208,8 +214,8 @@ public class AdapterListaUniversidades extends BaseAdapter {
 
                             // SE ENVÍA UNA NOTIFICACIÓN AL ALUMNO
                             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-                            if(prefs.getBoolean("notificacion",true)){
-                                GestorNotificaciones.getGestorNotificaciones(context).notificacionReservaLibro(tituloLibro,resultado);
+                            if (prefs.getBoolean("notificacion", true)) {
+                                GestorNotificaciones.getGestorNotificaciones(context).notificacionReservaLibro(tituloLibro, resultado);
                             }
                         } else {
                             //HA HABIDO ALGUN ERROR
@@ -223,14 +229,15 @@ public class AdapterListaUniversidades extends BaseAdapter {
     /**
      * Al pulsar el botón de 'Localización' se podrá ver la localización de la universidad gracias a
      * Google Maps
+     *
      * @param pos: la posición
      */
-    private void verLocalizacion(int pos){
-        if(comprobarPermisos()){
+    private void verLocalizacion(int pos) {
+        if (comprobarPermisos()) {
             Intent i = new Intent(context, MapsUniversidad.class);
-            i.putExtra("nombreUniversidad",universidades[pos]);
-            i.putExtra("latitud",latitudes[pos]);
-            i.putExtra("longitud",longitudes[pos]);
+            i.putExtra("nombreUniversidad", universidades[pos]);
+            i.putExtra("latitud", latitudes[pos]);
+            i.putExtra("longitud", longitudes[pos]);
 
             context.startActivity(i);
         }
@@ -240,19 +247,20 @@ public class AdapterListaUniversidades extends BaseAdapter {
     /**
      * Se comprueban los permisos. Si no se ha aceptado el permiso entonces se manda la petición de
      * que se acepten.
+     *
      * @return Si se acepta el permiso entonces devolverá true, sino false.
      */
-    private boolean comprobarPermisos(){
+    private boolean comprobarPermisos() {
 
-        if (ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
-            if (ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.ACCESS_FINE_LOCATION)){
+        if (ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.ACCESS_FINE_LOCATION)) {
                 Toast.makeText(activity.getApplicationContext(),
-                        context.getResources().getString(R.string.libroInformacion_explPermiso),Toast.LENGTH_LONG).show();
+                        context.getResources().getString(R.string.libroInformacion_explPermiso), Toast.LENGTH_LONG).show();
             }
             ActivityCompat.requestPermissions(activity, new String[]
                     {Manifest.permission.ACCESS_FINE_LOCATION}, 200);
 
-        }else{
+        } else {
             return true;
         }
         return false;

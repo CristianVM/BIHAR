@@ -20,13 +20,16 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import com.example.bihar.R;
 import com.example.bihar.controller.GestorLibros;
 import com.example.bihar.controller.WorkerBihar;
 import com.example.bihar.model.Libro;
 import com.example.bihar.utils.AdapterListaLibros;
 import com.example.bihar.view.dialog.DialogFiltradoLibros;
+
 import org.json.simple.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -91,7 +94,7 @@ public class Biblioteca extends AppCompatActivity implements DialogFiltradoLibro
 
 
         //AL HACERLE CLICK A "ATRAS" SE CIERRA LA ACTIVIDAD
-        imagenAtras.setOnClickListener( view -> {
+        imagenAtras.setOnClickListener(view -> {
             finish();
         });
 
@@ -149,25 +152,27 @@ public class Biblioteca extends AppCompatActivity implements DialogFiltradoLibro
         JSONObject jsonFiltrado = new JSONObject(map);
 
         limpiarArrayLists();
-        List<String> listaLibrosFiltrado = GestorLibros.getGestorLibros().filtrarLibro(jsonFiltrado.toString(),idiomaEstablecido);
-        temaInformatica="";
-        temaEconomia="";
-        temaMedicina="";
+        List<String> listaLibrosFiltrado = GestorLibros.getGestorLibros().filtrarLibro(jsonFiltrado.toString(), idiomaEstablecido);
+        temaInformatica = "";
+        temaEconomia = "";
+        temaMedicina = "";
         actualizarListadoLibros(listaLibrosFiltrado);
         adapterListaLibros.notifyDataSetChanged();
     }
 
     /**
      * Se abre el dialogo para filtrar los libros
+     *
      * @param view
      */
-    public void dialogFiltrado(View view){
+    public void dialogFiltrado(View view) {
         DialogFiltradoLibros dialogFiltradoLibros = new DialogFiltradoLibros();
-        dialogFiltradoLibros.show(getSupportFragmentManager(),"dialogFiltradoLibros");
+        dialogFiltradoLibros.show(getSupportFragmentManager(), "dialogFiltradoLibros");
     }
 
     /**
      * Carga los libros del GestorLibros y los almacena en la lista
+     *
      * @param data: el contenido para realizar la petición a la BD Remota
      */
     private void cargarLibros(Data.Builder data) {
@@ -186,8 +191,8 @@ public class Biblioteca extends AppCompatActivity implements DialogFiltradoLibro
                     if (status != null && status.getState().isFinished()) {
 
                         // RECORRE EL MAP Y VA AÑADIENDO LOS LIBROS A LAS LISTAS
-                        Map<String,Libro> librosMap = GestorLibros.getGestorLibros().getLibros();
-                        for(Map.Entry<String,Libro> datos: librosMap.entrySet()){
+                        Map<String, Libro> librosMap = GestorLibros.getGestorLibros().getLibros();
+                        for (Map.Entry<String, Libro> datos : librosMap.entrySet()) {
                             autores.add(datos.getValue().getAutor());
                             titulares.add(datos.getValue().getTitulo());
                             fechas.add(datos.getValue().getFecha());
@@ -212,7 +217,7 @@ public class Biblioteca extends AppCompatActivity implements DialogFiltradoLibro
                                 intent.putExtra("descripcion", libro.getDescripcion());
                                 intent.putExtra("fecha", libro.getFecha());
                                 intent.putExtra("titulo", libro.getTitulo());
-                                intent.putExtra("imagen",imagenes.get(i));
+                                intent.putExtra("imagen", imagenes.get(i));
                                 startActivity(intent);
                             }
                         });
@@ -223,6 +228,7 @@ public class Biblioteca extends AppCompatActivity implements DialogFiltradoLibro
     /**
      * Se comprueba que temas de los libros se han seleccionado en el díalogo y se filtran para mostrarlos
      * en el ListView
+     *
      * @param lista: ArrayList de los temas seleccionados en el diálogo
      */
     @Override
@@ -242,7 +248,7 @@ public class Biblioteca extends AppCompatActivity implements DialogFiltradoLibro
     /**
      * Vacía los ArrayList del ListView
      */
-    private void limpiarArrayLists(){
+    private void limpiarArrayLists() {
         autores.clear();
         titulares.clear();
         fechas.clear();
@@ -252,10 +258,11 @@ public class Biblioteca extends AppCompatActivity implements DialogFiltradoLibro
 
     /**
      * Rellena los ArrayList para el ListView con los libros recogidos.
+     *
      * @param listaFiltrada: Lista de ids de los libros
      */
-    private AdapterListaLibros actualizarListadoLibros(List<String> listaFiltrada){
-        for(String id: listaFiltrada){
+    private AdapterListaLibros actualizarListadoLibros(List<String> listaFiltrada) {
+        for (String id : listaFiltrada) {
             Libro libro = GestorLibros.getGestorLibros().getInfoLibro(id);
             autores.add(libro.getAutor());
             titulares.add(libro.getTitulo());
@@ -282,6 +289,7 @@ public class Biblioteca extends AppCompatActivity implements DialogFiltradoLibro
 
     /**
      * Se comprueba si al cerrar la aplicación en segundo plano si se estaba buscando un libro
+     *
      * @param outState
      */
     @Override
@@ -292,6 +300,7 @@ public class Biblioteca extends AppCompatActivity implements DialogFiltradoLibro
 
     /**
      * Se recoge si se estaba buscando un libro o no
+     *
      * @param savedInstanceState
      */
     @Override

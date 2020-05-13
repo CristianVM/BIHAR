@@ -23,13 +23,14 @@ public class AdapterListaLibros extends BaseAdapter {
 
     /**
      * Constructor del adapter para la lista de los libros
-     * @param context: el contexto
+     *
+     * @param context:  el contexto
      * @param imagenes: las imagenes
-     * @param autores: los autores del libro
-     * @param titulos: los titulos del libro
-     * @param fechas: las fechas de publicacion
+     * @param autores:  los autores del libro
+     * @param titulos:  los titulos del libro
+     * @param fechas:   las fechas de publicacion
      */
-    public AdapterListaLibros(Context context,ArrayList<Integer> imagenes, ArrayList<String> autores,
+    public AdapterListaLibros(Context context, ArrayList<Integer> imagenes, ArrayList<String> autores,
                               ArrayList<String> titulos, ArrayList<String> fechas) {
         this.context = context;
         this.layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -41,6 +42,7 @@ public class AdapterListaLibros extends BaseAdapter {
 
     /**
      * Devuelve el número de libros que hay
+     *
      * @return número de libros
      */
     @Override
@@ -50,6 +52,7 @@ public class AdapterListaLibros extends BaseAdapter {
 
     /**
      * Devuelve el objeto de la posición i
+     *
      * @param i: la posición de la lista
      * @return: el objeto
      */
@@ -60,6 +63,7 @@ public class AdapterListaLibros extends BaseAdapter {
 
     /**
      * Devuelve el identificador
+     *
      * @param i: identificador
      * @return: id
      */
@@ -70,8 +74,9 @@ public class AdapterListaLibros extends BaseAdapter {
 
     /**
      * Devuelve el listView personalizado habiendole asignado valores
-     * @param i: posición
-     * @param view: la vista
+     *
+     * @param i:        posición
+     * @param view:     la vista
      * @param viewGroup
      * @return
      */

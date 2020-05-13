@@ -91,19 +91,19 @@ public class AjustesPreferencias extends PreferenceFragmentCompat implements Sha
         addPreferencesFromResource(R.xml.ajustes_preferencias);
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
-        boolean iniciado = prefs.getBoolean("iniciado",false);
-        if(!iniciado){
+        boolean iniciado = prefs.getBoolean("iniciado", false);
+        if (!iniciado) {
             verPreferencias(false);
-        }else{
+        } else {
             verPreferencias(true);
         }
 
         // SE COMPRUEBA SI ESTÁ ACTIVADO O NO LA NOTIFICACIÓN
-        boolean notificacion = prefs.getBoolean("notificacion",true);
+        boolean notificacion = prefs.getBoolean("notificacion", true);
         SwitchPreference switchNotificacion = findPreference("notificacion");
         switchNotificacion.setChecked(notificacion);
 
-        if(iniciado) {
+        if (iniciado) {
             actualizarCampoEmail();
         }
 
@@ -125,13 +125,14 @@ public class AjustesPreferencias extends PreferenceFragmentCompat implements Sha
 
     /**
      * Al cambiar alguna de las preferencias, se ejecuta una función
+     *
      * @param sharedPreferences: shared preferences
-     * @param s: la key de la preferencias
+     * @param s:                 la key de la preferencias
      */
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
         // SI SE MODIFICA LA PREFERENCIA DE LA KEY IDIOMA SE CAMBIA EN LAS PREFERENCIAS
-        if(s.equals("idioma")){
+        if (s.equals("idioma")) {
             // si detecta cambios en la key idioma cambia el idioma.
             String idioma = sharedPreferences.getString("idioma", Locale.getDefault().getLanguage());
             cambiarIdioma(idioma);
@@ -140,6 +141,7 @@ public class AjustesPreferencias extends PreferenceFragmentCompat implements Sha
 
     /**
      * Al hacerle click en una preferencia, se activa su función.
+     *
      * @param preference: la preferencia clickada
      * @return
      */
@@ -147,12 +149,12 @@ public class AjustesPreferencias extends PreferenceFragmentCompat implements Sha
     public boolean onPreferenceTreeClick(Preference preference) {
         super.onPreferenceTreeClick(preference);
         String key = preference.getKey();
-        if(key.equals("portalWeb")){
+        if (key.equals("portalWeb")) {
             // AL HACERLE CLICK AL PORTAL WEB TE DIRIGE A LA WEB DE LA UPV-EHU
             SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getContext());
-            Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.ehu.eus/"+pref.getString("idioma","")+"/"));
+            Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.ehu.eus/" + pref.getString("idioma", "") + "/"));
             startActivity(i);
-        }else if(key.equals("notificacion")) {
+        } else if (key.equals("notificacion")) {
             //AL HACERLE CLICK A LA SWITCH DE LAS NOTIFICACIONES, SE MODIFICA EN LAS SHARED PREFERENCES
             // EL ESTADO DE LA NOTIFICACION Y TAMBIEN SE ACTUALIZA EN LA BASE DE DATOS REMOTA
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
@@ -160,22 +162,22 @@ public class AjustesPreferencias extends PreferenceFragmentCompat implements Sha
             SharedPreferences.Editor editor = prefs.edit();
             SwitchPreference switchNotificacion = findPreference("notificacion");
 
-            Map<String,String> map = new HashMap<>();
-            map.put("accion","updateNotificacion");
-            map.put("idPersona",GestorUsuario.getGestorUsuario().getUsuario().getIdUsuario());
+            Map<String, String> map = new HashMap<>();
+            map.put("accion", "updateNotificacion");
+            map.put("idPersona", GestorUsuario.getGestorUsuario().getUsuario().getIdUsuario());
 
             if (switchNotificacion.isChecked()) {
                 editor.putBoolean("notificacion", true);
-                map.put("notificacion","true");
+                map.put("notificacion", "true");
             } else {
                 editor.putBoolean("notificacion", false);
-                map.put("notificacion","false");
+                map.put("notificacion", "false");
             }
             editor.apply();
 
             // SE PREPARA PARA MODIFICAR EN LA BASE DE DATOS
             Data.Builder data = new Data.Builder();
-            data.putString("datos",new JSONObject(map).toString());
+            data.putString("datos", new JSONObject(map).toString());
 
             Constraints restricciones = new Constraints.Builder()
                     .setRequiredNetworkType(NetworkType.CONNECTED)
@@ -186,7 +188,7 @@ public class AjustesPreferencias extends PreferenceFragmentCompat implements Sha
                     .build();
             WorkManager.getInstance(getActivity()).enqueue(trabajo);
 
-        } else if (key.equals("fotoPerfil")){
+        } else if (key.equals("fotoPerfil")) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setTitle(getResources().getText(R.string.dialog_foto_eleccion));
             final CharSequence[] opciones =
@@ -204,13 +206,13 @@ public class AjustesPreferencias extends PreferenceFragmentCompat implements Sha
 
             dialog = builder.create();
             dialog.show();
-        }else if(key.equals("contrasena")){
+        } else if (key.equals("contrasena")) {
             // SI SE HACE CLICK EN LA PREFERENCIA DE CAMBIAR LA CONTRASEÑA
 
             // SE ABRE UN DIALOGO DONDE TIENES QUE ESCRIBIR LA CONTRASEÑA ACTUAL Y LA NUEVA
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             LayoutInflater inflater = getActivity().getLayoutInflater();
-            View vista = inflater.inflate(R.layout.dialog_cambiocontrasenia,null);
+            View vista = inflater.inflate(R.layout.dialog_cambiocontrasenia, null);
 
             builder.setView(vista);
 
@@ -227,17 +229,17 @@ public class AjustesPreferencias extends PreferenceFragmentCompat implements Sha
                 String txtAntigua = antigua.getText().toString();
                 String txtNueva = nueva.getText().toString();
 
-                if(!txtAntigua.equals("") && !txtNueva.equals("")){
+                if (!txtAntigua.equals("") && !txtNueva.equals("")) {
                     //SE COMPRUEBA QUE NO ESTÁN VACÍOS Y SE MANDA LA NUEVA CONTRASEÑA A LA BASE DE DATOS
-                        Map<String,String> map = new HashMap<>();
-                        map.put("idPersona",GestorUsuario.getGestorUsuario().getUsuario().getIdUsuario());
-                        map.put("antigua",txtAntigua);
-                        map.put("nueva",txtNueva);
-                        map.put("accion","cambioContrasena");
+                    Map<String, String> map = new HashMap<>();
+                    map.put("idPersona", GestorUsuario.getGestorUsuario().getUsuario().getIdUsuario());
+                    map.put("antigua", txtAntigua);
+                    map.put("nueva", txtNueva);
+                    map.put("accion", "cambioContrasena");
 
-                        JSONObject json = new JSONObject(map);
-                        Data.Builder data = new Data.Builder();
-                        data.putString("datos",json.toString());
+                    JSONObject json = new JSONObject(map);
+                    Data.Builder data = new Data.Builder();
+                    data.putString("datos", json.toString());
 
                     Constraints restricciones = new Constraints.Builder()
                             .setRequiredNetworkType(NetworkType.CONNECTED)
@@ -252,26 +254,26 @@ public class AjustesPreferencias extends PreferenceFragmentCompat implements Sha
                             lifecycleOwner, status -> {
                                 if (status != null && status.getState().isFinished()) {
                                     String resultado = status.getOutputData().getString("result");
-                                    if(resultado.equals("Ok")){
+                                    if (resultado.equals("Ok")) {
                                         // SI SE HA MODIFICADO LA CONTRASEÑA CORRECTAMENTE
                                         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
-                                        if(prefs.contains("password")){
+                                        if (prefs.contains("password")) {
                                             SharedPreferences.Editor editor = prefs.edit();
-                                            editor.putString("password",txtNueva);
+                                            editor.putString("password", txtNueva);
                                             editor.apply();
                                         }
-                                        Toast.makeText(getContext(),getActivity().getResources().getString(R.string.ajustes_contrasenaCambiada),Toast.LENGTH_SHORT).show();
-                                    }else{
+                                        Toast.makeText(getContext(), getActivity().getResources().getString(R.string.ajustes_contrasenaCambiada), Toast.LENGTH_SHORT).show();
+                                    } else {
                                         //NO SE HA MODIFICADO LA CONTRASEÑA
-                                        Toast.makeText(getContext(),getActivity().getResources().getString(R.string.ajustes_contrasenaNoCambiada),Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getContext(), getActivity().getResources().getString(R.string.ajustes_contrasenaNoCambiada), Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             });
                     dialog.dismiss();
 
-                }else{
+                } else {
                     // ALGÚN CAMPO ESTÁ VACÍO
-                    Toast.makeText(getActivity(),getActivity().getResources().getString(R.string.dialog_notaprofesor_vacio),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.dialog_notaprofesor_vacio), Toast.LENGTH_SHORT).show();
                 }
             });
             dialog.show();
@@ -281,21 +283,22 @@ public class AjustesPreferencias extends PreferenceFragmentCompat implements Sha
 
     /**
      * Cambia el idioma de la aplicación
+     *
      * @param idim: idioma nuevo
      */
-    private void cambiarIdioma(String idim){
+    private void cambiarIdioma(String idim) {
         Locale nuevaloc = new Locale(idim);
         Locale.setDefault(nuevaloc);
         Configuration config = new Configuration();
         config.locale = nuevaloc;
-        getActivity().getBaseContext().getResources().updateConfiguration(config,getActivity().getBaseContext().getResources()
+        getActivity().getBaseContext().getResources().updateConfiguration(config, getActivity().getBaseContext().getResources()
                 .getDisplayMetrics());
         getActivity().finish();
         Intent intent = getActivity().getIntent();
         startActivity(intent);
     }
 
-    private void actualizarCampoEmail(){
+    private void actualizarCampoEmail() {
         Preference editTextPreference = findPreference("gmail");
         String gmail = GestorUsuario.getGestorUsuario().getUsuario().getGmail();
         if (gmail != null && !gmail.isEmpty()) {
@@ -305,10 +308,10 @@ public class AjustesPreferencias extends PreferenceFragmentCompat implements Sha
                         .setPositiveButton(R.string.Si, (dialog, which) -> {
                             guardarEmail(null);
                             desvincularCuentaGoogle();
-                        }).setNegativeButton(R.string.No,null).show();
+                        }).setNegativeButton(R.string.No, null).show();
                 return true;
             });
-        }else{
+        } else {
             editTextPreference.setSummary(getString(R.string.ajustes_gmail_descripcion));
             editTextPreference.setOnPreferenceClickListener(preference -> {
                 inicioSesionGoogle();
@@ -317,7 +320,7 @@ public class AjustesPreferencias extends PreferenceFragmentCompat implements Sha
         }
     }
 
-    private void workerAjustes(Data.Builder data){
+    private void workerAjustes(Data.Builder data) {
         Constraints restricciones = new Constraints.Builder()
                 .setRequiredNetworkType(NetworkType.CONNECTED)
                 .build();
@@ -328,7 +331,7 @@ public class AjustesPreferencias extends PreferenceFragmentCompat implements Sha
         WorkManager.getInstance(getContext()).enqueue(trabajo);
     }
 
-    private void verPreferencias(boolean ver){
+    private void verPreferencias(boolean ver) {
         PreferenceCategory user = findPreference("keyUsuario");
         user.setVisible(ver);
 
@@ -341,7 +344,7 @@ public class AjustesPreferencias extends PreferenceFragmentCompat implements Sha
      * intención y te da la posibilidad de escoger una aplicación para coger una foto.
      */
     public void galeria() {
-        Intent elIntentGal= new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        Intent elIntentGal = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(elIntentGal, 80);
     }
 
@@ -353,8 +356,8 @@ public class AjustesPreferencias extends PreferenceFragmentCompat implements Sha
      */
 
     public void abrirCamara() {
-        if(ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.CAMERA},82);
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.CAMERA}, 82);
         } else {
             ejecutarCamara();
         }
@@ -381,7 +384,7 @@ public class AjustesPreferencias extends PreferenceFragmentCompat implements Sha
     }
 
     public void ejecutarCamara() {
-        Intent elIntent= new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        Intent elIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (elIntent.resolveActivity(getContext().getPackageManager()) != null) {
             startActivityForResult(elIntent, 82);
         }
@@ -390,13 +393,13 @@ public class AjustesPreferencias extends PreferenceFragmentCompat implements Sha
     public void cancelar() {
         dialog.dismiss();
     }
-    
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.i("REQUESTCODE","=" + requestCode);
-        if(requestCode == 100 && resultCode == Activity.RESULT_OK){
+        Log.i("REQUESTCODE", "=" + requestCode);
+        if (requestCode == 100 && resultCode == Activity.RESULT_OK) {
 
             GoogleSignIn.getSignedInAccountFromIntent(data).addOnSuccessListener(googleSignInAccount -> {
                 guardarEmail(googleSignInAccount.getEmail());
@@ -412,47 +415,47 @@ public class AjustesPreferencias extends PreferenceFragmentCompat implements Sha
 
             }).addOnFailureListener(e -> Toast.makeText(getActivity(), getString(R.string.error_general), Toast.LENGTH_SHORT).show());
 
-        }else if(resultCode == Activity.RESULT_OK && requestCode==80){
+        } else if (resultCode == Activity.RESULT_OK && requestCode == 80) {
             //RESULTADO DE LA GALERÍA
-            try{
-                Uri miPath  = data.getData();
+            try {
+                Uri miPath = data.getData();
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), miPath);
 
                 SharedPreferences prefs = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getActivity());
-                String nombrefichero = prefs.getString("idUsuario","");
+                String nombrefichero = prefs.getString("idUsuario", "");
                 File imagenFich = new File(getActivity().getApplicationContext().getFilesDir(), nombrefichero + ".png");
                 OutputStream os = new FileOutputStream(imagenFich);
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
                 os.flush();
                 os.close();
 
-                insertImageBD(true,miPath.toString());
-            }catch(Exception e){
-                Toast.makeText(getActivity(),"ERROR",Toast.LENGTH_SHORT).show();
+                insertImageBD(true, miPath.toString());
+            } catch (Exception e) {
+                Toast.makeText(getActivity(), "ERROR", Toast.LENGTH_SHORT).show();
             }
-        }else if(resultCode == Activity.RESULT_OK && requestCode==82){
+        } else if (resultCode == Activity.RESULT_OK && requestCode == 82) {
             SharedPreferences prefs = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getActivity());
-            String nombrefichero = prefs.getString("idUsuario","");
-            File imagenFich= new File(getActivity().getApplicationContext().getFilesDir(), nombrefichero + ".png");
+            String nombrefichero = prefs.getString("idUsuario", "");
+            File imagenFich = new File(getActivity().getApplicationContext().getFilesDir(), nombrefichero + ".png");
 
             try {
-                Bitmap bitmap = (Bitmap)data.getExtras().get("data");
+                Bitmap bitmap = (Bitmap) data.getExtras().get("data");
                 OutputStream os = new FileOutputStream(imagenFich);
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
                 os.flush();
                 os.close();
 
-                insertImageBD(true,imagenFich.toURI().toString());
+                insertImageBD(true, imagenFich.toURI().toString());
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-        }else if(resultCode == Activity.RESULT_OK && requestCode == 101){
+        } else if (resultCode == Activity.RESULT_OK && requestCode == 101) {
             new MiAsyncTask(this).execute(eventos.toArray(new Evento[0]));
         }
     }
 
-    private void inicioSesionGoogle(){
+    private void inicioSesionGoogle() {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .requestScopes(new Scope("https://www.googleapis.com/auth/calendar.events"))
@@ -464,28 +467,28 @@ public class AjustesPreferencias extends PreferenceFragmentCompat implements Sha
     }
 
 
-    private void guardarEmail(String pEmail){
+    private void guardarEmail(String pEmail) {
 
         SharedPreferences prefs = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getActivity());
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putString("gmail",pEmail);
+        editor.putString("gmail", pEmail);
         editor.apply();
 
         GestorUsuario.getGestorUsuario().getUsuario().setGmail(pEmail);
         actualizarCampoEmail();
 
-        Map<String,String> map = new HashMap<>();
-        map.put("accion","modificarGmail");
-        map.put("gmail",prefs.getString("gmail",null));
-        map.put("idPersona",prefs.getString("idUsuario",""));
+        Map<String, String> map = new HashMap<>();
+        map.put("accion", "modificarGmail");
+        map.put("gmail", prefs.getString("gmail", null));
+        map.put("idPersona", prefs.getString("idUsuario", ""));
 
         JSONObject jsonWorker = new JSONObject(map);
         Data.Builder dataBuilder = new Data.Builder();
-        dataBuilder.putString("datos",jsonWorker.toString());
+        dataBuilder.putString("datos", jsonWorker.toString());
         workerAjustes(dataBuilder);
     }
 
-    public void desvincularCuentaGoogle(){
+    public void desvincularCuentaGoogle() {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -495,27 +498,26 @@ public class AjustesPreferencias extends PreferenceFragmentCompat implements Sha
     }
 
 
-
     /**
      * Se inserta la imagen en la BD remota dependiendo de si es desde la galeria o desde la cámara.
      */
-    private void insertImageBD(boolean esGaleria,String path){
+    private void insertImageBD(boolean esGaleria, String path) {
 
         // SE MANDA LA IMAGEN A LA BASE DE DATOS GRACIAS AL WORKER
-        Map<String,String> map = new HashMap<>();
+        Map<String, String> map = new HashMap<>();
         map.put("idPersona", GestorUsuario.getGestorUsuario().getUsuario().getIdUsuario());
-        map.put("path",path);
-        map.put("accion","insertarFotoPerfil");
-        if(esGaleria){
-            map.put("esGaleria","true");
-        }else{
-            map.put("esGaleria","false");
+        map.put("path", path);
+        map.put("accion", "insertarFotoPerfil");
+        if (esGaleria) {
+            map.put("esGaleria", "true");
+        } else {
+            map.put("esGaleria", "false");
         }
 
         JSONObject json = new JSONObject(map);
 
         Data.Builder data = new Data.Builder();
-        data.putString("datos",json.toString());
+        data.putString("datos", json.toString());
 
         Constraints restricciones = new Constraints.Builder()
                 .setRequiredNetworkType(NetworkType.CONNECTED)
@@ -532,84 +534,35 @@ public class AjustesPreferencias extends PreferenceFragmentCompat implements Sha
                     if (workInfo != null && workInfo.getState().isFinished()) {
                         String resultado = workInfo.getOutputData().getString("result");
 
-                        if(resultado.equals("Ok")) {
+                        if (resultado.equals("Ok")) {
                             SharedPreferences prefs = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getActivity());
                             SharedPreferences.Editor editor = prefs.edit();
-                            editor.putBoolean("imagenCambiada",true);
+                            editor.putBoolean("imagenCambiada", true);
                             editor.apply();
-                            Toast.makeText(getActivity(),getString(R.string.avisoImagen),Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), getString(R.string.avisoImagen), Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(getActivity(),getString(R.string.error_general),Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), getString(R.string.error_general), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
     }
-
-    /*private void obtenerImagenUsuario() {
-        SharedPreferences prefs = android.preference.PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String idUsuario = prefs.getString("idUsuario", "");
-
-        JSONObject parametrosJSON = new JSONObject();
-        parametrosJSON.put("accion", "obtenerImagen");
-        parametrosJSON.put("idPersona", idUsuario);
-
-        Data datos = new Data.Builder()
-                .putString("datos", parametrosJSON.toJSONString())
-                .build();
-
-        Constraints restricciones = new Constraints.Builder()
-                .setRequiredNetworkType(NetworkType.CONNECTED)
-                .build();
-
-        OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(WorkerBihar.class)
-                .setConstraints(restricciones)
-                .setInputData(datos)
-                .build();
-
-        WorkManager.getInstance(getActivity())
-                .getWorkInfoByIdLiveData(otwr.getId())
-                .observe(this, workInfo -> {
-                    if (workInfo != null && workInfo.getState().isFinished()) {
-                        try {
-                            String resultado = workInfo.getOutputData().getString("result");
-                            // Si se ha obtenido la imagen correctamente
-                            if (resultado.equals("OK")) {
-                                Log.i("MY-APP", "IMAGEN USUARIO OBTENIDA");
-                                SharedPreferences.Editor editor = prefs.edit();
-                                editor.putBoolean("imagenCambiada",true);
-                                editor.apply();
-                                Toast.makeText(getActivity(), getString(R.string.avisoImagen),Toast.LENGTH_SHORT).show();
-                            } else {
-                                Log.i("MY-APP", "IMAGEN USUARIO NO OBTENIDA");
-                                File file = new File(getActivity().getFilesDir(), idUsuario + ".png");
-                                file.delete();
-                            }
-                            // Si salta algun error
-                        } catch (Exception e) {
-                            Toast.makeText(getActivity(), R.string.error_general, Toast.LENGTH_LONG).show();
-                            e.printStackTrace();
-                        }
-                    }
-                });
-
-        WorkManager.getInstance(getActivity()).enqueue(otwr);
-    }*/
 
     /**
      * Recoge el Lifecycle de la actividad Ajustes
+     *
      * @param lifecycleOwner: lifecycleOwner ajustes
      */
-    public void setLifecycleOwner(LifecycleOwner lifecycleOwner){
+    public void setLifecycleOwner(LifecycleOwner lifecycleOwner) {
         this.lifecycleOwner = lifecycleOwner;
     }
 
-    public void recogerEventos(){
+    public void recogerEventos() {
         SharedPreferences prefs = android.preference.PreferenceManager.getDefaultSharedPreferences(getActivity());
 
         JSONObject parametrosJSON = new JSONObject();
         parametrosJSON.put("accion", "obtenerEventosUsuario");
         parametrosJSON.put("idPersona", GestorUsuario.getGestorUsuario().getUsuario().getIdUsuario());
-        parametrosJSON.put("idioma",prefs.getString("idioma","es"));
+        parametrosJSON.put("idioma", prefs.getString("idioma", "es"));
 
         Data datos = new Data.Builder()
                 .putString("datos", parametrosJSON.toJSONString())
@@ -628,7 +581,7 @@ public class AjustesPreferencias extends PreferenceFragmentCompat implements Sha
                 .getWorkInfoByIdLiveData(otwr.getId())
                 .observe(this, workInfo -> {
                     if (workInfo != null && workInfo.getState().isFinished()) {
-                        if(workInfo.getState() == WorkInfo.State.FAILED){
+                        if (workInfo.getState() == WorkInfo.State.FAILED) {
                             Toast.makeText(getContext(), getString(R.string.error_general), Toast.LENGTH_SHORT).show();
                             return;
                         }
@@ -639,25 +592,25 @@ public class AjustesPreferencias extends PreferenceFragmentCompat implements Sha
 
                         try {
                             JSONArray array = (JSONArray) new JSONParser().parse(resultado);
-                            for(int i = 0; i<array.size();i++){
+                            for (int i = 0; i < array.size(); i++) {
                                 JSONObject obj = (JSONObject) array.get(i);
                                 boolean esTutoria = (boolean) obj.get("esTutoria");
                                 String nombreEvento = (String) obj.get("nombreEvento");
 
                                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-                                LocalDateTime fechaExamenInicio = LocalDateTime.parse((String) Objects.requireNonNull(obj.get("fechaExamenInicio")),formatter);
+                                LocalDateTime fechaExamenInicio = LocalDateTime.parse((String) Objects.requireNonNull(obj.get("fechaExamenInicio")), formatter);
                                 String strFechaFinal = (String) obj.get("fechaExamenFinal");
                                 LocalDateTime fechaExamenFinal;
-                                if(strFechaFinal == null){
+                                if (strFechaFinal == null) {
                                     fechaExamenFinal = null;
-                                }else{
+                                } else {
                                     fechaExamenFinal = LocalDateTime.parse(strFechaFinal, formatter);
                                 }
                                 String aulaExamen = (String) obj.get("aulaExamen");
                                 String nombreCentro = (String) obj.get("nombreCentro");
 
-                                eventos.add(new Evento(esTutoria, fechaExamenInicio, fechaExamenFinal,nombreEvento, nombreCentro, aulaExamen));
+                                eventos.add(new Evento(esTutoria, fechaExamenInicio, fechaExamenFinal, nombreEvento, nombreCentro, aulaExamen));
                             }
 
                             new MiAsyncTask(this).execute(eventos.toArray(new Evento[0]));
@@ -673,18 +626,18 @@ public class AjustesPreferencias extends PreferenceFragmentCompat implements Sha
 
     }
 
-    public void notificarCambio(){
+    public void notificarCambio() {
         Toast.makeText(getContext(), getString(R.string.datosGuardados), Toast.LENGTH_SHORT).show();
     }
 
 
 }
 
-class MiAsyncTask extends AsyncTask<Evento, Void, Integer>{
+class MiAsyncTask extends AsyncTask<Evento, Void, Integer> {
 
     private AjustesPreferencias fragment;
 
-    MiAsyncTask(AjustesPreferencias pFragment){
+    MiAsyncTask(AjustesPreferencias pFragment) {
         fragment = pFragment;
     }
 
@@ -699,14 +652,14 @@ class MiAsyncTask extends AsyncTask<Evento, Void, Integer>{
                 .setApplicationName("BIHAR")
                 .build();
 
-        try{
-            for(Evento e: params){
+        try {
+            for (Evento e : params) {
                 crearEvento(e, service);
             }
 
             return 1;
-        }catch (UserRecoverableAuthIOException e) {
-            fragment.startActivityForResult(e.getIntent(),101);
+        } catch (UserRecoverableAuthIOException e) {
+            fragment.startActivityForResult(e.getIntent(), 101);
             return 0;
         } catch (IOException e) {
             e.printStackTrace();
@@ -717,7 +670,7 @@ class MiAsyncTask extends AsyncTask<Evento, Void, Integer>{
     @Override
     protected void onPostExecute(Integer integer) {
         super.onPostExecute(integer);
-        if(integer == 1){
+        if (integer == 1) {
             fragment.notificarCambio();
         }
     }
@@ -725,14 +678,14 @@ class MiAsyncTask extends AsyncTask<Evento, Void, Integer>{
     private void crearEvento(Evento evento, Calendar service) throws IOException {
 
 
-        if(existeEvento(service, evento)){
+        if (existeEvento(service, evento)) {
             return;
         }
 
-        String summary = (evento.esTutoria()?fragment.getString(R.string.tutoria):fragment.getString(R.string.examen)) +
+        String summary = (evento.esTutoria() ? fragment.getString(R.string.tutoria) : fragment.getString(R.string.examen)) +
                 " " + evento.getNombreEvento();
 
-        Log.i("Evento",summary);
+        Log.i("Evento", summary);
         Event event = new Event()
                 .setSummary(summary)
                 .setLocation(evento.getCentro())
@@ -749,7 +702,6 @@ class MiAsyncTask extends AsyncTask<Evento, Void, Integer>{
                 .setTimeZone("Europe/Madrid")
                 .setDateTime(endDateTime);
         event.setEnd(end);
-
 
 
         String calendarId = "primary";
@@ -772,10 +724,7 @@ class MiAsyncTask extends AsyncTask<Evento, Void, Integer>{
                 .execute();
 
 
-
         List<Event> items = events.getItems();
-
-
 
 
         return items.size() > 0;
@@ -783,7 +732,7 @@ class MiAsyncTask extends AsyncTask<Evento, Void, Integer>{
 }
 
 
-class Evento{
+class Evento {
     private boolean esTutoria;
     private LocalDateTime fechaExamenInicio;
     private LocalDateTime fechaExamenFinal;
@@ -793,14 +742,14 @@ class Evento{
 
     private DateTimeFormatter formatter;
 
-    public Evento(boolean esTutoria, LocalDateTime fechaExamenInicio, LocalDateTime fechaExamenFinal, String nombreEvento, String centro, String clase){
+    public Evento(boolean esTutoria, LocalDateTime fechaExamenInicio, LocalDateTime fechaExamenFinal, String nombreEvento, String centro, String clase) {
         this.esTutoria = esTutoria;
 
         formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
 
         this.fechaExamenInicio = fechaExamenInicio.minusHours(2);
         this.fechaExamenFinal = fechaExamenFinal;
-        if(this.fechaExamenFinal != null){
+        if (this.fechaExamenFinal != null) {
             this.fechaExamenFinal = this.fechaExamenFinal.minusHours(2);
         }
         this.nombreEvento = nombreEvento;
@@ -808,7 +757,7 @@ class Evento{
         this.clase = clase;
     }
 
-    public Evento(boolean esTutoria, LocalDateTime fechaExamenInicio, String nombreEvento, String centro, String clase){
+    public Evento(boolean esTutoria, LocalDateTime fechaExamenInicio, String nombreEvento, String centro, String clase) {
         this(esTutoria, fechaExamenInicio, null, nombreEvento, centro, clase);
     }
 
@@ -821,7 +770,7 @@ class Evento{
     }
 
     String getFechaExamenFinal() {
-        if(fechaExamenFinal == null)
+        if (fechaExamenFinal == null)
             fechaExamenFinal = fechaExamenInicio.plusHours(2);
         return fechaExamenFinal.format(formatter);
     }
@@ -835,7 +784,7 @@ class Evento{
     }
 
     String getClase() {
-        if(clase == null)
+        if (clase == null)
             clase = "";
         return clase;
     }

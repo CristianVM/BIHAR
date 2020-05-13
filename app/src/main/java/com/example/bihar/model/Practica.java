@@ -1,5 +1,8 @@
 package com.example.bihar.model;
 
+/**
+ * Objeto que representa una practica de empresa
+ */
 public class Practica {
 
     private String nombreEmpresa;

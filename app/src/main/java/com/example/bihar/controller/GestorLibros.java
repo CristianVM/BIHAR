@@ -119,7 +119,7 @@ public class GestorLibros {
                 String tema = "";
                 if (idioma.equals("es")) {
                     tema = libros.get(id).getTema();
-                }else{
+                } else {
                     tema = libros.get(id).getTemaEuskera();
                 }
                 if (tema.toLowerCase().equals(((String) json.get("filtroInformatica")).toLowerCase())

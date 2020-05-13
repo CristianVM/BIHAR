@@ -23,15 +23,16 @@ public class AdapterListaAsignaturasMatricula extends BaseAdapter {
 
     /**
      * Constructor del adapter del adapter de las asignaturas de la sección de Matrícula
-     * @param context: el contexto de la aplicación
-     * @param asignaturas: nombres de las asignaturas
-     * @param cursos: cursos
-     * @param convocatorias: convocatorias realizadas
+     *
+     * @param context:              el contexto de la aplicación
+     * @param asignaturas:          nombres de las asignaturas
+     * @param cursos:               cursos
+     * @param convocatorias:        convocatorias realizadas
      * @param notasExtraordinarias: notas extraordinarias
-     * @param notasOrdinarias: notas ordinarias
+     * @param notasOrdinarias:      notas ordinarias
      */
     public AdapterListaAsignaturasMatricula(Context context, ArrayList<String> asignaturas, ArrayList<String> cursos,
-          ArrayList<String> convocatorias, ArrayList<String> notasExtraordinarias,ArrayList<String> notasOrdinarias){
+                                            ArrayList<String> convocatorias, ArrayList<String> notasExtraordinarias, ArrayList<String> notasOrdinarias) {
 
         this.context = context;
         this.asignaturas = asignaturas;
@@ -44,6 +45,7 @@ public class AdapterListaAsignaturasMatricula extends BaseAdapter {
 
     /**
      * Devuelve el número de asignaturas de la matrícula
+     *
      * @return número de asignaturas
      */
     @Override
@@ -53,6 +55,7 @@ public class AdapterListaAsignaturasMatricula extends BaseAdapter {
 
     /**
      * Devuelve el objeto de la posición i
+     *
      * @param i: la posición de la lista
      * @return: el objeto
      */
@@ -63,6 +66,7 @@ public class AdapterListaAsignaturasMatricula extends BaseAdapter {
 
     /**
      * Devuelve el identificador
+     *
      * @param i: identificador
      * @return: id
      */
@@ -73,8 +77,9 @@ public class AdapterListaAsignaturasMatricula extends BaseAdapter {
 
     /**
      * Devuelve el listView personalizado habiendole asignado valores
-     * @param i: posición
-     * @param view: la vista
+     *
+     * @param i:        posición
+     * @param view:     la vista
      * @param viewGroup
      * @return
      */

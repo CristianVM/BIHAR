@@ -38,6 +38,9 @@ import org.json.simple.parser.JSONParser;
 import java.io.File;
 import java.util.Locale;
 
+/**
+ * Actividad encargada de mostrar la informacion de una practica en concreto
+ */
 public class PracticaInformacion extends AppCompatActivity {
 
     private String IDPractica;

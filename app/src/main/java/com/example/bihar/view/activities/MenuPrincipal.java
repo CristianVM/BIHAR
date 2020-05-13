@@ -51,17 +51,17 @@ public class MenuPrincipal extends AppCompatActivity {
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-        idiomaEstablecido = prefs.getString("idioma","es");
-        if(idiomaEstablecido.equals("es")){
+        idiomaEstablecido = prefs.getString("idioma", "es");
+        if (idiomaEstablecido.equals("es")) {
             Locale locale = new Locale("es");
             cambiarIdiomaOnCreate(locale);
-        }else if(idiomaEstablecido.equals("eu")){
+        } else if (idiomaEstablecido.equals("eu")) {
             Locale locale = new Locale("eu");
             cambiarIdiomaOnCreate(locale);
         }
 
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putBoolean("iniciado",true);
+        editor.putBoolean("iniciado", true);
         editor.apply();
 
         setContentView(R.layout.activity_menuprincipal);
@@ -71,29 +71,28 @@ public class MenuPrincipal extends AppCompatActivity {
         toolbarMenuPrincipal.ocultarAtras();
 
         /*
-        * Dependiento de si es alumno o profesor se seleccionarán distintas opciones de la clase ListaOpcionesMenu
-        * Si es un alumno, se comprobará tambien el parametro del intent 'expediente' que indica si está dentro de expediente
-        * o no
-        */
-        String idioma = prefs.getString("idioma","es");
-        boolean esAlumno = prefs.getBoolean("esAlumno",false);
+         * Dependiento de si es alumno o profesor se seleccionarán distintas opciones de la clase ListaOpcionesMenu
+         * Si es un alumno, se comprobará tambien el parametro del intent 'expediente' que indica si está dentro de expediente
+         * o no
+         */
+        String idioma = prefs.getString("idioma", "es");
+        boolean esAlumno = prefs.getBoolean("esAlumno", false);
         CardOpcion[] opciones = null;
-        if(esAlumno) {
+        if (esAlumno) {
             opciones = ListaOpcionesMenu.getListaOpcionesUsuario(idioma);
             Bundle bundle = getIntent().getExtras();
-            if(bundle != null){
+            if (bundle != null) {
                 boolean expediente = bundle.getBoolean("expediente");
-                if(expediente) {
+                if (expediente) {
                     toolbarMenuPrincipal.cambiarTituloToolbar(getResources().getString(R.string.expendiente));
                     toolbarMenuPrincipal.mostrarAtras();
                     TextView notaMedia = findViewById(R.id.txtNotaMedia);
-                    notaMedia.setText(String.format("%.2f",GestorUsuario.getGestorUsuario().getUsuario().getNotaMedia()));
+                    notaMedia.setText(String.format("%.2f", GestorUsuario.getGestorUsuario().getUsuario().getNotaMedia()));
                     opciones = ListaOpcionesMenu.getListaOpcionesExpediente(idioma);
                     animacionCreditos(GestorUsuario.getGestorUsuario().getUsuario().getNumCreditos());
                 }
             }
-        }
-        else
+        } else
             opciones = ListaOpcionesMenu.getListaOpcionesProfesor(idioma);
 
         recyclerView = findViewById(R.id.menuRecyclerView);
@@ -110,7 +109,7 @@ public class MenuPrincipal extends AppCompatActivity {
     }
 
     //Muestra una animación de la ProgressBar indicando el numero de creditos superados que tiene el alumno
-    public void animacionCreditos(float numCreditos){
+    public void animacionCreditos(float numCreditos) {
         LinearLayout linearLayout = findViewById(R.id.menuPrincipal_extraLayout);
         linearLayout.setVisibility(View.VISIBLE);
         ProgressBar progressBar = findViewById(R.id.progressBar);
@@ -124,11 +123,11 @@ public class MenuPrincipal extends AppCompatActivity {
     }
 
 
-    class ElAdaptadorRecycler extends RecyclerView.Adapter<MiViewHolder>{
+    class ElAdaptadorRecycler extends RecyclerView.Adapter<MiViewHolder> {
 
         CardOpcion[] opciones;
 
-        public ElAdaptadorRecycler(CardOpcion[] pOpciones){
+        public ElAdaptadorRecycler(CardOpcion[] pOpciones) {
             opciones = pOpciones;
         }
 
@@ -146,68 +145,68 @@ public class MenuPrincipal extends AppCompatActivity {
             holder.cardView.setOnClickListener(v -> {
                 Intent intent = null;
                 //Dependiendo de donde de Click se le llevará a una venta u otra
-                switch (opciones[position].getTag()){
-                    case "matricula":{
+                switch (opciones[position].getTag()) {
+                    case "matricula": {
                         intent = new Intent(MenuPrincipal.this, Matricula.class);
                         break;
                     }
-                    case "expediente":{
+                    case "expediente": {
                         intent = new Intent(MenuPrincipal.this, MenuPrincipal.class);
-                        intent.putExtra("expediente",true);
+                        intent.putExtra("expediente", true);
                         break;
                     }
-                    case "horarios":{
-                        Log.i("HORARIOS","AAAA");
+                    case "horarios": {
+                        Log.i("HORARIOS", "AAAA");
                         intent = new Intent(MenuPrincipal.this, Horarios.class);
                         break;
                     }
-                    case "tutorias":{
+                    case "tutorias": {
                         intent = new Intent(MenuPrincipal.this, Tutorias.class);
                         break;
                     }
-                    case "biblioteca":{
+                    case "biblioteca": {
                         intent = new Intent(MenuPrincipal.this, Biblioteca.class);
                         break;
                     }
-                    case "practicas":{
+                    case "practicas": {
                         intent = new Intent(MenuPrincipal.this, Practicas.class);
                         break;
                     }
-                    case "egela":{
+                    case "egela": {
                         intent = new Intent(MenuPrincipal.this, Egela.class);
                         break;
                     }
-                    case "foro":{
+                    case "foro": {
                         intent = new Intent(MenuPrincipal.this, ForoVirtual.class);
                         break;
                     }
-                    case "asignaturas":{
+                    case "asignaturas": {
                         intent = new Intent(MenuPrincipal.this, Asignaturas.class);
                         break;
                     }
-                    case "creditos":{
+                    case "creditos": {
                         intent = new Intent(MenuPrincipal.this, Creditos.class);
                         break;
                     }
-                    case "logros":{
+                    case "logros": {
                         Toast.makeText(MenuPrincipal.this, getString(R.string.noDisponible), Toast.LENGTH_SHORT).show();
                         break;
                     }
-                    case "foroProfesor":{
+                    case "foroProfesor": {
                         intent = new Intent(MenuPrincipal.this, ForoVirtual.class);
                         break;
                     }
-                    case "notasProfesor":{
-                        intent = new Intent(MenuPrincipal.this,NotasProfesor.class);
+                    case "notasProfesor": {
+                        intent = new Intent(MenuPrincipal.this, NotasProfesor.class);
                         break;
                     }
-                    case "tutoriasProfesor":{
-                        intent = new Intent(MenuPrincipal.this,TutoriasProfesor.class);
+                    case "tutoriasProfesor": {
+                        intent = new Intent(MenuPrincipal.this, TutoriasProfesor.class);
                         break;
                     }
                 }
 
-                if(intent != null)
+                if (intent != null)
                     startActivity(intent);
 
             });
@@ -230,14 +229,14 @@ public class MenuPrincipal extends AppCompatActivity {
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-        String idiomaNuevo = sharedPreferences.getString("idioma","es");
+        String idiomaNuevo = sharedPreferences.getString("idioma", "es");
 
-        if(!idiomaNuevo.equals(idiomaEstablecido)){
+        if (!idiomaNuevo.equals(idiomaEstablecido)) {
             idiomaEstablecido = idiomaNuevo;
-            if(idiomaEstablecido.equals("es")){
+            if (idiomaEstablecido.equals("es")) {
                 Locale locale = new Locale("es");
                 cambiarIdiomaOnResume(locale);
-            }else if(idiomaEstablecido.equals("eu")){
+            } else if (idiomaEstablecido.equals("eu")) {
                 Locale locale = new Locale("eu");
                 cambiarIdiomaOnResume(locale);
             }
@@ -247,9 +246,10 @@ public class MenuPrincipal extends AppCompatActivity {
     /**
      * Cambia el idioma de la aplicación al reanudarse la actividad. Se destruye la actividad y se
      * vuelve a iniciar
+     *
      * @param locale: el idioma almacenado en SharedPreferences
      */
-    public void cambiarIdiomaOnResume(Locale locale){
+    public void cambiarIdiomaOnResume(Locale locale) {
         Locale.setDefault(locale);
         Resources res = getResources();
         DisplayMetrics dm = res.getDisplayMetrics();
@@ -261,9 +261,10 @@ public class MenuPrincipal extends AppCompatActivity {
 
     /**
      * Cambia el idioma de la aplicación al crearse la actividad
+     *
      * @param locale: el idioma almacenado en SharedPreferences
      */
-    public void cambiarIdiomaOnCreate(Locale locale){
+    public void cambiarIdiomaOnCreate(Locale locale) {
         Locale.setDefault(locale);
         Resources res = getResources();
         DisplayMetrics dm = res.getDisplayMetrics();
@@ -274,7 +275,7 @@ public class MenuPrincipal extends AppCompatActivity {
 
 }
 
-class MiViewHolder extends RecyclerView.ViewHolder{
+class MiViewHolder extends RecyclerView.ViewHolder {
 
     public ImageView imgButton;
     public CardView cardView;
@@ -335,7 +336,7 @@ class ProgressBarAnimation extends Animation {
     private ProgressBar progressBar;
     private TextView textView;
     private float from;
-    private float  to;
+    private float to;
 
     public ProgressBarAnimation(TextView textView, ProgressBar progressBar, float from, float to) {
         super();

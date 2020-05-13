@@ -53,6 +53,7 @@ public class LibroInformacion extends AppCompatActivity {
     private boolean listaCargada;
 
     private ListView listView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,7 +90,7 @@ public class LibroInformacion extends AppCompatActivity {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             Calendar calendar = Calendar.getInstance();
             Date date = calendar.getTime();
-            map.put("fecha",dateFormat.format(date));
+            map.put("fecha", dateFormat.format(date));
 
             //SE RELLENAN LOS DATOS DEL LIBRO
             rellenarDatosLibro(
@@ -289,7 +290,7 @@ public class LibroInformacion extends AppCompatActivity {
             }
         }
 
-        if(listaCargada){
+        if (listaCargada) {
             crearAdapter();
         }
     }
@@ -326,20 +327,21 @@ public class LibroInformacion extends AppCompatActivity {
 
     /**
      * Dependiendo del idioma, se cre un adapter u otro
+     *
      * @return: el adapter dependiendo del idioma
      */
-    private AdapterListaUniversidades crearAdapter(){
+    private AdapterListaUniversidades crearAdapter() {
         TextView txtTitulo = (TextView) findViewById(R.id.libroInformacion_titulo);
 
         AdapterListaUniversidades adapter = null;
         if (idiomaEstablecido.equals("es")) {
             adapter = new AdapterListaUniversidades(this, universidades,
                     disponibles, estaDisponible, idLibros, usuario, this, latitudes,
-                    longitudes, this,txtTitulo.getText().toString());
+                    longitudes, this, txtTitulo.getText().toString());
         } else {
             adapter = new AdapterListaUniversidades(this, universidadesEuskera,
                     disponibles, estaDisponible, idLibros, usuario, this, latitudes,
-                    longitudes, this,txtTitulo.getText().toString());
+                    longitudes, this, txtTitulo.getText().toString());
         }
         return adapter;
     }

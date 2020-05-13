@@ -25,7 +25,7 @@ public class MapsUniversidad extends FragmentActivity implements OnMapReadyCallb
         setContentView(R.layout.activity_maps_universidad);
 
         Bundle bundle = getIntent().getExtras();
-        if(bundle !=null){
+        if (bundle != null) {
             universidad = bundle.getString("nombreUniversidad");
             latitud = Double.valueOf(bundle.getString("latitud"));
             longitud = Double.valueOf(bundle.getString("longitud"));
@@ -54,8 +54,8 @@ public class MapsUniversidad extends FragmentActivity implements OnMapReadyCallb
         //LOCALIZACION DE LA UNIVERSIDAD
         LatLng coordenadas = new LatLng(latitud, longitud);
         mMap.addMarker(new MarkerOptions()
-                        .position(coordenadas)
-                        .title(universidad));
+                .position(coordenadas)
+                .title(universidad));
 
         // Controles UI
         mMap.getUiSettings().setZoomControlsEnabled(true);
@@ -64,6 +64,6 @@ public class MapsUniversidad extends FragmentActivity implements OnMapReadyCallb
 
         mMap.setMyLocationEnabled(true);
         mMap.getUiSettings().setMyLocationButtonEnabled(true);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(coordenadas,15));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(coordenadas, 15));
     }
 }

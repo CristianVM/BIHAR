@@ -166,7 +166,7 @@ public class NotasProfesor extends AppCompatActivity {
         Map<String, String> map = new HashMap<>();
         map.put("accion", "obtenerNotasProfesor");
         map.put("idPersona", GestorUsuario.getGestorUsuario().getUsuario().getIdUsuario());
-        map.put("anio","2019");
+        map.put("anio", "2019");
         JSONObject json = new JSONObject(map);
 
         Data.Builder data = new Data.Builder();
@@ -298,6 +298,7 @@ class MyExpandableListAdapterNotasProfesor extends BaseExpandableListAdapter {
 
     /**
      * Cuenta el número de grupos
+     *
      * @return: cantidad de grupos
      */
     @Override
@@ -307,6 +308,7 @@ class MyExpandableListAdapterNotasProfesor extends BaseExpandableListAdapter {
 
     /**
      * Cuenta el número de hijos que tiene el grupo en cuestión
+     *
      * @param groupPosition: el grupo
      * @return: cantidad de hijos que tiene el grupo
      */
@@ -317,6 +319,7 @@ class MyExpandableListAdapterNotasProfesor extends BaseExpandableListAdapter {
 
     /**
      * Obtiene el grupo
+     *
      * @param groupPosition: el número dle grupo
      * @return: el objeto del grupo
      */
@@ -327,6 +330,7 @@ class MyExpandableListAdapterNotasProfesor extends BaseExpandableListAdapter {
 
     /**
      * Obtiene el hijo respecto al grupo
+     *
      * @param groupPosition: el número del grupo
      * @param childPosition: el número del hijo
      * @return: el objeto del hijo
@@ -338,6 +342,7 @@ class MyExpandableListAdapterNotasProfesor extends BaseExpandableListAdapter {
 
     /**
      * Id dlel grupo
+     *
      * @param groupPosition: la posición del grupo
      * @return: id
      */
@@ -348,6 +353,7 @@ class MyExpandableListAdapterNotasProfesor extends BaseExpandableListAdapter {
 
     /**
      * Id del hijo del grupo
+     *
      * @param groupPosition: la posición del grupo
      * @param childPosition: la posición del hijo
      * @return id
@@ -364,8 +370,9 @@ class MyExpandableListAdapterNotasProfesor extends BaseExpandableListAdapter {
 
     /**
      * Carga la visualización del grupo
+     *
      * @param groupPosition: posición del grupo
-     * @param isExpanded: si está expandido o no
+     * @param isExpanded:    si está expandido o no
      * @param convertView:
      * @param parent:
      * @return: la vista del grupo
@@ -396,10 +403,11 @@ class MyExpandableListAdapterNotasProfesor extends BaseExpandableListAdapter {
 
     /**
      * Carga la visualización de los hijos
+     *
      * @param groupPosition: posición del grupo
      * @param childPosition: posiicón del hijo
-     * @param isLastChild: si es el último hijo
-     * @param convertView: la view
+     * @param isLastChild:   si es el último hijo
+     * @param convertView:   la view
      * @param parent
      * @return: la view
      */
@@ -440,12 +448,13 @@ class MyExpandableListAdapterNotasProfesor extends BaseExpandableListAdapter {
     /**
      * Se crea un diálogo para añadir una nota a un alumno, ya sea para la convocatoria ordinaria o
      * extraordinaria. Al añadir la nota, se le envía una notificación al alumno con la nota.
+     *
      * @param nombreUsuario: nombre del alumno
-     * @param idPersona: id del alumno
-     * @param token: token del alumno
-     * @param idAsignatura: id de la asignatura
-     * @param anio: anio de la matricula
-     * @param group: grupo en que está el alumno
+     * @param idPersona:     id del alumno
+     * @param token:         token del alumno
+     * @param idAsignatura:  id de la asignatura
+     * @param anio:          anio de la matricula
+     * @param group:         grupo en que está el alumno
      */
     private void crearDialog(String nombreUsuario, String idPersona, String token, String idAsignatura, int anio, int group) {
 
@@ -535,9 +544,10 @@ class AsignaturaImparte {
 
     /**
      * Se añade un alumno que está matriculado en la asignatura en las listas
+     *
      * @param nombre: nombre del alumno
-     * @param token: token del alumno
-     * @param id: id del alumno
+     * @param token:  token del alumno
+     * @param id:     id del alumno
      */
     public void addAlumno(String nombre, String token, String id) {
         nombresAlumnos.add(nombre);
@@ -547,6 +557,7 @@ class AsignaturaImparte {
 
     /**
      * Tamaño de las listas, cantidad de alumnos que hay matriculados
+     *
      * @return
      */
     public int size() {
@@ -555,6 +566,7 @@ class AsignaturaImparte {
 
     /**
      * Se recoge el nombre, el token y el id del alumno respecto a la posición de la lista.
+     *
      * @param i: posición de la lista
      * @return: Un Map con los datos del alumno
      */

@@ -24,12 +24,13 @@ public class AdapterListaHorarios extends BaseAdapter {
 
     /**
      * Constructor del adapter del adapter de los horarios
+     *
      * @param nombresAsignaturas: nombres de las aignaturas
-     * @param hInicios: horas iniciales
-     * @param hFinales: horas finales
-     * @param diasSemanas: dias de la semana (Lunes, martes, miercoles...)
-     * @param semanas: semanas
-     * @param context: el contexto
+     * @param hInicios:           horas iniciales
+     * @param hFinales:           horas finales
+     * @param diasSemanas:        dias de la semana (Lunes, martes, miercoles...)
+     * @param semanas:            semanas
+     * @param context:            el contexto
      */
     public AdapterListaHorarios(ArrayList<String> nombresAsignaturas, ArrayList<String> hInicios, ArrayList<String> hFinales,
                                 ArrayList<String> diasSemanas, ArrayList<String> semanas, Context context) {
@@ -44,6 +45,7 @@ public class AdapterListaHorarios extends BaseAdapter {
 
     /**
      * Devuelve el número de asignatura que hay
+     *
      * @return número de asignatura
      */
     @Override
@@ -53,6 +55,7 @@ public class AdapterListaHorarios extends BaseAdapter {
 
     /**
      * Devuelve el objeto de la posición i
+     *
      * @param i: la posición de la lista
      * @return: el objeto
      */
@@ -63,6 +66,7 @@ public class AdapterListaHorarios extends BaseAdapter {
 
     /**
      * Devuelve el identificador
+     *
      * @param i: identificador
      * @return: id
      */
@@ -73,14 +77,15 @@ public class AdapterListaHorarios extends BaseAdapter {
 
     /**
      * Devuelve el listView personalizado habiendole asignado valores
-     * @param i: posición
-     * @param view: la vista
+     *
+     * @param i:        posición
+     * @param view:     la vista
      * @param viewGroup
      * @return
      */
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        view = layoutInflater.inflate(R.layout.lista_horarios,null);
+        view = layoutInflater.inflate(R.layout.lista_horarios, null);
 
         TextView txtAsignatura = (TextView) view.findViewById(R.id.lista_horario_asignatura);
         TextView txtHFin = (TextView) view.findViewById(R.id.lista_horario_hFin);

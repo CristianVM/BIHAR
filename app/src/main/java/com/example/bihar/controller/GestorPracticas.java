@@ -1,31 +1,34 @@
 package com.example.bihar.controller;
 
-import android.content.Context;
-
-import com.example.bihar.model.Libro;
-import com.example.bihar.model.MatriculaAnios;
 import com.example.bihar.model.Practica;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
+/**
+ * Gestor que almacena todos los datos de las practicas de empresa
+ */
 public class GestorPracticas {
 
     private static GestorPracticas gestorPracticas;
     private Map<String, Practica> practicas;
 
+    /**
+     * Constructor
+     */
     private GestorPracticas() {
         practicas = new HashMap<>();
     }
 
+    /**
+     * Se obtiene el gestor de practicas
+     *
+     * @return: gestor de practicas
+     */
     public static GestorPracticas getGestorPracticas() {
         if (gestorPracticas == null) {
             gestorPracticas = new GestorPracticas();
@@ -33,10 +36,20 @@ public class GestorPracticas {
         return gestorPracticas;
     }
 
+    /**
+     * Devuelve el mapa que contiene todas las practicas
+     *
+     * @return
+     */
     public Map<String, Practica> getPracticas() {
         return practicas;
     }
 
+    /**
+     * Anade las practicas al map
+     *
+     * @param jsonString: El json en String con los datos de las practicas
+     */
     public void addPracticas(String jsonString) {
         JSONParser parser = new JSONParser();
         try {

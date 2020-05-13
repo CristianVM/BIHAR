@@ -9,7 +9,7 @@ public class CardOpcion {
     private int imagen;
     private String tag;
 
-    public CardOpcion(int pImagen, String pTag){
+    public CardOpcion(int pImagen, String pTag) {
         imagen = pImagen;
         tag = pTag;
     }

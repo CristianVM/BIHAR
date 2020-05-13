@@ -128,14 +128,14 @@ public class Tutorias extends AppCompatActivity {
         }
     }
 
-    public void salir(View v){
+    public void salir(View v) {
         finish();
     }
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putInt("visible", titulo.getVisibility());
-        outState.putBoolean("todos",todos);
+        outState.putBoolean("todos", todos);
         super.onSaveInstanceState(outState);
     }
 
@@ -152,23 +152,23 @@ public class Tutorias extends AppCompatActivity {
     /**
      * Llamamos al Worker para recoger los datos de la BD
      */
-    public void cargarDatosProfesores(){
+    public void cargarDatosProfesores() {
         Map<String, String> map = new HashMap<>();
-        map.put("accion","obtenerProfesores");
+        map.put("accion", "obtenerProfesores");
 
-        if(!todos){
+        if (!todos) {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-            String idPersona = prefs.getString("idUsuario",null);
+            String idPersona = prefs.getString("idUsuario", null);
             Log.i("idPersona", idPersona);
             map.put("idPersona", idPersona);
         }
         SharedPreferences preferences = androidx.preference.PreferenceManager.getDefaultSharedPreferences(this);
-        map.put("idioma",preferences.getString("idioma","es"));
+        map.put("idioma", preferences.getString("idioma", "es"));
 
         JSONObject json = new JSONObject(map);
 
         Data.Builder data = new Data.Builder();
-        data.putString("datos",json.toString());
+        data.putString("datos", json.toString());
 
         Constraints restricciones = new Constraints.Builder()
                 .setRequiredNetworkType(NetworkType.CONNECTED)
@@ -189,14 +189,14 @@ public class Tutorias extends AppCompatActivity {
                             JSONArray jsonArray = (JSONArray) parser.parse(resultado);
                             GestorProfesores gestor = GestorProfesores.getGestorProfesores();
                             gestor.limpiar();
-                            for(int i = 0; i<jsonArray.size(); i++){
+                            for (int i = 0; i < jsonArray.size(); i++) {
                                 JSONObject obj = (JSONObject) jsonArray.get(i);
                                 String idPersona = (String) obj.get("idPersona");
                                 String nombreCompleto = (String) obj.get("nombreCompleto");
                                 int idAsignatura = Integer.parseInt((String) Objects.requireNonNull(obj.get("idAsignatura")));
                                 String nombreAsignatura = (String) obj.get("nombreAsignatura");
 
-                                gestor.anadirProfesor(idPersona,nombreCompleto,idAsignatura,nombreAsignatura);
+                                gestor.anadirProfesor(idPersona, nombreCompleto, idAsignatura, nombreAsignatura);
                             }
 
                             actualizarLista();
@@ -214,12 +214,12 @@ public class Tutorias extends AppCompatActivity {
     /**
      * Creamos el adapter con los datos guardados del gestor y lo cargamos en la listView
      */
-    private void actualizarLista(){
+    private void actualizarLista() {
 
         Map<String, Profesor> datos = GestorProfesores.getGestorProfesores().getListaProfesores();
         ids = GestorProfesores.getGestorProfesores().getIds("");
 
-        elAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_2, android.R.id.text1, ids){
+        elAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_2, android.R.id.text1, ids) {
             @NonNull
             @Override
             public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -239,7 +239,7 @@ public class Tutorias extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         Intent i = new Intent(Tutorias.this, DatosTutoria.class);
-                        i.putExtra("idPersona",ids.get(position));
+                        i.putExtra("idPersona", ids.get(position));
                         startActivity(i);
                     }
                 });

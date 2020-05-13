@@ -19,12 +19,13 @@ public class DialogFiltradoLibros extends DialogFragment {
     private ArrayList<String> seleccionados;
     private ListenerFiltradoLibros listenerFiltradoLibros;
 
-    public interface ListenerFiltradoLibros{
+    public interface ListenerFiltradoLibros {
         void temasSeleccionados(ArrayList<String> lista);
     }
 
     /**
      * Dialog que se encarga de seleccionar si quieres filtrar
+     *
      * @param savedInstanceState
      * @return
      */
@@ -38,15 +39,15 @@ public class DialogFiltradoLibros extends DialogFragment {
         opciones[0] = getResources().getText(R.string.biblioteca_temaEconomia).toString();
         opciones[1] = getResources().getText(R.string.biblioteca_temaInformatica).toString();
         opciones[2] = getResources().getText(R.string.biblioteca_temaMedicina).toString();
-        seleccionados =new ArrayList<>();
+        seleccionados = new ArrayList<>();
         listenerFiltradoLibros = (ListenerFiltradoLibros) getActivity();
 
         builder.setMultiChoiceItems(opciones, null, new DialogInterface.OnMultiChoiceClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i, boolean b) {
-                if(b){
+                if (b) {
                     seleccionados.add(opciones[i]);
-                }else{
+                } else {
                     seleccionados.remove(opciones[i]);
                 }
             }

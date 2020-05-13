@@ -1,21 +1,17 @@
 package com.example.bihar.view.activities;
 
 import android.Manifest;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.hardware.biometrics.BiometricPrompt;
-import android.hardware.fingerprint.FingerprintManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CancellationSignal;
 import android.preference.PreferenceManager;
-import android.telephony.SmsManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -57,6 +53,10 @@ import java.util.Locale;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+/**
+ * Actividad encargada de gestionar el inicio de sesion tanto cuando no hay un usuario preguardado
+ * (login tipo 1) como para cuando lo hay (login tipo 2)
+ */
 public class InicioSesion extends AppCompatActivity {
 
     private String idiomaEstablecido;
@@ -82,6 +82,7 @@ public class InicioSesion extends AppCompatActivity {
         }
         prefs.getBoolean("notificacion", true);
 
+        // Si hay un nombre de usuario almacenado mostramos la pantalla de login tipo 2
         if (prefs.contains("nombreUsuario")) {
             setContentView(R.layout.inicio_sesion_usuario);
 
@@ -102,6 +103,7 @@ public class InicioSesion extends AppCompatActivity {
             TextView textViewNombreUsuario = findViewById(R.id.login2NombreUsuario);
             textViewNombreUsuario.setText(nombreUsuario);
 
+            // Si el usuario decidio recordar la contrasenia
             if (prefs.contains("password")) {
                 String password = prefs.getString("password", null);
                 EditText loginEditPassword = findViewById(R.id.loginEditPassword);
@@ -113,6 +115,9 @@ public class InicioSesion extends AppCompatActivity {
                 loginInputPassword.setEndIconMode(TextInputLayout.END_ICON_NONE);
             }
 
+            // Habilitar el inicio de sesion mediante huella solo si la version de Android es igual
+            // o superior a Android Pie y si tiene el hardware para deteccion de huellas en el
+            // dispositivo
             try {
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P || !FingerprintManagerCompat.from(this).isHardwareDetected()) {
                     TextView login2AccesoHuella = findViewById(R.id.login2AccesoHuella);
@@ -137,7 +142,6 @@ public class InicioSesion extends AppCompatActivity {
         GestorNotificaciones.getGestorNotificaciones(this).createCanalNotificacion();
     }
 
-
     public void iniciarSesion(View v) {
         EditText login1EditUsuario = findViewById(R.id.login1EditUsuario);
         EditText loginEditPassword = findViewById(R.id.loginEditPassword);
@@ -152,7 +156,6 @@ public class InicioSesion extends AppCompatActivity {
         } else {
             usuario = login1EditUsuario.getText().toString();
         }
-
 
         if (usuario.isEmpty()) {
             Toast.makeText(this, getString(R.string.usuario_vacio), Toast.LENGTH_SHORT).show();
@@ -291,7 +294,14 @@ public class InicioSesion extends AppCompatActivity {
         }
     }
 
-    // PONE LINK DEL VIDEO DE YOUTUBE
+    /**
+     * El codigo relacionado con el sensor de huellas dactilares esta basado en el codigo de la web
+     * proandroiddev
+     *
+     * Fuente: https://proandroiddev.com/5-steps-to-implement-biometric-authentication-in-android-dbeb825aeee8
+     *
+     * Adaptado y modificado para simplificarlo a nuestras necesidades
+     */
     @RequiresApi(api = Build.VERSION_CODES.P)
     public void accederHuella(View v) {
         try {

@@ -54,9 +54,9 @@ public class DatosTutoria extends AppCompatActivity {
     private ProgressBar progressBar;
     private ImageView imgProfesor;
     private TextView nombreProfesor,
-                     departamentoProfesor,
-                     despachoProfesor,
-                     nombreCentroProfesor;
+            departamentoProfesor,
+            despachoProfesor,
+            nombreCentroProfesor;
     private ExpandableListView expandableListView;
     private MyExpandableListAdapter adapter;
 
@@ -68,7 +68,7 @@ public class DatosTutoria extends AppCompatActivity {
         setContentView(R.layout.activity_datostutoria);
 
         Bundle bundle = getIntent().getExtras();
-        if(bundle == null){
+        if (bundle == null) {
             finish();
             return;
         }
@@ -96,23 +96,23 @@ public class DatosTutoria extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         File file = new File(getApplicationContext().getFilesDir(), idPersona + ".png");
-        if(file.exists())
+        if (file.exists())
             file.delete();
     }
 
     /**
      * Cargamos los datos del profesor de la BD y lo guardamos en el Gestor
      */
-    private void cargarDatosProfesor(){
+    private void cargarDatosProfesor() {
         Map<String, String> map = new HashMap<>();
-        map.put("accion","obtenerDatosProfesor");
+        map.put("accion", "obtenerDatosProfesor");
         map.put("idPersona", idPersona);
         SharedPreferences preferences = androidx.preference.PreferenceManager.getDefaultSharedPreferences(this);
-        map.put("idioma",preferences.getString("idioma","es"));
+        map.put("idioma", preferences.getString("idioma", "es"));
         JSONObject json = new JSONObject(map);
 
         Data.Builder data = new Data.Builder();
-        data.putString("datos",json.toString());
+        data.putString("datos", json.toString());
 
         Constraints restricciones = new Constraints.Builder()
                 .setRequiredNetworkType(NetworkType.CONNECTED)
@@ -136,9 +136,9 @@ public class DatosTutoria extends AppCompatActivity {
                             String despacho = (String) obj.get("despacho");
                             String nombreCentro = (String) obj.get("nombreCentro");
 
-                            profesor.setDepartamento(departamento==null?"":departamento);
-                            profesor.setDespacho(despacho==null?"":despacho);
-                            profesor.setNombreCentro(nombreCentro==null?"":nombreCentro);
+                            profesor.setDepartamento(departamento == null ? "" : departamento);
+                            profesor.setDespacho(despacho == null ? "" : despacho);
+                            profesor.setNombreCentro(nombreCentro == null ? "" : nombreCentro);
 
                             cargarTutorias();
 
@@ -155,17 +155,17 @@ public class DatosTutoria extends AppCompatActivity {
     /**
      * Después de cargar los datos del profesor, cargamos las tutorías de las que dispone dicho profesor
      */
-    private void cargarTutorias(){
+    private void cargarTutorias() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String idUsuario = prefs.getString("idUsuario", "");
         Map<String, String> map = new HashMap<>();
-        map.put("accion","obtenerTutoriasProfesor");
+        map.put("accion", "obtenerTutoriasProfesor");
         map.put("idPersona", idPersona);
         map.put("idUsuario", idUsuario);
         JSONObject json = new JSONObject(map);
 
         Data.Builder data = new Data.Builder();
-        data.putString("datos",json.toString());
+        data.putString("datos", json.toString());
 
         Constraints restricciones = new Constraints.Builder()
                 .setRequiredNetworkType(NetworkType.CONNECTED)
@@ -179,7 +179,7 @@ public class DatosTutoria extends AppCompatActivity {
                 this, status -> {
                     if (status != null && status.getState().isFinished()) {
                         String resultado = status.getOutputData().getString("result");
-                        if(resultado == null || resultado.isEmpty()) {
+                        if (resultado == null || resultado.isEmpty()) {
                             finish();
                             return;
                         }
@@ -189,14 +189,14 @@ public class DatosTutoria extends AppCompatActivity {
                         JSONParser parser = new JSONParser();
                         try {
                             JSONArray array = (JSONArray) parser.parse(resultado);
-                            for(int i = 0; i<array.size();i++){
+                            for (int i = 0; i < array.size(); i++) {
                                 JSONObject obj = (JSONObject) array.get(i);
                                 int idTutoria = Integer.parseInt((String) obj.get("idTutoria"));
                                 String fecha = (String) obj.get("fecha");
                                 String horaInicio = (String) obj.get("horaInicio");
                                 String horaFin = (String) obj.get("horaFin");
                                 int estado = Integer.parseInt(String.valueOf(obj.get("estado")));
-                                profesor.anadirTutoria(idTutoria,fecha,horaInicio,horaFin,estado);
+                                profesor.anadirTutoria(idTutoria, fecha, horaInicio, horaFin, estado);
                             }
 
                             cargarFotoProfesor();
@@ -213,7 +213,7 @@ public class DatosTutoria extends AppCompatActivity {
      * Cargamos la foto almacenada en la BD del profesor, en caso de que no tenga ninguna
      * se le asignará una por defecto.
      */
-    private void cargarFotoProfesor(){
+    private void cargarFotoProfesor() {
 
         JSONObject parametrosJSON = new JSONObject();
         parametrosJSON.put("accion", "obtenerImagen");
@@ -243,7 +243,7 @@ public class DatosTutoria extends AppCompatActivity {
                         File file = new File(getApplicationContext().getFilesDir(), idPersona + ".png");
                         GestorProfesores.getGestorProfesores().getProfesor(idPersona).setFoto(Uri.fromFile(file));
                         progressBar.setVisibility(View.INVISIBLE);
-                        imgProfesor.setImageURI( GestorProfesores.getGestorProfesores().getProfesor(idPersona).getFoto());
+                        imgProfesor.setImageURI(GestorProfesores.getGestorProfesores().getProfesor(idPersona).getFoto());
                         mostrarDatos();
                     }
                 }
@@ -252,7 +252,7 @@ public class DatosTutoria extends AppCompatActivity {
         WorkManager.getInstance(this).enqueue(trabajo);
     }
 
-    private void mostrarDatos(){
+    private void mostrarDatos() {
         Profesor p = GestorProfesores.getGestorProfesores().getProfesor(idPersona);
 
         nombreProfesor.setText(p.getNombreCompleto());
@@ -268,13 +268,13 @@ public class DatosTutoria extends AppCompatActivity {
 }
 
 
-class MyExpandableListAdapter extends BaseExpandableListAdapter{
+class MyExpandableListAdapter extends BaseExpandableListAdapter {
 
     private FechaTutoria[] fechaTutorias;
     private Activity activity;
     private AlertDialog alertDialog;
 
-    MyExpandableListAdapter(Activity pActivity, String idPersona){
+    MyExpandableListAdapter(Activity pActivity, String idPersona) {
         activity = pActivity;
         fechaTutorias = GestorProfesores.getGestorProfesores().getProfesor(idPersona).getFechaTutorias();
     }
@@ -306,7 +306,7 @@ class MyExpandableListAdapter extends BaseExpandableListAdapter{
 
     @Override
     public long getChildId(int groupPosition, int childPosition) {
-        return groupPosition*childPosition;
+        return groupPosition * childPosition;
     }
 
     @Override
@@ -316,13 +316,13 @@ class MyExpandableListAdapter extends BaseExpandableListAdapter{
 
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-        if(convertView==null)
-            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.tutorias_listgroup,parent ,false);
+        if (convertView == null)
+            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.tutorias_listgroup, parent, false);
 
-        if(!isExpanded)
-            convertView.setPadding(0,0,0,75);
+        if (!isExpanded)
+            convertView.setPadding(0, 0, 0, 75);
         else
-            convertView.setPadding(0,0,0,0);
+            convertView.setPadding(0, 0, 0, 0);
 
         TextView fecha = convertView.findViewById(R.id.txtFecha);
         fecha.setText(fechaTutorias[groupPosition].getFecha());
@@ -331,16 +331,16 @@ class MyExpandableListAdapter extends BaseExpandableListAdapter{
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        if(convertView == null)
-            convertView=LayoutInflater.from(parent.getContext()).inflate(R.layout.tutorias_listitem,parent,false);
+        if (convertView == null)
+            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.tutorias_listitem, parent, false);
 
-        if(isLastChild){
-            convertView.setPadding(0,0,0,75);
-        }else{
-            convertView.setPadding(0,0,0,0);
+        if (isLastChild) {
+            convertView.setPadding(0, 0, 0, 75);
+        } else {
+            convertView.setPadding(0, 0, 0, 0);
         }
 
-        Tutoria t = (Tutoria) getChild(groupPosition,childPosition);
+        Tutoria t = (Tutoria) getChild(groupPosition, childPosition);
         TextView hora = convertView.findViewById(R.id.txtHora);
         hora.setText(t.getHora());
 
@@ -355,8 +355,8 @@ class MyExpandableListAdapter extends BaseExpandableListAdapter{
         Únicamente el los casos de Pendiente y Aceptada se le permitirá al usuario cancelar la petición
         */
         ImageView imgReservar = convertView.findViewById(R.id.imgReservar);
-        if(t.getEstado() == 0 || t.getEstado() == 1){
-            if(t.getEstado() == 0)
+        if (t.getEstado() == 0 || t.getEstado() == 1) {
+            if (t.getEstado() == 0)
                 imgReservar.setImageResource(R.drawable.ic_pending);
             else
                 imgReservar.setImageResource(R.drawable.ic_check);
@@ -365,18 +365,18 @@ class MyExpandableListAdapter extends BaseExpandableListAdapter{
                 final int idTutoria = t.getIdTutoria();
                 AlertDialog.Builder builder = new AlertDialog.Builder(activity);
                 LayoutInflater inflater = activity.getLayoutInflater();
-                View elAspecto = inflater.inflate(R.layout.tutorias_alertdialog,null);
+                View elAspecto = inflater.inflate(R.layout.tutorias_alertdialog, null);
                 builder.setView(elAspecto);
 
                 TextView msg = elAspecto.findViewById(R.id.alertMsg);
-                Button si  = elAspecto.findViewById(R.id.alertBtnSi);
+                Button si = elAspecto.findViewById(R.id.alertBtnSi);
                 Button no = elAspecto.findViewById(R.id.alertBtnNo);
 
                 msg.setText(activity.getString(R.string.preguntaCancelar));
 
                 si.setOnClickListener(v14 -> {
                     SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity.getApplicationContext());
-                    String idPersona = prefs.getString("idUsuario",null);
+                    String idPersona = prefs.getString("idUsuario", null);
                     cancelarReserva(idPersona, idTutoria, groupPosition, childPosition);
                 });
                 no.setOnClickListener(v15 -> {
@@ -386,25 +386,24 @@ class MyExpandableListAdapter extends BaseExpandableListAdapter{
                 alertDialog = builder.create();
                 alertDialog.show();
             });
-        }else if(t.getEstado() == -1){
+        } else if (t.getEstado() == -1) {
             imgReservar.setImageResource(R.drawable.ic_add);
             imgReservar.setOnClickListener(v -> {
 
                 final int idTutoria = t.getIdTutoria();
                 AlertDialog.Builder builder = new AlertDialog.Builder(activity);
                 LayoutInflater inflater = activity.getLayoutInflater();
-                View elAspecto = inflater.inflate(R.layout.tutorias_alertdialog,null);
+                View elAspecto = inflater.inflate(R.layout.tutorias_alertdialog, null);
                 builder.setView(elAspecto);
 
                 TextView msg = elAspecto.findViewById(R.id.alertMsg);
-                Button si  = elAspecto.findViewById(R.id.alertBtnSi);
+                Button si = elAspecto.findViewById(R.id.alertBtnSi);
                 Button no = elAspecto.findViewById(R.id.alertBtnNo);
                 Button hecho = elAspecto.findViewById(R.id.alertBtnHecho);
                 Space space = elAspecto.findViewById(R.id.alertSpace);
                 EditText edt = elAspecto.findViewById(R.id.alertEditText);
                 LinearLayout ll1 = elAspecto.findViewById(R.id.alertLL1);
                 LinearLayout ll2 = elAspecto.findViewById(R.id.alertLL2);
-
 
 
                 si.setOnClickListener(v1 -> {
@@ -422,15 +421,15 @@ class MyExpandableListAdapter extends BaseExpandableListAdapter{
 
                 hecho.setOnClickListener(v13 -> {
                     SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity.getApplicationContext());
-                    String idPersona = prefs.getString("idUsuario",null);
-                    reservarTutoria(idPersona,idTutoria,edt.getText().toString(), groupPosition, childPosition);
+                    String idPersona = prefs.getString("idUsuario", null);
+                    reservarTutoria(idPersona, idTutoria, edt.getText().toString(), groupPosition, childPosition);
                 });
 
                 alertDialog = builder.create();
                 alertDialog.show();
 
             });
-        }else if(t.getEstado() == 2){
+        } else if (t.getEstado() == 2) {
             imgReservar.setImageResource(R.drawable.ic_close_red);
             imgReservar.setOnClickListener(null);
         }
@@ -443,23 +442,23 @@ class MyExpandableListAdapter extends BaseExpandableListAdapter{
         return false;
     }
 
-    private void reservarTutoria(String idPersona, int idTutoria, String msg, int groupPosition, int childPosition){
+    private void reservarTutoria(String idPersona, int idTutoria, String msg, int groupPosition, int childPosition) {
         Map<String, String> map = new HashMap<>();
-        map.put("accion","reservarTutoria");
+        map.put("accion", "reservarTutoria");
         map.put("idPersona", idPersona);
-        map.put("idTutoria",String.valueOf(idTutoria));
-        map.put("msg",msg);
+        map.put("idTutoria", String.valueOf(idTutoria));
+        map.put("msg", msg);
 
         SharedPreferences sharedPreferences = androidx.preference.PreferenceManager.getDefaultSharedPreferences(activity);
-        String nombre = sharedPreferences.getString("nombreUsuario","");
+        String nombre = sharedPreferences.getString("nombreUsuario", "");
 
-        String msgN = activity.getString(R.string.notificacionSolicitud,nombre);
+        String msgN = activity.getString(R.string.notificacionSolicitud, nombre);
         map.put("msgN", msgN);
-        map.put("titulo",activity.getString(R.string.tutorias));
+        map.put("titulo", activity.getString(R.string.tutorias));
         JSONObject json = new JSONObject(map);
 
         Data.Builder data = new Data.Builder();
-        data.putString("datos",json.toString());
+        data.putString("datos", json.toString());
 
         Constraints restricciones = new Constraints.Builder()
                 .setRequiredNetworkType(NetworkType.CONNECTED)
@@ -479,8 +478,8 @@ class MyExpandableListAdapter extends BaseExpandableListAdapter{
                         }
 
                         alertDialog.dismiss();
-                        Toast.makeText(activity, activity.getString(R.string.tutoriaReservada),Toast.LENGTH_SHORT).show();
-                        Tutoria t = (Tutoria) getChild(groupPosition,childPosition);
+                        Toast.makeText(activity, activity.getString(R.string.tutoriaReservada), Toast.LENGTH_SHORT).show();
+                        Tutoria t = (Tutoria) getChild(groupPosition, childPosition);
                         t.setEstado(0);
                         notifyDataSetChanged();
                     }
@@ -490,20 +489,20 @@ class MyExpandableListAdapter extends BaseExpandableListAdapter{
         WorkManager.getInstance(activity).enqueue(trabajo);
     }
 
-    private void cancelarReserva(String idPersona, int idTutoria, int groupPosition, int childPosition){
+    private void cancelarReserva(String idPersona, int idTutoria, int groupPosition, int childPosition) {
         Map<String, String> map = new HashMap<>();
-        map.put("accion","borrarReservaTutoria");
+        map.put("accion", "borrarReservaTutoria");
         map.put("idPersona", idPersona);
-        map.put("idTutoria",String.valueOf(idTutoria));
+        map.put("idTutoria", String.valueOf(idTutoria));
 
         SharedPreferences preferences = androidx.preference.PreferenceManager.getDefaultSharedPreferences(activity);
 
-        map.put("msg",activity.getString(R.string.notificacionCancelar,preferences.getString("nombreUsuario","")));
-        map.put("titulo",activity.getString(R.string.tutorias));
+        map.put("msg", activity.getString(R.string.notificacionCancelar, preferences.getString("nombreUsuario", "")));
+        map.put("titulo", activity.getString(R.string.tutorias));
         JSONObject json = new JSONObject(map);
 
         Data.Builder data = new Data.Builder();
-        data.putString("datos",json.toString());
+        data.putString("datos", json.toString());
 
         Constraints restricciones = new Constraints.Builder()
                 .setRequiredNetworkType(NetworkType.CONNECTED)
@@ -516,14 +515,14 @@ class MyExpandableListAdapter extends BaseExpandableListAdapter{
         WorkManager.getInstance(activity).getWorkInfoByIdLiveData(trabajo.getId()).observe(
                 (LifecycleOwner) activity, status -> {
                     if (status != null && status.getState().isFinished()) {
-                        if(status.getState() == WorkInfo.State.SUCCEEDED){
+                        if (status.getState() == WorkInfo.State.SUCCEEDED) {
                             alertDialog.dismiss();
-                            Toast.makeText(activity, activity.getString(R.string.reservaCancelada),Toast.LENGTH_SHORT).show();
-                            Tutoria t = (Tutoria) getChild(groupPosition,childPosition);
+                            Toast.makeText(activity, activity.getString(R.string.reservaCancelada), Toast.LENGTH_SHORT).show();
+                            Tutoria t = (Tutoria) getChild(groupPosition, childPosition);
                             t.setEstado(-1);
                             notifyDataSetChanged();
-                        }else{
-                            Toast.makeText(activity, activity.getString(R.string.error_general),Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(activity, activity.getString(R.string.error_general), Toast.LENGTH_SHORT).show();
                         }
                     }
                 }

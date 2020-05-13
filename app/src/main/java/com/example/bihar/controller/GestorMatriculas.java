@@ -7,6 +7,7 @@ import com.example.bihar.model.MatriculaAnios;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,16 +19,17 @@ public class GestorMatriculas {
     /**
      * Constructor
      */
-    private GestorMatriculas(){
+    private GestorMatriculas() {
         matriculasPorUsuario = new HashMap<>();
     }
 
     /**
      * Se recoge el gestor de la matrícula
+     *
      * @return
      */
-    public static GestorMatriculas gestorMatriculas(){
-        if(gestorMatriculas==null){
+    public static GestorMatriculas gestorMatriculas() {
+        if (gestorMatriculas == null) {
             gestorMatriculas = new GestorMatriculas();
         }
         return gestorMatriculas;
@@ -35,29 +37,31 @@ public class GestorMatriculas {
 
     /**
      * Se crea una matrícula con sus asignaturas
-     * @param datos: las asignaturas
-     * @param context: contexto de la aplicacion
+     *
+     * @param datos:     las asignaturas
+     * @param context:   contexto de la aplicacion
      * @param idPersona: id de la persona
      */
-    public void addMatriculas(String datos, Context context,String idPersona){
+    public void addMatriculas(String datos, Context context, String idPersona) {
         JSONParser parser = new JSONParser();
-        try{
+        try {
             JSONArray jsonArray = (JSONArray) parser.parse(datos);
             MatriculaAnios matriculaAnios = new MatriculaAnios(context);
             matriculaAnios.crearMatricula(jsonArray);
 
-            matriculasPorUsuario.put(idPersona,matriculaAnios);
-        }catch (ParseException e){
+            matriculasPorUsuario.put(idPersona, matriculaAnios);
+        } catch (ParseException e) {
             e.printStackTrace();
         }
     }
 
     /**
      * Se obtiene todas las matriculas realizadas de la persona
+     *
      * @param idPersona: id de la persona
      * @return: todas las matriculas
      */
-    public MatriculaAnios getMatriculas(String idPersona){
+    public MatriculaAnios getMatriculas(String idPersona) {
         return matriculasPorUsuario.get(idPersona);
     }
 }

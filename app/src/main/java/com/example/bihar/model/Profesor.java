@@ -25,45 +25,45 @@ public class Profesor {
     private ArrayList<FechaTutoria> fechaTutorias;
     private Map<Integer, String> asignaturas;
 
-    public Profesor(String pNombreCompleto, int pIdAsignatura, String pNombreAsignatura){
+    public Profesor(String pNombreCompleto, int pIdAsignatura, String pNombreAsignatura) {
         fechaTutorias = new ArrayList<>();
         asignaturas = new HashMap<>();
         nombreCompleto = pNombreCompleto;
-        asignaturas.put(pIdAsignatura,pNombreAsignatura);
+        asignaturas.put(pIdAsignatura, pNombreAsignatura);
     }
 
-    public void setFoto(Uri foto){
+    public void setFoto(Uri foto) {
         uriFoto = foto;
     }
 
-    public Uri getFoto(){
+    public Uri getFoto() {
         return uriFoto;
     }
 
-    public void anadirAsignatura(int pIdAsignatura, String pNombreAsignatura){
-        if(!asignaturas.containsKey(pIdAsignatura)){
-            asignaturas.put(pIdAsignatura,pNombreAsignatura);
+    public void anadirAsignatura(int pIdAsignatura, String pNombreAsignatura) {
+        if (!asignaturas.containsKey(pIdAsignatura)) {
+            asignaturas.put(pIdAsignatura, pNombreAsignatura);
         }
     }
 
-    public String getAsignaturas(){
+    public String getAsignaturas() {
         String cadena = "";
 
         Collection<String> collection = asignaturas.values();
         Iterator<String> itr = collection.iterator();
 
-        while (itr.hasNext()){
+        while (itr.hasNext()) {
             String asignatura = itr.next();
             cadena += (asignatura) + (itr.hasNext() ? " | " : "");
         }
 
 
-        if(cadena.length() > LONGITUD_MAXIMA){
+        if (cadena.length() > LONGITUD_MAXIMA) {
             StringTokenizer token = new StringTokenizer(cadena, "|");
             cadena = "";
-            Log.i("tokens",String.valueOf(token.hasMoreElements()));
-            while (token.hasMoreElements()){
-                cadena += getAcronimo(token.nextToken()) + (token.hasMoreElements()?" | ":"");
+            Log.i("tokens", String.valueOf(token.hasMoreElements()));
+            while (token.hasMoreElements()) {
+                cadena += getAcronimo(token.nextToken()) + (token.hasMoreElements() ? " | " : "");
             }
 
         }
@@ -71,12 +71,12 @@ public class Profesor {
         return cadena;
     }
 
-    public String getNombreCompleto(){
+    public String getNombreCompleto() {
         return nombreCompleto;
     }
 
-    private String getAcronimo(String pAsignatura){
-        return pAsignatura.replaceAll("[^A-Z]","");
+    private String getAcronimo(String pAsignatura) {
+        return pAsignatura.replaceAll("[^A-Z]", "");
     }
 
     public String getDepartamento() {
@@ -107,9 +107,9 @@ public class Profesor {
         this.nombreCentro = nombreCentro;
     }
 
-    public void anadirTutoria(int pIdTutoria, String pFecha, String pHoraInicio, String pHoraFin, int pEstado){
-        for(FechaTutoria fechaTutoria : fechaTutorias){
-            if(fechaTutoria.getFecha().equals(pFecha)){
+    public void anadirTutoria(int pIdTutoria, String pFecha, String pHoraInicio, String pHoraFin, int pEstado) {
+        for (FechaTutoria fechaTutoria : fechaTutorias) {
+            if (fechaTutoria.getFecha().equals(pFecha)) {
                 fechaTutoria.anadirHora(pIdTutoria, pHoraInicio, pHoraFin, pEstado);
                 return;
             }
@@ -118,7 +118,7 @@ public class Profesor {
     }
 
 
-    public void limpiarTutorias(){
+    public void limpiarTutorias() {
         fechaTutorias.clear();
     }
 }

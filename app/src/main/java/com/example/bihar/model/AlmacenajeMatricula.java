@@ -1,9 +1,6 @@
 package com.example.bihar.model;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-
-import androidx.preference.PreferenceManager;
 
 import com.example.bihar.R;
 
@@ -36,6 +33,7 @@ public class AlmacenajeMatricula {
 
     /**
      * Se almacenan en las listas el nombre, el curso, la convocatoria y las notas de la asignatura
+     *
      * @param jsonDato: el json con los datos de la asignatura
      */
     public void setDato(JSONObject jsonDato) {
@@ -53,6 +51,7 @@ public class AlmacenajeMatricula {
      * Con los datos obtenidos del json se añade la nota obtenida o un no presentado o aún no ha
      * realizado el examen. Si la nota es "-1" entonces no se ha realizado el examen aún. SI es "-2"
      * entonces tendrá un no presentado
+     *
      * @param notaOrd:    nota obtenida en la convocatoria ordinaria
      * @param notaExtrad: nota obtenida en la convocatoria extraordinaria
      */

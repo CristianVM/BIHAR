@@ -28,7 +28,4 @@ public class GestorUsuario {
     public Usuario getUsuario(){
         return usuario;
     }
-
-
-
 }

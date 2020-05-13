@@ -1,5 +1,8 @@
 package com.example.bihar.model;
 
+/**
+ * Objeto que representa un libro
+ */
 public class Libro {
 
     private String titulo;

@@ -42,6 +42,9 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Map;
 
+/**
+ * Actividad encargada de mostrar todas las practicas de empresa disponibles para su inscripcion
+ */
 public class Practicas extends AppCompatActivity {
 
     private ArrayList<String> IDs = new ArrayList<>();
@@ -180,10 +183,19 @@ public class Practicas extends AppCompatActivity {
         }
     }
 
-    // https://stackoverflow.com/questions/58224630/how-to-get-selected-chips-from-chipgroup
+    /**
+     * Metodo que permite mostrar solo las practicas de las provincias seleccionadas
+     */
     public void filtrarPracticas(View v) {
         try {
             ArrayList<String> provinciasSeleccionadas = new ArrayList<>();
+
+            /** Basado en el codigo extraido de Stack Overflow para obtener los Chips seleccionados dentro
+             *  de un ChipGroup
+             *
+             *  Pregunta: https://stackoverflow.com/questions/58224630/how-to-get-selected-chips-from-chipgroup
+             *  Autor: https://stackoverflow.com/users/2016562/gabriele-mariotti
+             */
             ChipGroup chipGroup = findViewById(R.id.chipGroup);
             for (int i = 0; i < chipGroup.getChildCount(); i++) {
                 Chip chip = (Chip) chipGroup.getChildAt(i);

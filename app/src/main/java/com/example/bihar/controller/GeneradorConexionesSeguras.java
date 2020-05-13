@@ -15,26 +15,41 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 
-
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
 
+/**
+ * Clase Singleton encargadada de crear una conexion segura con nuestro servidor remoto.
+ */
 public class GeneradorConexionesSeguras {
 
     private static GeneradorConexionesSeguras instancia;
 
-    private GeneradorConexionesSeguras(){}
+    /**
+     * Constructor
+     */
+    private GeneradorConexionesSeguras() { }
 
-    public static GeneradorConexionesSeguras getInstance(){
-        if (instancia==null){
+    /**
+     * Getter
+     */
+    public static GeneradorConexionesSeguras getInstance() {
+        if (instancia == null) {
             instancia = new GeneradorConexionesSeguras();
         }
         return instancia;
     }
 
-    public HttpsURLConnection crearConexionSegura (Context contexto, String direccion) {
-        HttpsURLConnection conexion=null;
+    /**
+     * Se genera la conexion con la direccion
+     *
+     * @param contexto: el contexto
+     * @param direccion: la url del servidor
+     * @return: el objeto conexion segura mediante el protocolo HTTPS
+     */
+    public HttpsURLConnection crearConexionSegura(Context contexto, String direccion) {
+        HttpsURLConnection conexion = null;
         try {
             CertificateFactory cf = CertificateFactory.getInstance("X.509");
             InputStream caInput = new BufferedInputStream(contexto.getAssets().open("servidor.cer"));
@@ -67,5 +82,4 @@ public class GeneradorConexionesSeguras {
         }
         return conexion;
     }
-
 }

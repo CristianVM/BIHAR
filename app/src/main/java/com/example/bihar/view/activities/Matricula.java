@@ -34,7 +34,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-public class Matricula extends AppCompatActivity{
+public class Matricula extends AppCompatActivity {
 
     private TextView txtAnioSeleccionado;
     private ListView asignaturas;
@@ -51,11 +51,11 @@ public class Matricula extends AppCompatActivity{
         listaAñadida = false;
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-        idiomaEstablecido = prefs.getString("idioma","es");
-        if(idiomaEstablecido.equals("es")){
+        idiomaEstablecido = prefs.getString("idioma", "es");
+        if (idiomaEstablecido.equals("es")) {
             Locale locale = new Locale("es");
             cambiarIdiomaOnCreate(locale);
-        }else if(idiomaEstablecido.equals("eu")){
+        } else if (idiomaEstablecido.equals("eu")) {
             Locale locale = new Locale("eu");
             cambiarIdiomaOnCreate(locale);
         }
@@ -70,13 +70,13 @@ public class Matricula extends AppCompatActivity{
         toolBar.cambiarTituloToolbar(getResources().getString(R.string.matricula));
 
         // SE VAN METIENDO LOS DATOS PARA MANDARLE LA PETICION A LA BASE DE DATOS
-        Map<String,String> map = new HashMap<>();
-        map.put("idPersona",idPersona);
-        map.put("accion","verMatricula");
+        Map<String, String> map = new HashMap<>();
+        map.put("idPersona", idPersona);
+        map.put("accion", "verMatricula");
         JSONObject json = new JSONObject(map);
 
         Data.Builder data = new Data.Builder();
-        data.putString("datos",json.toString());
+        data.putString("datos", json.toString());
 
         Constraints restricciones = new Constraints.Builder()
                 .setRequiredNetworkType(NetworkType.CONNECTED)
@@ -87,19 +87,19 @@ public class Matricula extends AppCompatActivity{
                 .build();
         WorkManager.getInstance(this).enqueue(trabajo);
 
-       WorkManager.getInstance(this).getWorkInfoByIdLiveData(trabajo.getId()).observe(
+        WorkManager.getInstance(this).getWorkInfoByIdLiveData(trabajo.getId()).observe(
                 this, status -> {
-                   if (status != null && status.getState().isFinished()) {
-                       rellenarListView();
-                   }
-               });
+                    if (status != null && status.getState().isFinished()) {
+                        rellenarListView();
+                    }
+                });
     }
 
     /**
      * Se asigna el listener de tal manera que al pulsar se abra un diálogo para seleccionar la
      * matrícula
      */
-    private void asignarListeners(){
+    private void asignarListeners() {
         LinearLayout linearLayoutAnio = (LinearLayout) findViewById(R.id.matricula_linearLayoutSeleccionAnio);
         linearLayoutAnio.setOnClickListener(view -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -123,6 +123,7 @@ public class Matricula extends AppCompatActivity{
     /**
      * Al seleccionar la matrícula en el dialog se muestran las asignaturas de esa matrícula y se
      * cambia el año escogido en el TextView
+     *
      * @param i: la posición de la matrícula elegida en el dialog
      */
     public void seleccionAnio(int i) {
@@ -131,7 +132,7 @@ public class Matricula extends AppCompatActivity{
 
         asignaturas.setAdapter(crearAdapter(datos));
 
-        txtAnioSeleccionado.setText(anioSeleccionado+"-"+(Integer.parseInt(anioSeleccionado)+1));
+        txtAnioSeleccionado.setText(anioSeleccionado + "-" + (Integer.parseInt(anioSeleccionado) + 1));
     }
 
     /**
@@ -144,21 +145,21 @@ public class Matricula extends AppCompatActivity{
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-        String idiomaNuevo = sharedPreferences.getString("idioma","es");
+        String idiomaNuevo = sharedPreferences.getString("idioma", "es");
 
-        if(!idiomaNuevo.equals(idiomaEstablecido)){
+        if (!idiomaNuevo.equals(idiomaEstablecido)) {
             idiomaEstablecido = idiomaNuevo;
-            if(idiomaEstablecido.equals("es")){
+            if (idiomaEstablecido.equals("es")) {
                 Locale locale = new Locale("es");
                 cambiarIdiomaOnResume(locale);
-            }else if(idiomaEstablecido.equals("eu")){
+            } else if (idiomaEstablecido.equals("eu")) {
                 Locale locale = new Locale("eu");
                 cambiarIdiomaOnResume(locale);
             }
         }
 
         // SI YA SE HABÍA CARGADO LA LISTA ANTERIORMENTE Y LA ACTIVIDAD VUELVE A REANUDARSE
-        if(listaAñadida){
+        if (listaAñadida) {
             rellenarListView();
         }
 
@@ -167,9 +168,10 @@ public class Matricula extends AppCompatActivity{
     /**
      * Cambia el idioma de la aplicación al reanudarse la actividad. Se destruye la actividad y se
      * vuelve a iniciar
+     *
      * @param locale: el idioma almacenado en SharedPreferences
      */
-    public void cambiarIdiomaOnResume(Locale locale){
+    public void cambiarIdiomaOnResume(Locale locale) {
         Locale.setDefault(locale);
         Resources res = getResources();
         DisplayMetrics dm = res.getDisplayMetrics();
@@ -181,9 +183,10 @@ public class Matricula extends AppCompatActivity{
 
     /**
      * Cambia el idioma de la aplicación al crearse la actividad
+     *
      * @param locale: el idioma almacenado en SharedPreferences
      */
-    public void cambiarIdiomaOnCreate(Locale locale){
+    public void cambiarIdiomaOnCreate(Locale locale) {
         Locale.setDefault(locale);
         Resources res = getResources();
         DisplayMetrics dm = res.getDisplayMetrics();
@@ -196,7 +199,7 @@ public class Matricula extends AppCompatActivity{
      * Se rellenan la ListVIew con los datos que se han recogido de la base de datos que están en el
      * GestorMatriculas
      */
-    private void rellenarListView(){
+    private void rellenarListView() {
         MatriculaAnios matriculaAnios = GestorMatriculas.gestorMatriculas().getMatriculas(idPersona);
         Map<String, AlmacenajeMatricula> matriculaMap = matriculaAnios.getMatriculas();
 
@@ -217,10 +220,11 @@ public class Matricula extends AppCompatActivity{
 
     /**
      * Dependiendo del idioma, crea un adapter u otro
+     *
      * @param almacenajeMatricula: datos de la matrícula
      * @return: el adapter
      */
-    private AdapterListaAsignaturasMatricula crearAdapter(AlmacenajeMatricula almacenajeMatricula){
+    private AdapterListaAsignaturasMatricula crearAdapter(AlmacenajeMatricula almacenajeMatricula) {
         AdapterListaAsignaturasMatricula adapter = null;
         if (idiomaEstablecido.equals("es")) {
             adapter = new AdapterListaAsignaturasMatricula(

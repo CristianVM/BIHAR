@@ -42,9 +42,18 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+/**
+ * Actividad encargada de mostrar los mensajes del foro para una asignatura en concreto
+ */
 public class ForoAsignatura extends AppCompatActivity {
 
-    // https://www.scaledrone.com/blog/android-chat-tutorial/
+    /**
+     * Interfaz grafica de esta actividad basada en el codigo extraido del sitio web Scaledrone
+     *
+     * Fuente: https://www.scaledrone.com/blog/android-chat-tutorial/
+     *
+     * Modificado para simplicar y adaptar las necesidades a nuestra aplicacion
+     */
 
     private AdapterForo adapterForo;
     private ArrayList<String> nombresProfesores = new ArrayList<>();
@@ -84,6 +93,7 @@ public class ForoAsignatura extends AppCompatActivity {
 
         listaMensajesForo.addItemDecoration(new GridSpacingItemDecoration(1, 20, true));
 
+        // Si es alumno se le oculta la posibilidad de mandar un mensaje
         if (prefs.getBoolean("esAlumno", true)) {
             LinearLayout linearLayoutMandarMensaje = findViewById(R.id.linearLayoutMandarMensaje);
             linearLayoutMandarMensaje.setVisibility(View.GONE);
@@ -158,7 +168,7 @@ public class ForoAsignatura extends AppCompatActivity {
 
                                     adapterForo.notifyDataSetChanged();
                                 }
-                                // Si salta algun error
+                            // Si salta algun error
                             } catch (Exception e) {
                                 Toast.makeText(getApplicationContext(), getString(R.string.error_general), Toast.LENGTH_SHORT).show();
                                 e.printStackTrace();
@@ -238,7 +248,7 @@ public class ForoAsignatura extends AppCompatActivity {
                                     } else {
                                         Toast.makeText(getApplicationContext(), getString(R.string.error_general), Toast.LENGTH_SHORT).show();
                                     }
-                                    // Si salta algun error
+                                // Si salta algun error
                                 } catch (Exception e) {
                                     Toast.makeText(getApplicationContext(), getString(R.string.error_general), Toast.LENGTH_SHORT).show();
                                     e.printStackTrace();
@@ -256,6 +266,14 @@ public class ForoAsignatura extends AppCompatActivity {
         }
     }
 
+    /**
+     * Mandar una notificacion mediante Firebase a todos los alumnos de esta asignatura cuando el
+     * profesor mande un mensaje
+     *
+     * @param idAsignatura: el id de la asignatura
+     * @param mensajeNotificacion: el mensaje de la notificacion
+     * @param tituloNotificacion: el titulo de la notificacion
+     */
     private void mandarNotificacion(String idAsignatura, String mensajeNotificacion, String tituloNotificacion) {
         JSONObject parametrosJSON = new JSONObject();
         parametrosJSON.put("accion", "notificarForo");

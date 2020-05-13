@@ -1,8 +1,6 @@
 package com.example.bihar.model;
 
 import android.content.Context;
-import android.content.Intent;
-import android.util.Log;
 
 import com.example.bihar.R;
 
@@ -29,6 +27,7 @@ public class HorarioAsignatura {
 
     /**
      * Constructor de los horarios de las asignaturas
+     *
      * @param context: el contexto
      */
     public HorarioAsignatura(Context context) {
@@ -43,13 +42,14 @@ public class HorarioAsignatura {
 
     /**
      * Añade un horario de la asignatura
+     *
      * @param diaSemana: día de la semana
-     * @param semana: semana de la hora
-     * @param hInicio: hora inicio de la clase
-     * @param hFinal: hora final de la clase
-     * @param asg: id asignatura
+     * @param semana:    semana de la hora
+     * @param hInicio:   hora inicio de la clase
+     * @param hFinal:    hora final de la clase
+     * @param asg:       id asignatura
      */
-    public void addHorarioAsignatura(String diaSemana, String semana, String hInicio, String hFinal, String asg,String asgEusk) {
+    public void addHorarioAsignatura(String diaSemana, String semana, String hInicio, String hFinal, String asg, String asgEusk) {
         procesarDiaSemana(diaSemana);
         procesarDiaClase(diaSemana, semana);
         hFinales.add(hFinal);
@@ -60,6 +60,7 @@ public class HorarioAsignatura {
 
     /**
      * Se obtiene el horario de una posición concreta de la lista
+     *
      * @param pos: posición
      * @return: Un JSON con el horario
      */
@@ -70,12 +71,13 @@ public class HorarioAsignatura {
         map.put("hInicios", hInicios.get(pos));
         map.put("hFinales", hFinales.get(pos));
         map.put("nombresAsignaturas", nombresAsignaturas.get(pos));
-        map.put("nombresAsignaturasEuskera",nombreAsignaturaEuskera.get(pos));
+        map.put("nombresAsignaturasEuskera", nombreAsignaturaEuskera.get(pos));
         return new JSONObject(map);
     }
 
     /**
      * Procesa el día de la semana dependiendo del número
+     *
      * @param diaSemana: día de la semana
      */
     private void procesarDiaSemana(String diaSemana) {
@@ -98,7 +100,7 @@ public class HorarioAsignatura {
      * Autor: https://stackoverflow.com/users/260990/jigar-joshi
      *
      * @param diaSemana: dia de la semana. 0 es Lunes, 1 Martes...
-     * @param semana: la fecha de la semana
+     * @param semana:    la fecha de la semana
      */
     private void procesarDiaClase(String diaSemana, String semana) {
 
@@ -120,11 +122,12 @@ public class HorarioAsignatura {
 
     /**
      * Devuelve el JSON con con el horario de la asignatura a tal fecha
-     * @param fecha: fecha elegida
+     *
+     * @param fecha:  fecha elegida
      * @param format: formato de la fecha
      * @return: JSON con el horario
      */
-    public JSONObject horarioAsignatura(Calendar fecha,SimpleDateFormat format) {
+    public JSONObject horarioAsignatura(Calendar fecha, SimpleDateFormat format) {
         for (int i = 0; i < semanas.size(); i++) {
             String semana = semanas.get(i);
             Calendar calendar = Calendar.getInstance();
@@ -135,7 +138,7 @@ public class HorarioAsignatura {
 
                 Date date2 = fecha.getTime();
 
-                if(fechaLista.equals(format.format(date2))){
+                if (fechaLista.equals(format.format(date2))) {
                     return getHorario(i);
                 }
             } catch (ParseException e) {

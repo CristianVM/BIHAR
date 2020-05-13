@@ -15,7 +15,6 @@ import android.os.Bundle;
 
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -64,11 +63,11 @@ public class Horarios extends AppCompatActivity {
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-        idiomaEstablecido = prefs.getString("idioma","es");
-        if(idiomaEstablecido.equals("es")){
+        idiomaEstablecido = prefs.getString("idioma", "es");
+        if (idiomaEstablecido.equals("es")) {
             Locale locale = new Locale("es");
             cambiarIdiomaOnCreate(locale);
-        }else if(idiomaEstablecido.equals("eu")){
+        } else if (idiomaEstablecido.equals("eu")) {
             Locale locale = new Locale("eu");
             cambiarIdiomaOnCreate(locale);
         }
@@ -93,9 +92,9 @@ public class Horarios extends AppCompatActivity {
         fechaEscogida = Calendar.getInstance();
 
         // SI HOY ES SABADO O DOMINGO ENTONCES SE PASA AL LUNES
-        if(fechaEscogida.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY){
+        if (fechaEscogida.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
             rellenarListas(2);
-        }else if(fechaEscogida.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY){
+        } else if (fechaEscogida.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
             rellenarListas(1);
         }
         // SE PONE LA FECHA DE HOY EN EL TEXTVIEW
@@ -108,8 +107,8 @@ public class Horarios extends AppCompatActivity {
         // PETICION A LA BD REMOTA PARA OBTENER LOS HORARIOS
         Map<String, String> map = new HashMap<>();
         map.put("accion", "consultarHorario");
-        map.put("idPersona",usuario);
-        map.put("anio",anioActualMatricula());
+        map.put("idPersona", usuario);
+        map.put("anio", anioActualMatricula());
         JSONObject jsonWorker = new JSONObject(map);
 
         Data.Builder data = new Data.Builder();
@@ -128,12 +127,12 @@ public class Horarios extends AppCompatActivity {
                 this, status -> {
                     if (status.getState().isFinished()) {
                         rellenarListas(0);
-                        if(prefs.getString("idioma","es").equals("es")){
+                        if (prefs.getString("idioma", "es").equals("es")) {
                             adapterListaHorarios = new AdapterListaHorarios(
-                                    nombreAsignaturas,horaIniciales,horaFinales,diaSemanas,semanas,this);
-                        }else{
+                                    nombreAsignaturas, horaIniciales, horaFinales, diaSemanas, semanas, this);
+                        } else {
                             adapterListaHorarios = new AdapterListaHorarios(
-                                    nombreAsignturasEuskera,horaIniciales,horaFinales,diaSemanas,semanas,this);
+                                    nombreAsignturasEuskera, horaIniciales, horaFinales, diaSemanas, semanas, this);
                         }
                         listView.setAdapter(adapterListaHorarios);
                         pasarDias();
@@ -145,13 +144,14 @@ public class Horarios extends AppCompatActivity {
     /**
      * Se obtiene el año de la matricula actual. Si el mes de hoy es menor igual que 7 entonces se coge el año
      * anterior
+     *
      * @return: el año de la matricula
      */
-    private String anioActualMatricula(){
+    private String anioActualMatricula() {
         int anio = fechaEscogida.get(Calendar.YEAR);
         int mes = fechaEscogida.get(Calendar.MONTH);
 
-        if(mes <= 7){
+        if (mes <= 7) {
             anio--;
         }
         return String.valueOf(anio);
@@ -160,25 +160,25 @@ public class Horarios extends AppCompatActivity {
     /**
      * Se crean los listeners al pulsar las flechas. Dos flechas 7 días, una flecha 1  día
      */
-    private void pasarDias(){
+    private void pasarDias() {
         ImageView uniIzq = (ImageView) findViewById(R.id.horarios_uniflechaIzq);
         ImageView biIzq = (ImageView) findViewById(R.id.horarios_biflechaIzq);
         ImageView uniDer = (ImageView) findViewById(R.id.horarios_uniflechaDer);
         ImageView biDer = (ImageView) findViewById(R.id.horarios_biflechaDer);
 
         // UNA FLECHA IZQUIERDA
-        uniIzq.setOnClickListener( view -> {
+        uniIzq.setOnClickListener(view -> {
             limpiarListas();
-            if(fechaEscogida.get(Calendar.DAY_OF_WEEK)!=Calendar.MONDAY){
+            if (fechaEscogida.get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY) {
                 rellenarListas(-1);
-            }else{
+            } else {
                 rellenarListas(-3);
             }
             adapterListaHorarios.notifyDataSetChanged();
         });
 
         // DOS FLECHAS IZQUIERDA
-        biIzq.setOnClickListener( view -> {
+        biIzq.setOnClickListener(view -> {
             limpiarListas();
             rellenarListas(-7);
             adapterListaHorarios.notifyDataSetChanged();
@@ -187,16 +187,16 @@ public class Horarios extends AppCompatActivity {
         // UNA FLECHAS DERECHA
         uniDer.setOnClickListener(view -> {
             limpiarListas();
-            if(fechaEscogida.get(Calendar.DAY_OF_WEEK)!=Calendar.FRIDAY){
+            if (fechaEscogida.get(Calendar.DAY_OF_WEEK) != Calendar.FRIDAY) {
                 rellenarListas(1);
-            }else{
+            } else {
                 rellenarListas(3);
             }
             adapterListaHorarios.notifyDataSetChanged();
         });
 
         // DOS FLECHAS DERECHA
-        biDer.setOnClickListener( view -> {
+        biDer.setOnClickListener(view -> {
             limpiarListas();
             rellenarListas(7);
             adapterListaHorarios.notifyDataSetChanged();
@@ -216,7 +216,7 @@ public class Horarios extends AppCompatActivity {
     /**
      * Limpia las listas
      */
-    private void limpiarListas(){
+    private void limpiarListas() {
         nombreAsignaturas.clear();
         horaFinales.clear();
         horaIniciales.clear();
@@ -227,15 +227,16 @@ public class Horarios extends AppCompatActivity {
 
     /**
      * Rellena las listas con el horario
+     *
      * @param diasNuevos
      */
-    private void rellenarListas(int diasNuevos){
-        fechaEscogida.add(Calendar.DATE,diasNuevos);
+    private void rellenarListas(int diasNuevos) {
+        fechaEscogida.add(Calendar.DATE, diasNuevos);
         anadirDiaSemanaTextView();
         List<JSONObject> listaJSONs = GestorHorarios.gestorHorarios().obtHorariosDelDia(fechaEscogida);
 
-        if(listaJSONs.size()>0){
-            for(int i=listaJSONs.size()-1;i >=0 ;i--){
+        if (listaJSONs.size() > 0) {
+            for (int i = listaJSONs.size() - 1; i >= 0; i--) {
                 JSONObject jsonObject = (JSONObject) listaJSONs.get(i);
                 nombreAsignaturas.add((String) jsonObject.get("nombresAsignaturas"));
                 nombreAsignturasEuskera.add((String) jsonObject.get("nombresAsignaturasEuskera"));
@@ -250,22 +251,22 @@ public class Horarios extends AppCompatActivity {
     /**
      * Añade el día de la semana y su fecha en la parte superior
      */
-    private void anadirDiaSemanaTextView(){
+    private void anadirDiaSemanaTextView() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date hoy = fechaEscogida.getTime();
         String fecha = dateFormat.format(hoy);
-        if(fechaEscogida.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY){
+        if (fechaEscogida.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY) {
             diaFecha.setText(R.string.horario_diaLunes);
-        }else if(fechaEscogida.get(Calendar.DAY_OF_WEEK) == Calendar.TUESDAY){
+        } else if (fechaEscogida.get(Calendar.DAY_OF_WEEK) == Calendar.TUESDAY) {
             diaFecha.setText(R.string.horario_diaMartes);
-        }else if(fechaEscogida.get(Calendar.DAY_OF_WEEK) == Calendar.WEDNESDAY){
+        } else if (fechaEscogida.get(Calendar.DAY_OF_WEEK) == Calendar.WEDNESDAY) {
             diaFecha.setText(R.string.horario_diaMiercoles);
-        }else if(fechaEscogida.get(Calendar.DAY_OF_WEEK) == Calendar.THURSDAY){
+        } else if (fechaEscogida.get(Calendar.DAY_OF_WEEK) == Calendar.THURSDAY) {
             diaFecha.setText(R.string.horario_diaJueves);
-        }else if(fechaEscogida.get(Calendar.DAY_OF_WEEK) == Calendar.FRIDAY) {
+        } else if (fechaEscogida.get(Calendar.DAY_OF_WEEK) == Calendar.FRIDAY) {
             diaFecha.setText(R.string.horario_diaViernes);
         }
-        diaFecha.setText(diaFecha.getText() +" " + fecha);
+        diaFecha.setText(diaFecha.getText() + " " + fecha);
     }
 
 
@@ -279,24 +280,24 @@ public class Horarios extends AppCompatActivity {
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-        String idiomaNuevo = sharedPreferences.getString("idioma","es");
+        String idiomaNuevo = sharedPreferences.getString("idioma", "es");
 
-        if(!idiomaNuevo.equals(idiomaEstablecido)){
+        if (!idiomaNuevo.equals(idiomaEstablecido)) {
             idiomaEstablecido = idiomaNuevo;
-            if(idiomaEstablecido.equals("es")){
+            if (idiomaEstablecido.equals("es")) {
                 Locale locale = new Locale("es");
                 cambiarIdiomaOnResume(locale);
-            }else if(idiomaEstablecido.equals("eu")){
+            } else if (idiomaEstablecido.equals("eu")) {
                 Locale locale = new Locale("eu");
                 cambiarIdiomaOnResume(locale);
             }
         }
 
-        if(cargado){
-            if(idiomaEstablecido.equals("es")){
-                adapterListaHorarios = new AdapterListaHorarios(nombreAsignaturas,horaIniciales,horaFinales,diaSemanas,semanas,this);
-            }else{
-                adapterListaHorarios = new AdapterListaHorarios(nombreAsignturasEuskera,horaIniciales,horaFinales,diaSemanas,semanas,this);
+        if (cargado) {
+            if (idiomaEstablecido.equals("es")) {
+                adapterListaHorarios = new AdapterListaHorarios(nombreAsignaturas, horaIniciales, horaFinales, diaSemanas, semanas, this);
+            } else {
+                adapterListaHorarios = new AdapterListaHorarios(nombreAsignturasEuskera, horaIniciales, horaFinales, diaSemanas, semanas, this);
             }
             listView.setAdapter(adapterListaHorarios);
         }
@@ -305,9 +306,10 @@ public class Horarios extends AppCompatActivity {
     /**
      * Cambia el idioma de la aplicación al reanudarse la actividad. Se destruye la actividad y se
      * vuelve a iniciar
+     *
      * @param locale: el idioma almacenado en SharedPreferences
      */
-    public void cambiarIdiomaOnResume(Locale locale){
+    public void cambiarIdiomaOnResume(Locale locale) {
         Locale.setDefault(locale);
         Resources res = getResources();
         DisplayMetrics dm = res.getDisplayMetrics();
@@ -319,9 +321,10 @@ public class Horarios extends AppCompatActivity {
 
     /**
      * Cambia el idioma de la aplicación al crearse la actividad
+     *
      * @param locale: el idioma almacenado en SharedPreferences
      */
-    public void cambiarIdiomaOnCreate(Locale locale){
+    public void cambiarIdiomaOnCreate(Locale locale) {
         Locale.setDefault(locale);
         Resources res = getResources();
         DisplayMetrics dm = res.getDisplayMetrics();
@@ -332,6 +335,7 @@ public class Horarios extends AppCompatActivity {
 
     /**
      * Al cambiar la orientación del móvil se guarda la fecha actual puesta
+     *
      * @param outState
      */
     @Override
@@ -339,11 +343,12 @@ public class Horarios extends AppCompatActivity {
         super.onSaveInstanceState(outState);
         Date date = fechaEscogida.getTime();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        outState.putString("fecha",dateFormat.format(date));
+        outState.putString("fecha", dateFormat.format(date));
     }
 
     /**
      * Se recupera la fecha puesta anterior
+     *
      * @param savedInstanceState
      */
     @Override
@@ -351,9 +356,9 @@ public class Horarios extends AppCompatActivity {
         super.onRestoreInstanceState(savedInstanceState);
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String fecha = savedInstanceState.getString("fecha");
-        try{
+        try {
             fechaEscogida.setTime(dateFormat.parse(fecha));
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

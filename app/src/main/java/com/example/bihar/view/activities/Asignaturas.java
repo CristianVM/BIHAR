@@ -62,7 +62,7 @@ public class Asignaturas extends AppCompatActivity {
 
             @Override
             public void onGroupExpand(int groupPosition) {
-                if(groupPosition != previousGroup)
+                if (groupPosition != previousGroup)
                     expandableListView.collapseGroup(previousGroup);
                 previousGroup = groupPosition;
             }
@@ -75,19 +75,19 @@ public class Asignaturas extends AppCompatActivity {
         cargarDatos();
     }
 
-    //Cargamos los datos de las asignaturas y las guardamos en el Gestor
-    private void cargarDatos(){
+    // Cargamos los datos de las asignaturas y las guardamos en el Gestor
+    private void cargarDatos() {
         Map<String, String> map = new HashMap<>();
-        map.put("accion","obtenerAsignaturasPorAnyo");
+        map.put("accion", "obtenerAsignaturasPorAnyo");
         map.put("idPersona", GestorUsuario.getGestorUsuario().getUsuario().getIdUsuario());
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        map.put("idioma",preferences.getString("idioma","es"));
+        map.put("idioma", preferences.getString("idioma", "es"));
 
         JSONObject json = new JSONObject(map);
 
         Data.Builder data = new Data.Builder();
-        data.putString("datos",json.toString());
+        data.putString("datos", json.toString());
 
         Constraints restricciones = new Constraints.Builder()
                 .setRequiredNetworkType(NetworkType.CONNECTED)
@@ -102,7 +102,7 @@ public class Asignaturas extends AppCompatActivity {
                 this, status -> {
                     if (status != null && status.getState().isFinished()) {
 
-                        if(status.getState() == WorkInfo.State.FAILED){
+                        if (status.getState() == WorkInfo.State.FAILED) {
                             finish();
                             return;
                         }
@@ -113,16 +113,16 @@ public class Asignaturas extends AppCompatActivity {
                         JSONParser parser = new JSONParser();
                         try {
                             JSONArray array = (JSONArray) parser.parse(resultado);
-                            for(int i = 0; i<array.size(); i++){
+                            for (int i = 0; i < array.size(); i++) {
                                 JSONObject obj = (JSONObject) array.get(i);
-                                int anyo = Integer.parseInt((String)obj.get("anio"));
-                                int conv = Integer.parseInt((String)obj.get("convocatoria"));
-                                double nota = Double.parseDouble((String)obj.get("notaFinal"));
+                                int anyo = Integer.parseInt((String) obj.get("anio"));
+                                int conv = Integer.parseInt((String) obj.get("convocatoria"));
+                                double nota = Double.parseDouble((String) obj.get("notaFinal"));
                                 String nombreAsignatura = (String) obj.get("nombreAsignatura");
-                                int curso = Integer.parseInt((String)obj.get("curso"));
+                                int curso = Integer.parseInt((String) obj.get("curso"));
                                 String tipo = (String) obj.get("tipo");
 
-                                Asignatura a = new Asignatura(nombreAsignatura,nota,conv,tipo,anyo,curso);
+                                Asignatura a = new Asignatura(nombreAsignatura, nota, conv, tipo, anyo, curso);
                                 u.anadirAsignatura(a);
                             }
 
@@ -148,7 +148,7 @@ class MyExpandableListAdapterAsignaturas extends BaseExpandableListAdapter {
     private Integer[] cursos;
     private Activity activity;
 
-    MyExpandableListAdapterAsignaturas(Activity pActivity){
+    MyExpandableListAdapterAsignaturas(Activity pActivity) {
         activity = pActivity;
         asignaturas = GestorUsuario.getGestorUsuario().getUsuario().getAsignaturas_por_curso();
         List<Integer> lista = new ArrayList<>(asignaturas.keySet());
@@ -183,7 +183,7 @@ class MyExpandableListAdapterAsignaturas extends BaseExpandableListAdapter {
 
     @Override
     public long getChildId(int groupPosition, int childPosition) {
-        return groupPosition*childPosition;
+        return groupPosition * childPosition;
     }
 
     @Override
@@ -193,35 +193,35 @@ class MyExpandableListAdapterAsignaturas extends BaseExpandableListAdapter {
 
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-        if(convertView==null)
-            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.tutorias_listgroup,parent ,false);
+        if (convertView == null)
+            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.tutorias_listgroup, parent, false);
 
         //Entre curso y curso damos un espacio
-        if(!isExpanded)
-            convertView.setPadding(0,0,0,75);
+        if (!isExpanded)
+            convertView.setPadding(0, 0, 0, 75);
         else
-            convertView.setPadding(0,0,0,0);
+            convertView.setPadding(0, 0, 0, 0);
 
-        String[] strCurso = new String[]{activity.getString(R.string.primero),activity.getString(R.string.segundo),activity.getString(R.string.tercero),activity.getString(R.string.cuarto),activity.getString(R.string.quinto)};
+        String[] strCurso = new String[]{activity.getString(R.string.primero), activity.getString(R.string.segundo), activity.getString(R.string.tercero), activity.getString(R.string.cuarto), activity.getString(R.string.quinto)};
         TextView fecha = convertView.findViewById(R.id.txtFecha);
-        fecha.setText(activity.getString(R.string.asignaturas_curso,strCurso[(Integer) getGroup(groupPosition) - 1]));
+        fecha.setText(activity.getString(R.string.asignaturas_curso, strCurso[(Integer) getGroup(groupPosition) - 1]));
 
         return convertView;
     }
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        if(convertView==null)
-            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.asignaturas_listitem,parent ,false);
+        if (convertView == null)
+            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.asignaturas_listitem, parent, false);
 
         //Si el grupo está expandido, damos un espacio entre el último elemento (asignatura) y el siguiente curso
-        if(isLastChild){
-            convertView.setPadding(0,0,0,75);
-        }else{
-            convertView.setPadding(0,0,0,0);
+        if (isLastChild) {
+            convertView.setPadding(0, 0, 0, 75);
+        } else {
+            convertView.setPadding(0, 0, 0, 0);
         }
 
-        Asignatura a = (Asignatura) getChild(groupPosition,childPosition);
+        Asignatura a = (Asignatura) getChild(groupPosition, childPosition);
 
         TextView nombreAsignatura = convertView.findViewById(R.id.nombreAsignatura);
         TextView curso = convertView.findViewById(R.id.txtCurso);
@@ -233,14 +233,14 @@ class MyExpandableListAdapterAsignaturas extends BaseExpandableListAdapter {
         nombreAsignatura.setText(a.getNombreAsignatura());
         curso.setText(String.valueOf(a.getCurso()));
         String strAnyo = String.valueOf(a.getAnyo());
-        strAnyo += "/" + (Integer.parseInt(strAnyo.substring(2,4))+1);
+        strAnyo += "/" + (Integer.parseInt(strAnyo.substring(2, 4)) + 1);
         anyo.setText(strAnyo);
         tipo.setText(a.getTipo());
 
         double notaFinal = a.getCalificacionOrd();
-        if(notaFinal == -1){
+        if (notaFinal == -1) {
             nota.setText("");
-        }else{
+        } else {
             nota.setText(String.valueOf(notaFinal));
         }
 
