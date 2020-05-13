@@ -166,6 +166,7 @@ public class InicioSesion extends AppCompatActivity {
             parametrosJSON.put("idUsuario", usuario);
             parametrosJSON.put("password", password);
             parametrosJSON.put("token", prefs.getString("token", ""));
+            parametrosJSON.put("finger", false);
 
             Data datos = new Data.Builder()
                     .putString("datos", parametrosJSON.toJSONString())
@@ -341,10 +342,10 @@ public class InicioSesion extends AppCompatActivity {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         JSONObject parametrosJSON = new JSONObject();
-        parametrosJSON.put("accion", "iniciarSesion");
+        parametrosJSON.put("accion", "iniciarSesionFingerprint");
         parametrosJSON.put("idUsuario", prefs.getString("idUsuario", ""));
-        parametrosJSON.put("password", prefs.getString("passwordFingerprint", ""));
         parametrosJSON.put("token", prefs.getString("token", ""));
+        parametrosJSON.put("finger", true);
 
         Data datos = new Data.Builder()
                 .putString("datos", parametrosJSON.toJSONString())
