@@ -82,6 +82,7 @@ public class DatosTutoria extends AppCompatActivity {
 
         ToolBar toolbarDatosTutoria = (ToolBar) getSupportFragmentManager().findFragmentById(R.id.toolbarDatosTutoria);
         toolbarDatosTutoria.cambiarTituloToolbar(getResources().getString(R.string.tutorias));
+        toolbarDatosTutoria.ocultarAjustes();
 
         cargarDatosProfesor();
     }

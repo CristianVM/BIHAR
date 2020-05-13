@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -134,7 +135,7 @@ public class MenuPrincipal extends AppCompatActivity {
         @Override
         public void onBindViewHolder(@NonNull MiViewHolder holder, int position) {
             holder.imgButton.setImageResource(opciones[position].getImagen());
-            holder.imgButton.setOnClickListener(v -> {
+            holder.cardView.setOnClickListener(v -> {
                 Intent intent = null;
                 switch (opciones[position].getTag()){
                     case "matricula":{
@@ -267,9 +268,11 @@ public class MenuPrincipal extends AppCompatActivity {
 class MiViewHolder extends RecyclerView.ViewHolder{
 
     public ImageView imgButton;
+    public CardView cardView;
 
     public MiViewHolder(@NonNull View itemView) {
         super(itemView);
+        cardView = itemView.findViewById(R.id.menuCardView);
         imgButton = itemView.findViewById(R.id.btnOpcion);
     }
 }

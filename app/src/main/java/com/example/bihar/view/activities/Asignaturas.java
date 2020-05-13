@@ -71,6 +71,7 @@ public class Asignaturas extends AppCompatActivity {
 
         ToolBar toolbarAsignaturas = (ToolBar) getSupportFragmentManager().findFragmentById(R.id.toolbarAsignaturas);
         toolbarAsignaturas.cambiarTituloToolbar(getResources().getString(R.string.asignaturas));
+        toolbarAsignaturas.ocultarAjustes();
 
         cargarDatos();
     }
