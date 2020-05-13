@@ -108,7 +108,7 @@
     <string name="dialog_notaprofesor_alumno">Ikaslea:</string>
     <string name="dialog_notaprofesor_nota">Nota:</string>
     <string name="dialog_notaprofesor_notaError">Errorea, nota baxua edo oso altua</string>
-    <string name="dialog_notaprofesor_vacio">Errorea, eremu hutsa</string>
+    <string name="dialog_notaprofesor_vacio">Errorea, pasahitza bat idatzi</string>
     <string name="notasprofesor">NOTAK</string>
     <string name="dialog_cambioContrasena_persona">Pertsona</string>
     <string name="dialog_cambioContrasena_contrasenaAnterior">Pasahitza zaharra</string>

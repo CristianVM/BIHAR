@@ -257,9 +257,11 @@ public class AjustesPreferencias extends PreferenceFragmentCompat implements Sha
                                     if(resultado.equals("Ok")){
                                         // SI SE HA MODIFICADO LA CONTRASEÑA CORRECTAMENTE
                                         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
-                                        SharedPreferences.Editor editor = prefs.edit();
-                                        editor.putString("password",txtNueva);
-                                        editor.apply();
+                                        if(!prefs.getString("password","").equals("")){
+                                            SharedPreferences.Editor editor = prefs.edit();
+                                            editor.putString("password",txtNueva);
+                                            editor.apply();
+                                        }
                                         Toast.makeText(getContext(),getActivity().getResources().getString(R.string.ajustes_contrasenaCambiada),Toast.LENGTH_SHORT).show();
                                     }else{
                                         //NO SE HA MODIFICADO LA CONTRASEÑA

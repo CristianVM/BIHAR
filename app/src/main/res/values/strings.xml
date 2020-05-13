@@ -124,7 +124,6 @@
     <string name="ajustes_gmail">Otro correo electrónico</string>
     <string name="ajustes_gmail_descripcion">Vincula otra cuenta de correo electrónico</string>
     <string name="ajustes_emailError">Introduzca un correo electrónico correcto</string>
-    <string name="ajustes_emailVacio">Campo vacío</string>
     <string name="ajustes_contrasena">Cambiar contraseña</string>
     <string name="ajustes_contrasena_descripcion">Cambias la contraseña por una nueva</string>
     <string name="ajustes_gmail_dialog">Escriba el correo electrónico</string>
@@ -145,6 +144,13 @@
     <string name="aula">Aula:</string>
     <string name="datosGuardados">Datos guardados correctamente.</string>
     <string name="ajustes">AJUSTES</string>
+    <string name="dialog_cambioContrasena_persona">"Persona: "</string>
+    <string name="dialog_cambioContrasena_contrasenaAnterior">"Contraseña antigua: "</string>
+    <string name="dialog_cambioContrasena_contrasenaNueva">Contraseña nueva</string>
+    <string name="dialog_cambioContrasena">Cambiar contraseña</string>
+    <string name="dialog_cambioContrasenaDistintos">Las contraseñas no coinciden</string>
+    <string name="ajustes_contrasenaCambiada">Contraseña cambiada</string>
+    <string name="ajustes_contrasenaNoCambiada">Error, contraseña no modificada</string>
 
 
     <!-- ASIGNATURAS-->
@@ -172,15 +178,8 @@
     <string name="dialog_notaprofesor_alumno">"Alumno: "</string>
     <string name="dialog_notaprofesor_nota">"Nota: "</string>
     <string name="dialog_notaprofesor_notaError">Error, nota baja o muy alta</string>
-    <string name="dialog_notaprofesor_vacio">Error, campo vacío</string>
+    <string name="dialog_notaprofesor_vacio">Error, escriba una nota</string>
     <string name="notasprofesor">NOTAS</string>
-    <string name="dialog_cambioContrasena_persona">"Persona: "</string>
-    <string name="dialog_cambioContrasena_contrasenaAnterior">"Contraseña antigua: "</string>
-    <string name="dialog_cambioContrasena_contrasenaNueva">Contraseña nueva</string>
-    <string name="dialog_cambioContrasena">Cambiar contraseña</string>
-    <string name="dialog_cambioContrasenaDistintos">Las contraseñas no coinciden</string>
-    <string name="ajustes_contrasenaCambiada">Contraseña cambiada</string>
-    <string name="ajustes_contrasenaNoCambiada">Error, contraseña no modificada</string>
     <string name="dialog_notaprofesor_ordinaria">C. Ordinaria?</string>
 
     <!-- NOTIFICACIONES -->

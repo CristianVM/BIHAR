@@ -362,6 +362,11 @@ public class InicioSesion extends AppCompatActivity {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean("iniciado",false);
 
+        String contrasena = sharedPreferences.getString("password","");
+        if(!contrasena.equals("")){
+            EditText loginEditPassword = findViewById(R.id.loginEditPassword);
+            loginEditPassword.setText(contrasena);
+        }
 
         if(sharedPreferences.getBoolean("imagenCambiada",false)){
             editor.putBoolean("imagenCambiada",false);
