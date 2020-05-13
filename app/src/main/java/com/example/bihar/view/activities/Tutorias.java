@@ -1,5 +1,19 @@
 package com.example.bihar.view.activities;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Typeface;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.Switch;
+import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,22 +23,6 @@ import androidx.work.Data;
 import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
-
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.Typeface;
-import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.Switch;
-import android.widget.TextView;
 
 import com.example.bihar.R;
 import com.example.bihar.controller.GestorProfesores;
@@ -43,6 +41,9 @@ import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+/**
+ * Actividad que muestra en una lista todos los profesores registrados en la BD
+ */
 public class Tutorias extends AppCompatActivity {
 
     private TextView titulo;
@@ -63,6 +64,8 @@ public class Tutorias extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tutorias);
 
+        //Por defecto se mostrarán unicamente los profesores de las asignaturas en las que estés
+        //matriculado este curso
         todos = false;
 
         titulo = findViewById(R.id.textView);
@@ -93,6 +96,7 @@ public class Tutorias extends AppCompatActivity {
             return false;
         });
 
+        //Evento para filtrar la lista de profesores
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {

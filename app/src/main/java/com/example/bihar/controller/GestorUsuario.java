@@ -2,6 +2,9 @@ package com.example.bihar.controller;
 
 import com.example.bihar.model.Usuario;
 
+/**
+ * Clase singleton que gestiona el usuario que tiene la sesión iniciada
+ */
 public class GestorUsuario {
 
     private static GestorUsuario mGestorUsuario;

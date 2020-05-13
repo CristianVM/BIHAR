@@ -17,6 +17,9 @@ import com.example.bihar.view.fragments.ToolBar;
 
 import java.util.Locale;
 
+/**
+ * Actividad que corresponde al acceso a eGela por medio de la aplicación
+ */
 public class Egela extends AppCompatActivity {
 
     private static final String URL_EGELA = "https://egela.ehu.eus/";
@@ -45,6 +48,8 @@ public class Egela extends AppCompatActivity {
         webView = findViewById(R.id.webview);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebViewClient(new WebViewClient());
+
+        //Usaremos la query en la url para determinar el idioma de la página web
         webView.loadUrl(URL_EGELA + "?lang=" + idiomaEstablecido);
 
         ToolBar toolbarEgela = (ToolBar) getSupportFragmentManager().findFragmentById(R.id.toolbarEgela);

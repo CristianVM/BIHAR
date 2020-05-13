@@ -1,21 +1,10 @@
 package com.example.bihar.view.activities;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.work.Constraints;
-import androidx.work.Data;
-import androidx.work.NetworkType;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkInfo;
-import androidx.work.WorkManager;
-
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,15 +15,25 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.Space;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Space;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.work.Constraints;
+import androidx.work.Data;
+import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkInfo;
+import androidx.work.WorkManager;
 
 import com.example.bihar.R;
 import com.example.bihar.controller.GestorProfesores;
 import com.example.bihar.controller.WorkerBihar;
-import com.example.bihar.model.Profesor;
 import com.example.bihar.model.FechaTutoria;
+import com.example.bihar.model.Profesor;
 import com.example.bihar.model.Tutoria;
 import com.example.bihar.view.fragments.ToolBar;
 
@@ -47,6 +46,9 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Actividad que muestra los datos del profesor y una lista de las tutorias de las que dispone.
+ */
 public class DatosTutoria extends AppCompatActivity {
 
     private ProgressBar progressBar;
@@ -87,6 +89,9 @@ public class DatosTutoria extends AppCompatActivity {
         cargarDatosProfesor();
     }
 
+    /**
+     * Borramos la foto del profesor cuando salgamos de la actividad.
+     */
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -95,6 +100,9 @@ public class DatosTutoria extends AppCompatActivity {
             file.delete();
     }
 
+    /**
+     * Cargamos los datos del profesor de la BD y lo guardamos en el Gestor
+     */
     private void cargarDatosProfesor(){
         Map<String, String> map = new HashMap<>();
         map.put("accion","obtenerDatosProfesor");
@@ -144,6 +152,9 @@ public class DatosTutoria extends AppCompatActivity {
         WorkManager.getInstance(this).enqueue(trabajo);
     }
 
+    /**
+     * Después de cargar los datos del profesor, cargamos las tutorías de las que dispone dicho profesor
+     */
     private void cargarTutorias(){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String idUsuario = prefs.getString("idUsuario", "");
@@ -198,6 +209,10 @@ public class DatosTutoria extends AppCompatActivity {
         WorkManager.getInstance(this).enqueue(trabajo);
     }
 
+    /**
+     * Cargamos la foto almacenada en la BD del profesor, en caso de que no tenga ninguna
+     * se le asignará una por defecto.
+     */
     private void cargarFotoProfesor(){
 
         JSONObject parametrosJSON = new JSONObject();
@@ -329,6 +344,16 @@ class MyExpandableListAdapter extends BaseExpandableListAdapter{
         TextView hora = convertView.findViewById(R.id.txtHora);
         hora.setText(t.getHora());
 
+        /*
+        Dependiendo del estado que tenga el usuario con la tutoria del profesor, se mostrará una imagen
+        y se podrá realizar una acción:
+            0 --> Pendiente
+            1 --> Aceptada
+            2 --> Rechazada
+            -1 --> Sin solicitar
+
+        Únicamente el los casos de Pendiente y Aceptada se le permitirá al usuario cancelar la petición
+        */
         ImageView imgReservar = convertView.findViewById(R.id.imgReservar);
         if(t.getEstado() == 0 || t.getEstado() == 1){
             if(t.getEstado() == 0)

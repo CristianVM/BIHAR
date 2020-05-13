@@ -10,6 +10,9 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+/**
+ * Clase que representa a un profesor. Gestiona las asignaturas que imparte y las tutorías que tiene disponibles
+ */
 public class Profesor {
 
     private static final int LONGITUD_MAXIMA = 65;

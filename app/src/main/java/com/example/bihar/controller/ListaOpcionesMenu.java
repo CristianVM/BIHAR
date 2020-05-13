@@ -1,8 +1,11 @@
-package com.example.bihar.model;
+package com.example.bihar.controller;
 
 import com.example.bihar.R;
 import com.example.bihar.model.CardOpcion;
 
+/**
+ * Clase que gestiona las opciones del menú principal y la acción que van a realizar
+ */
 public class ListaOpcionesMenu {
 
     public static CardOpcion[] getListaOpcionesUsuario(String idioma){

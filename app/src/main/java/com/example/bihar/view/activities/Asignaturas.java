@@ -1,5 +1,15 @@
 package com.example.bihar.view.activities;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseExpandableListAdapter;
+import android.widget.ExpandableListView;
+import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceManager;
 import androidx.work.Constraints;
@@ -8,19 +18,6 @@ import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
-
-import android.app.Activity;
-import android.content.SharedPreferences;
-import android.content.res.Configuration;
-import android.content.res.Resources;
-import android.os.Bundle;
-import android.util.DisplayMetrics;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseExpandableListAdapter;
-import android.widget.ExpandableListView;
-import android.widget.TextView;
 
 import com.example.bihar.R;
 import com.example.bihar.controller.GestorUsuario;
@@ -38,9 +35,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
+/**
+ * Actividad encargada de mostrar todas las asignaturas por cursos del expediente del alumno
+ */
 public class Asignaturas extends AppCompatActivity {
 
     private ExpandableListView expandableListView;
@@ -76,6 +75,7 @@ public class Asignaturas extends AppCompatActivity {
         cargarDatos();
     }
 
+    //Cargamos los datos de las asignaturas y las guardamos en el Gestor
     private void cargarDatos(){
         Map<String, String> map = new HashMap<>();
         map.put("accion","obtenerAsignaturasPorAnyo");
@@ -196,6 +196,7 @@ class MyExpandableListAdapterAsignaturas extends BaseExpandableListAdapter {
         if(convertView==null)
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.tutorias_listgroup,parent ,false);
 
+        //Entre curso y curso damos un espacio
         if(!isExpanded)
             convertView.setPadding(0,0,0,75);
         else
@@ -213,6 +214,7 @@ class MyExpandableListAdapterAsignaturas extends BaseExpandableListAdapter {
         if(convertView==null)
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.asignaturas_listitem,parent ,false);
 
+        //Si el grupo está expandido, damos un espacio entre el último elemento (asignatura) y el siguiente curso
         if(isLastChild){
             convertView.setPadding(0,0,0,75);
         }else{

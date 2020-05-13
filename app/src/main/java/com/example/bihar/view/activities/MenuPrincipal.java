@@ -8,7 +8,6 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,11 +29,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.bihar.R;
 import com.example.bihar.controller.GestorUsuario;
 import com.example.bihar.model.CardOpcion;
-import com.example.bihar.model.ListaOpcionesMenu;
+import com.example.bihar.controller.ListaOpcionesMenu;
 import com.example.bihar.view.fragments.ToolBar;
 
 import java.util.Locale;
 
+/**
+ * Actividad correspondiente al Menú principal (del alumno y del profesor), también el menú del Expediente
+ */
 public class MenuPrincipal extends AppCompatActivity {
 
     private static final int TIEMPO_ANIMACION_MS = 1250;
@@ -68,6 +70,11 @@ public class MenuPrincipal extends AppCompatActivity {
         toolbarMenuPrincipal.cambiarTituloToolbar(getResources().getString(R.string.app_name));
         toolbarMenuPrincipal.ocultarAtras();
 
+        /*
+        * Dependiento de si es alumno o profesor se seleccionarán distintas opciones de la clase ListaOpcionesMenu
+        * Si es un alumno, se comprobará tambien el parametro del intent 'expediente' que indica si está dentro de expediente
+        * o no
+        */
         String idioma = prefs.getString("idioma","es");
         boolean esAlumno = prefs.getBoolean("esAlumno",false);
         CardOpcion[] opciones = null;
@@ -102,6 +109,7 @@ public class MenuPrincipal extends AppCompatActivity {
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, true));
     }
 
+    //Muestra una animación de la ProgressBar indicando el numero de creditos superados que tiene el alumno
     public void animacionCreditos(float numCreditos){
         LinearLayout linearLayout = findViewById(R.id.menuPrincipal_extraLayout);
         linearLayout.setVisibility(View.VISIBLE);
@@ -137,6 +145,7 @@ public class MenuPrincipal extends AppCompatActivity {
             holder.imgButton.setImageResource(opciones[position].getImagen());
             holder.cardView.setOnClickListener(v -> {
                 Intent intent = null;
+                //Dependiendo de donde de Click se le llevará a una venta u otra
                 switch (opciones[position].getTag()){
                     case "matricula":{
                         intent = new Intent(MenuPrincipal.this, Matricula.class);

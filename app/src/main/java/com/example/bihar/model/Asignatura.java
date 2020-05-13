@@ -1,5 +1,8 @@
 package com.example.bihar.model;
 
+/**
+ * Objeto que representa una Asignatura
+ */
 public class Asignatura {
 
     private String nombreAsignatura;

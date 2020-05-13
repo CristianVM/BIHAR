@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +28,6 @@ import com.example.bihar.R;
 import com.example.bihar.controller.GestorReservas;
 import com.example.bihar.controller.GestorUsuario;
 import com.example.bihar.controller.WorkerBihar;
-import com.example.bihar.model.Usuario;
 import com.example.bihar.view.fragments.ToolBar;
 
 import org.json.simple.JSONArray;
@@ -43,6 +41,10 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+/**
+ * Actividad en la que un Profesor podrá ver que alumnos le han solicitado asistir a una tutoría
+ * El profesor podrá aceptar o rechazar esa petición.
+ */
 public class TutoriasProfesor extends AppCompatActivity {
 
     private ListView solicitadas;
@@ -61,6 +63,9 @@ public class TutoriasProfesor extends AppCompatActivity {
         cargarDatos();
     }
 
+    /**
+     * Se cargan los datos de la BD y se guardan en el Gestor
+     */
     public void cargarDatos(){
         Map<String, String> map = new HashMap<>();
         map.put("accion","obtenerDatosReservas");

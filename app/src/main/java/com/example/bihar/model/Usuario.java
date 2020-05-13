@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Objeto que representa a un usuario, se establecerán los datos como el id, el email, la nota media
+ * y el numero de cretitos del usuario al iniciar sesión.
+ */
+
 public class Usuario {
 
     private String idUsuario;

@@ -3,6 +3,9 @@ package com.example.bihar.model;
 
 import java.util.ArrayList;
 
+/**
+ * Objeto que gestiona las tutorias que pueden llegar a haber en un día en concreto
+ */
 public class FechaTutoria {
     private String fecha;
     private ArrayList<Tutoria> tutorias;
