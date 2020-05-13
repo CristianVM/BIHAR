@@ -1,7 +1,6 @@
 package com.example.bihar.controller;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.example.bihar.model.HorarioAsignatura;
 
@@ -71,12 +70,11 @@ public class GestorHorarios {
                         (String) json.get("semana"),
                         (String) json.get("horaInicio"),
                         (String) json.get("horaFin"),
-                        (String) json.get("nombreAsignatura"));
+                        (String) json.get("nombreAsignatura"),
+                        (String) json.get("nombreAsignaturaEuskera"));
 
                 horarioAsignaturaMap.put(idAsignatura,horario);
             }
-            Log.i("HORARIOS",horarioAsignaturaMap.size()+"");
-
         }catch (ParseException e){
             e.printStackTrace();
         }

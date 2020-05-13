@@ -6,7 +6,6 @@ import androidx.work.Constraints;
 import androidx.work.Data;
 import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
 import android.app.Activity;
@@ -16,7 +15,6 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,8 +29,6 @@ import android.widget.Toast;
 import com.example.bihar.R;
 import com.example.bihar.controller.GestorUsuario;
 import com.example.bihar.controller.WorkerBihar;
-import com.example.bihar.model.Asignatura;
-import com.example.bihar.model.Usuario;
 import com.example.bihar.view.fragments.ToolBar;
 
 import org.json.simple.JSONArray;
@@ -41,7 +37,6 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;

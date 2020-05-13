@@ -24,6 +24,7 @@ public class HorarioAsignatura {
     private List<String> hInicios;
     private List<String> hFinales;
     private List<String> nombresAsignaturas;
+    private List<String> nombreAsignaturaEuskera;
     private Context context;
 
     /**
@@ -36,6 +37,7 @@ public class HorarioAsignatura {
         hFinales = new ArrayList<>();
         hInicios = new ArrayList<>();
         nombresAsignaturas = new ArrayList<>();
+        nombreAsignaturaEuskera = new ArrayList<>();
         this.context = context;
     }
 
@@ -47,12 +49,13 @@ public class HorarioAsignatura {
      * @param hFinal: hora final de la clase
      * @param asg: id asignatura
      */
-    public void addHorarioAsignatura(String diaSemana, String semana, String hInicio, String hFinal, String asg) {
+    public void addHorarioAsignatura(String diaSemana, String semana, String hInicio, String hFinal, String asg,String asgEusk) {
         procesarDiaSemana(diaSemana);
         procesarDiaClase(diaSemana, semana);
         hFinales.add(hFinal);
         hInicios.add(hInicio);
         nombresAsignaturas.add(asg);
+        nombreAsignaturaEuskera.add(asgEusk);
     }
 
     /**
@@ -67,6 +70,7 @@ public class HorarioAsignatura {
         map.put("hInicios", hInicios.get(pos));
         map.put("hFinales", hFinales.get(pos));
         map.put("nombresAsignaturas", nombresAsignaturas.get(pos));
+        map.put("nombresAsignaturasEuskera",nombreAsignaturaEuskera.get(pos));
         return new JSONObject(map);
     }
 

@@ -7,17 +7,13 @@ import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -25,11 +21,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.bihar.R;
-import com.example.bihar.controller.GestorLibros;
 import com.example.bihar.controller.GestorUsuario;
 import com.example.bihar.controller.WorkerBihar;
-import com.example.bihar.utils.AdapterListaAsignaturasMatricula;
-import com.example.bihar.utils.AdapterListaLibros;
 import com.example.bihar.utils.AdapterListaUniversidades;
 import com.example.bihar.view.fragments.ToolBar;
 
@@ -42,7 +35,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 

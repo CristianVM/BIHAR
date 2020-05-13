@@ -16,28 +16,17 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RadioButton;
 import android.widget.TextView;
-
 import com.example.bihar.R;
 import com.example.bihar.controller.GestorLibros;
-import com.example.bihar.controller.GestorProfesores;
 import com.example.bihar.controller.WorkerBihar;
 import com.example.bihar.model.Libro;
-import com.example.bihar.utils.AdapterListaAsignaturasMatricula;
 import com.example.bihar.utils.AdapterListaLibros;
 import com.example.bihar.view.dialog.DialogFiltradoLibros;
-
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

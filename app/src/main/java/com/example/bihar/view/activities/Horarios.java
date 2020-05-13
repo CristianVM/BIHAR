@@ -15,6 +15,7 @@ import android.os.Bundle;
 
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -40,6 +41,7 @@ import java.util.Map;
 public class Horarios extends AppCompatActivity {
 
     private ArrayList<String> nombreAsignaturas;
+    private ArrayList<String> nombreAsignturasEuskera;
     private ArrayList<String> horaFinales;
     private ArrayList<String> horaIniciales;
     private ArrayList<String> diaSemanas;
@@ -53,6 +55,8 @@ public class Horarios extends AppCompatActivity {
     private String usuario;
 
     private String idiomaEstablecido;
+
+    private boolean cargado;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,12 +75,14 @@ public class Horarios extends AppCompatActivity {
 
         setContentView(R.layout.activity_horarios);
 
+        cargado = false;
         // SE INICIALIZAN LOS DATOS
         nombreAsignaturas = new ArrayList<>();
         horaFinales = new ArrayList<>();
         horaIniciales = new ArrayList<>();
         diaSemanas = new ArrayList<>();
         semanas = new ArrayList<>();
+        nombreAsignturasEuskera = new ArrayList<>();
 
         listView = (ListView) findViewById(R.id.horario_lista);
         diaFecha = (TextView) findViewById(R.id.horario_diaSemana);
@@ -122,10 +128,16 @@ public class Horarios extends AppCompatActivity {
                 this, status -> {
                     if (status.getState().isFinished()) {
                         rellenarListas(0);
-                        adapterListaHorarios = new AdapterListaHorarios(
-                                nombreAsignaturas,horaIniciales,horaFinales,diaSemanas,semanas,this);
+                        if(prefs.getString("idioma","es").equals("es")){
+                            adapterListaHorarios = new AdapterListaHorarios(
+                                    nombreAsignaturas,horaIniciales,horaFinales,diaSemanas,semanas,this);
+                        }else{
+                            adapterListaHorarios = new AdapterListaHorarios(
+                                    nombreAsignturasEuskera,horaIniciales,horaFinales,diaSemanas,semanas,this);
+                        }
                         listView.setAdapter(adapterListaHorarios);
                         pasarDias();
+                        cargado = true;
                     }
                 });
     }
@@ -210,6 +222,7 @@ public class Horarios extends AppCompatActivity {
         horaIniciales.clear();
         diaSemanas.clear();
         semanas.clear();
+        nombreAsignturasEuskera.clear();
     }
 
     /**
@@ -220,10 +233,12 @@ public class Horarios extends AppCompatActivity {
         fechaEscogida.add(Calendar.DATE,diasNuevos);
         anadirDiaSemanaTextView();
         List<JSONObject> listaJSONs = GestorHorarios.gestorHorarios().obtHorariosDelDia(fechaEscogida);
+
         if(listaJSONs.size()>0){
             for(int i=listaJSONs.size()-1;i >=0 ;i--){
                 JSONObject jsonObject = (JSONObject) listaJSONs.get(i);
                 nombreAsignaturas.add((String) jsonObject.get("nombresAsignaturas"));
+                nombreAsignturasEuskera.add((String) jsonObject.get("nombresAsignaturasEuskera"));
                 horaIniciales.add((String) jsonObject.get("hInicios"));
                 horaFinales.add((String) jsonObject.get("hFinales"));
                 diaSemanas.add((String) jsonObject.get("diaSemanas"));
@@ -275,6 +290,15 @@ public class Horarios extends AppCompatActivity {
                 Locale locale = new Locale("eu");
                 cambiarIdiomaOnResume(locale);
             }
+        }
+
+        if(cargado){
+            if(idiomaEstablecido.equals("es")){
+                adapterListaHorarios = new AdapterListaHorarios(nombreAsignaturas,horaIniciales,horaFinales,diaSemanas,semanas,this);
+            }else{
+                adapterListaHorarios = new AdapterListaHorarios(nombreAsignturasEuskera,horaIniciales,horaFinales,diaSemanas,semanas,this);
+            }
+            listView.setAdapter(adapterListaHorarios);
         }
     }
 
