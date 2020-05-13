@@ -120,7 +120,7 @@ public class InicioSesion extends AppCompatActivity {
                     ImageButton botonHuella = findViewById(R.id.botonHuella);
                     botonHuella.setVisibility(View.GONE);
                 }
-            } catch(Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
                 Toast.makeText(this, getString(R.string.error_general), Toast.LENGTH_SHORT).show();
             }
@@ -155,9 +155,9 @@ public class InicioSesion extends AppCompatActivity {
 
 
         if (usuario.isEmpty()) {
-            Toast.makeText(this, R.string.usuario_vacio, Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.usuario_vacio), Toast.LENGTH_SHORT).show();
         } else if (password.isEmpty()) {
-            Toast.makeText(this, R.string.password_vacia, Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.password_vacia), Toast.LENGTH_SHORT).show();
         } else {
             comenzarCarga();
 
@@ -216,6 +216,7 @@ public class InicioSesion extends AppCompatActivity {
                                             editor.putString("idUsuario", idUsuario);
                                             editor.putString("nombreUsuario", nombre);
                                             editor.putBoolean("esAlumno", esAlumno);
+                                            editor.putString("passwordFingerprint", password);
 
                                             // Si ha marcado recordar contraseña
                                             Switch login1SwitchRecordar = findViewById(R.id.loginSwitchRecordar);
@@ -236,17 +237,17 @@ public class InicioSesion extends AppCompatActivity {
                                             // Si alguno de los datos no es correcto
                                         } else {
                                             terminarCarga();
-                                            Toast.makeText(getApplicationContext(), R.string.login_datos_incorrectos, Toast.LENGTH_LONG).show();
+                                            Toast.makeText(getApplicationContext(), getString(R.string.login_datos_incorrectos), Toast.LENGTH_SHORT).show();
                                         }
                                         // Si ha habido algun error
                                     } else {
                                         terminarCarga();
-                                        Toast.makeText(getApplicationContext(), R.string.error_general, Toast.LENGTH_LONG).show();
+                                        Toast.makeText(getApplicationContext(), getString(R.string.error_general), Toast.LENGTH_SHORT).show();
                                     }
                                     // Si salta algun error
                                 } catch (Exception e) {
                                     terminarCarga();
-                                    Toast.makeText(getApplicationContext(), R.string.error_general, Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getApplicationContext(), getString(R.string.error_general), Toast.LENGTH_SHORT).show();
                                     e.printStackTrace();
                                 }
                             }
@@ -294,7 +295,7 @@ public class InicioSesion extends AppCompatActivity {
     public void accederHuella(View v) {
         try {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.USE_BIOMETRIC) != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{Manifest.permission.USE_BIOMETRIC},333);
+                requestPermissions(new String[]{Manifest.permission.USE_BIOMETRIC}, 333);
             } else if (!FingerprintManagerCompat.from(this).hasEnrolledFingerprints()) {
                 Toast.makeText(this, getString(R.string.sin_huella), Toast.LENGTH_SHORT).show();
             } else {
@@ -324,16 +325,110 @@ public class InicioSesion extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Intent i = new Intent(getApplicationContext(), MenuPrincipal.class);
-                            startActivity(i);
+                            iniciarSesionFingerprint();
                         }
                     });
                 }
             });
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(this, getString(R.string.error_general), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void iniciarSesionFingerprint() {
+        comenzarCarga();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        JSONObject parametrosJSON = new JSONObject();
+        parametrosJSON.put("accion", "iniciarSesion");
+        parametrosJSON.put("idUsuario", prefs.getString("idUsuario", ""));
+        parametrosJSON.put("password", prefs.getString("passwordFingerprint", ""));
+        parametrosJSON.put("token", prefs.getString("token", ""));
+
+        Data datos = new Data.Builder()
+                .putString("datos", parametrosJSON.toJSONString())
+                .build();
+
+        Constraints restricciones = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
+
+        OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(WorkerBihar.class)
+                .setConstraints(restricciones)
+                .setInputData(datos)
+                .build();
+
+        WorkManager.getInstance(this)
+                .getWorkInfoByIdLiveData(otwr.getId())
+                .observe(this, new Observer<WorkInfo>() {
+                    @Override
+                    public void onChanged(WorkInfo workInfo) {
+                        if (workInfo != null && workInfo.getState().isFinished()) {
+                            try {
+                                String rdo = workInfo.getOutputData().getString("result");
+                                JSONParser parser = new JSONParser();
+                                JSONObject json = (JSONObject) parser.parse(rdo);
+                                boolean exito = (boolean) json.get("exito");
+                                // Si no ha habido errores
+                                if (exito) {
+                                    boolean existe = (boolean) json.get("existe");
+                                    // Si el usuario existe y tiene esa password
+                                    if (existe) {
+                                        // Cargamos sus datos en SharedPreferences
+                                        String idUsuario = (String) json.get("idUsuario");
+                                        String nombre = (String) json.get("nombre");
+                                        boolean esAlumno = (boolean) json.get("esAlumno");
+                                        String emailEHU = (String) json.get("emailEHU");
+                                        String gmail = (String) json.get("gmail");
+                                        float creditos = Float.parseFloat((String) json.get("creditos"));
+                                        float media = Float.parseFloat((String) json.get("media"));
+
+                                        Usuario u = new Usuario(idUsuario, emailEHU);
+                                        u.setNotaMedia(media);
+                                        u.setNumCreditos(creditos);
+                                        u.setGmail(gmail);
+                                        GestorUsuario.getGestorUsuario().setUsuario(u);
+
+                                        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                                        SharedPreferences.Editor editor = prefs.edit();
+                                        editor.putString("idUsuario", idUsuario);
+                                        editor.putString("nombreUsuario", nombre);
+                                        editor.putBoolean("esAlumno", esAlumno);
+
+                                        // Si ha marcado recordar contraseña
+                                        Switch login1SwitchRecordar = findViewById(R.id.loginSwitchRecordar);
+                                        if (login1SwitchRecordar.isChecked()) {
+                                            editor.putString("password", prefs.getString("passwordFingerprint", ""));
+                                        }
+
+                                        editor.apply();
+
+                                        terminarCarga();
+                                        Intent i = new Intent(getApplicationContext(), MenuPrincipal.class);
+                                        startActivity(i);
+
+                                        // Si alguno de los datos no es correcto
+                                    } else {
+                                        terminarCarga();
+                                        Toast.makeText(getApplicationContext(), getString(R.string.login_datos_incorrectos), Toast.LENGTH_SHORT).show();
+                                    }
+                                    // Si ha habido algun error
+                                } else {
+                                    terminarCarga();
+                                    Toast.makeText(getApplicationContext(), getString(R.string.error_general), Toast.LENGTH_SHORT).show();
+                                }
+                                // Si salta algun error
+                            } catch (Exception e) {
+                                terminarCarga();
+                                Toast.makeText(getApplicationContext(), getString(R.string.error_general), Toast.LENGTH_SHORT).show();
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                });
+
+        WorkManager.getInstance(this).enqueue(otwr);
     }
 
     private void obtenerImagenUsuario() {
@@ -379,7 +474,7 @@ public class InicioSesion extends AppCompatActivity {
                                 startActivity(i);
                                 // Si salta algun error
                             } catch (Exception e) {
-                                Toast.makeText(getApplicationContext(), R.string.error_general, Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), getString(R.string.error_general), Toast.LENGTH_SHORT).show();
                                 e.printStackTrace();
                             } finally {
                                 terminarCarga();

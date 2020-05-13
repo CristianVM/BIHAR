@@ -15,7 +15,7 @@
     <string name="matricula_texto_anioMatricula">"Año de matrícula: "</string>
     <string name="dialog_matricaTxtSelectAnio">Seleccione el año de la matrícula</string>
     <string name="matricula_notaNP">NP</string>
-    <string name="matricula">MATRICULA</string>
+    <string name="matricula">MATRÍCULA</string>
 
     <!-- LOGIN -->
     <string name="login_usuario">Usuario</string>
@@ -117,27 +117,27 @@
     <string name="ajustes_usuario">USUARIO</string>
     <string name="ajustes_aplicacion">BIHAR</string>
     <string name="ajustes_idioma">Idioma</string>
-    <string name="ajustes_idioma_descripcion">Elija el idioma de la descripción</string>
+    <string name="ajustes_idioma_descripcion">Elige el idioma de la aplicación</string>
     <string name="ajustes_idioma_castellano">Español</string>
     <string name="ajustes_idioma_euskera">Euskera</string>
     <string name="ajustes_web">Portal Web UPV - EHU</string>
-    <string name="ajustes_web_descripcion">Accede a la web de UPV-EHU</string>
-    <string name="ajustes_gmail">Otro correo electrónico</string>
-    <string name="ajustes_gmail_descripcion">Vincula otra cuenta de correo electrónico</string>
+    <string name="ajustes_web_descripcion">Accede a la web de UPV - EHU</string>
+    <string name="ajustes_gmail">Vincular cuenta Gmail</string>
+    <string name="ajustes_gmail_descripcion">Vincula tu correo electrónico de Google</string>
     <string name="ajustes_emailError">Introduzca un correo electrónico correcto</string>
     <string name="ajustes_contrasena">Cambiar contraseña</string>
-    <string name="ajustes_contrasena_descripcion">Cambias la contraseña por una nueva</string>
+    <string name="ajustes_contrasena_descripcion">Sustituye la contraseña actual</string>
     <string name="ajustes_gmail_dialog">Escriba el correo electrónico</string>
     <string name="ajustes_contrasena_dialog">Escriba una nueva contraseña</string>
     <string name="ajustes_fotoPerfil">Cambiar foto perfil</string>
-    <string name="ajustes_fotoPerfil_descripcion">Cambias la foto de perfil por otro</string>
+    <string name="ajustes_fotoPerfil_descripcion">Sustituye la imagen actual</string>
     <string name="ajustes_notificacion_descripcion">Activar o desactivar notificaciones</string>
     <string name="ajustes_notificacion">Notificaciones</string>
-    <string name="dialog_foto_eleccion">Elija desde donde quieres obtener la foto</string>
+    <string name="dialog_foto_eleccion">Elige desde donde quieres obtener la foto</string>
     <string name="dialog_foto_capturar">Capturar foto</string>
-    <string name="dialog_foto_galeria">Galeria</string>
+    <string name="dialog_foto_galeria">Galería</string>
     <string name="dialog_foto_cancelar">Cancelar</string>
-    <string name="dialog_foto_seleccionar">Seleccione un método</string>
+    <string name="dialog_foto_seleccionar">Selecciona un método</string>
     <string name="avisoImagen">Imagen cambiada</string>
     <string name="desvincularCuenta">¿Deseas desvincular tu cuenta Google de la aplicación?</string>
     <string name="examen">Examen:</string>
@@ -173,14 +173,14 @@
 
     <!-- AÑADIR NOTAS PROFESOR  -->
     <string name="imparte_anadirNota">Añadir nota</string>
-    <string name="imparte_idPersona">ID Alumno</string>
+    <string name="imparte_idPersona">ID Alumno:</string>
     <string name="imparte_nombreAlumno">Nombre del alumno</string>
     <string name="dialog_notaprofesor_alumno">"Alumno: "</string>
     <string name="dialog_notaprofesor_nota">"Nota: "</string>
     <string name="dialog_notaprofesor_notaError">Error, nota baja o muy alta</string>
-    <string name="dialog_notaprofesor_vacio">Error, escriba una nota</string>
+    <string name="dialog_notaprofesor_vacio">Error, escribe una nota</string>
     <string name="notasprofesor">NOTAS</string>
-    <string name="dialog_notaprofesor_ordinaria">C. Ordinaria?</string>
+    <string name="dialog_notaprofesor_ordinaria">¿C. Ordinaria?</string>
 
     <!-- NOTIFICACIONES -->
     <string name="notificacion_nota">Notas</string>
@@ -199,5 +199,6 @@
     <string name="gaur">GAUR</string>
     <string name="expendiente">EXPEDIENTE</string>
     <string name="mensaje_foro_vacio">El mensaje no puede estar vacío</string>
+    <string name="ajustes_emailVacio">Error, escriba un correo electrónico</string>
 
 </resources>

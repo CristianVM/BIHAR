@@ -160,7 +160,7 @@ public class ForoAsignatura extends AppCompatActivity {
                                 }
                                 // Si salta algun error
                             } catch (Exception e) {
-                                Toast.makeText(getApplicationContext(), R.string.error_general, Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), getString(R.string.error_general), Toast.LENGTH_SHORT).show();
                                 e.printStackTrace();
                             } finally {
                                 terminarCarga();
@@ -236,11 +236,11 @@ public class ForoAsignatura extends AppCompatActivity {
 
                                         mensajeAMandar.setText("");
                                     } else {
-                                        Toast.makeText(getApplicationContext(), R.string.error_general, Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getApplicationContext(), getString(R.string.error_general), Toast.LENGTH_SHORT).show();
                                     }
                                     // Si salta algun error
                                 } catch (Exception e) {
-                                    Toast.makeText(getApplicationContext(), R.string.error_general, Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), getString(R.string.error_general), Toast.LENGTH_SHORT).show();
                                     e.printStackTrace();
                                 } finally {
                                     ImageButton botonMandarMensajeForo = findViewById(R.id.botonMandarMensajeForo);
@@ -252,7 +252,7 @@ public class ForoAsignatura extends AppCompatActivity {
 
             WorkManager.getInstance(this).enqueue(otwr);
         } else {
-            Toast.makeText(this, R.string.mensaje_foro_vacio, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.mensaje_foro_vacio), Toast.LENGTH_SHORT).show();
         }
     }
 

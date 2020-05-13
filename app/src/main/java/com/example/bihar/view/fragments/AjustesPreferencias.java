@@ -412,7 +412,7 @@ public class AjustesPreferencias extends PreferenceFragmentCompat implements Sha
 
                 recogerEventos();
 
-            }).addOnFailureListener(e -> Toast.makeText(getActivity(), getString(R.string.error_general), Toast.LENGTH_LONG).show());
+            }).addOnFailureListener(e -> Toast.makeText(getActivity(), getString(R.string.error_general), Toast.LENGTH_SHORT).show());
 
         }else if(resultCode == Activity.RESULT_OK && requestCode==80){
             //RESULTADO DE LA GALERÍA
@@ -430,7 +430,7 @@ public class AjustesPreferencias extends PreferenceFragmentCompat implements Sha
 
                 insertImageBD(true,miPath.toString());
             }catch(Exception e){
-                Toast.makeText(getActivity(),"ERROR",Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(),"ERROR",Toast.LENGTH_SHORT).show();
             }
         }else if(resultCode == Activity.RESULT_OK && requestCode==82){
             SharedPreferences prefs = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getActivity());
@@ -631,7 +631,7 @@ public class AjustesPreferencias extends PreferenceFragmentCompat implements Sha
                 .observe(this, workInfo -> {
                     if (workInfo != null && workInfo.getState().isFinished()) {
                         if(workInfo.getState() == WorkInfo.State.FAILED){
-                            Toast.makeText(getContext(), R.string.error_general, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), getString(R.string.error_general), Toast.LENGTH_SHORT).show();
                             return;
                         }
 
