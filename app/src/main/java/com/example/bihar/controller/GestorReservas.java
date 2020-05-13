@@ -3,9 +3,11 @@ package com.example.bihar.controller;
 import android.os.Build;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
+/**
+ * Clase singleton que gestiona las reservas de tutorias recogidas de la base de datos
+ */
 public class GestorReservas {
 
     private static GestorReservas mGestorReservas;
