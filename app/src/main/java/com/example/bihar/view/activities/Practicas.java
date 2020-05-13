@@ -146,7 +146,7 @@ public class Practicas extends AppCompatActivity {
 
                                 // Si salta algun error
                             } catch (Exception e) {
-                                Toast.makeText(getApplicationContext(), R.string.error_general, Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), getString(R.string.error_general), Toast.LENGTH_SHORT).show();
                                 e.printStackTrace();
                             } finally {
                                 terminarCarga();

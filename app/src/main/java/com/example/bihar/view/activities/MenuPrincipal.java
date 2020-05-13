@@ -65,7 +65,7 @@ public class MenuPrincipal extends AppCompatActivity {
         setContentView(R.layout.activity_menuprincipal);
 
         ToolBar toolbarMenuPrincipal = (ToolBar) getSupportFragmentManager().findFragmentById(R.id.toolbarMenuPrincipal);
-        toolbarMenuPrincipal.cambiarTituloToolbar(getResources().getString(R.string.gaur));
+        toolbarMenuPrincipal.cambiarTituloToolbar(getResources().getString(R.string.app_name));
         toolbarMenuPrincipal.ocultarAtras();
 
         String idioma = prefs.getString("idioma","es");

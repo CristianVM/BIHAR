@@ -1,7 +1,6 @@
 package com.example.bihar.view.activities;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -143,7 +142,7 @@ public class PracticaInformacion extends AppCompatActivity {
                                 }
                                 // Si salta algun error
                             } catch (Exception e) {
-                                Toast.makeText(getApplicationContext(), R.string.error_general, Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), getString(R.string.error_general), Toast.LENGTH_SHORT).show();
                                 e.printStackTrace();
                             } finally {
                                 terminarCarga();
@@ -181,13 +180,13 @@ public class PracticaInformacion extends AppCompatActivity {
 
     public void avisoInscripcion(View v) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.practica_inscripcion_titulo);
-        builder.setMessage(R.string.practica_inscripcion_mensaje);
+        builder.setTitle(getString(R.string.practica_inscripcion_titulo));
+        builder.setMessage(getString(R.string.practica_inscripcion_mensaje));
 
-        builder.setPositiveButton(R.string.Si, (dialog, which) -> inscripcionPractica());
+        builder.setPositiveButton(getString(R.string.Si), (dialog, which) -> inscripcionPractica());
 
-        builder.setNegativeButton(R.string.No, (dialog, which) ->
-                Toast.makeText(getApplicationContext(), R.string.practica_inscripcion_cancelada, Toast.LENGTH_LONG).show()
+        builder.setNegativeButton(getString(R.string.No), (dialog, which) ->
+                Toast.makeText(getApplicationContext(), getString(R.string.practica_inscripcion_cancelada), Toast.LENGTH_SHORT).show()
         );
 
         builder.show();
@@ -230,13 +229,13 @@ public class PracticaInformacion extends AppCompatActivity {
                                 boolean exito = (boolean) json.get("exito");
                                 // Si no ha habido errores
                                 if (exito) {
-                                    Toast.makeText(getApplicationContext(), R.string.practica_inscripcion_realizada, Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getApplicationContext(), getString(R.string.practica_inscripcion_realizada), Toast.LENGTH_SHORT).show();
                                 } else {
-                                    Toast.makeText(getApplicationContext(), R.string.error_general, Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getApplicationContext(), getString(R.string.error_general), Toast.LENGTH_SHORT).show();
                                 }
                             // Si salta algun error
                             } catch (Exception e) {
-                                Toast.makeText(getApplicationContext(), R.string.error_general, Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), getString(R.string.error_general), Toast.LENGTH_SHORT).show();
                                 e.printStackTrace();
                             } finally {
                                 terminarCarga();
